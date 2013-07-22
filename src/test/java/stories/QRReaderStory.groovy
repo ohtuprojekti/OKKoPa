@@ -13,7 +13,6 @@ scenario "Reading an image file with only QR code", {
     when "QR code is read", {
     }
  
-    then "the result should be", {
-        1.shouldBe 2
+    then "the result should be ??", {
     }
 }
