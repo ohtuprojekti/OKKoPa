@@ -29,7 +29,7 @@ public class PDFSplitter {
                 papers.add(paper);
             }
             // add to last exam paper
-            papers.get(papers.size() - 1).addPage(pages.get(i).convertToImage());
+            papers.get(papers.size() - 1).getPages().add(pages.get(i).convertToImage());
         }
         document.close();
         return papers;
