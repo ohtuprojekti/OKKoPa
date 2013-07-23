@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.Settings;
@@ -16,34 +12,26 @@ import javax.activation.*;
  */
 public class OKKoPaMessage {
     
-    MimeMessage message;
     Multipart body;
     Properties properties;
-    javax.mail.Session session;
     private static final String MAIL_PROPERTY = "mail.smtp.host";
     private static final int VIESTI_INDEX = 0;
+    
+    String subject;
+    String receiver;
+    String sender;
+    
     
     public OKKoPaMessage(String receiver, String sender, Properties properties) throws MessagingException {
         // Add parameter properties
         this.properties = properties;
-
-        
-        // Get the default Session object.
-        session = Session.getInstance(properties);
-       
-        message = new MimeMessage(session);
+        this.receiver = receiver;
+        this.sender = sender;
         
         body = new MimeMultipart();
         
         BodyPart viesti = new MimeBodyPart();
         body.addBodyPart(viesti, VIESTI_INDEX);
-
-        // Set From: header field of the header.
-        message.setFrom(new InternetAddress(sender));
-        
-        // Set To: header field of the header.
-        message.addRecipient(javax.mail.Message.RecipientType.TO,
-                                 new InternetAddress(receiver));
     }
     
     
@@ -51,11 +39,6 @@ public class OKKoPaMessage {
         this(receiver, sender, System.getProperties());
     }
     
-
-    public void setAuthentication(String username, String password) {
-        PasswordAuthentication pw = new PasswordAuthentication(username, password);
-        session.setPasswordAuthentication(new URLName(session.getProperty(MAIL_PROPERTY)), pw);
-    }
     
     public void setText(String text) throws MessagingException {
         BodyPart viesti = body.getBodyPart(VIESTI_INDEX);
@@ -63,11 +46,36 @@ public class OKKoPaMessage {
     }
     
     public void setSubject(String subject) throws MessagingException {
-        message.setSubject(subject);
+        this.subject = subject;
     }
     
-    public void send() throws MessagingException {
+    
+    protected Session generateSession() {
+        return Session.getInstance(properties);
+        
+    }
+    
+    
+    public final MimeMessage generateMessage() throws MessagingException {
+        // Get the default Session object.
+        Session session = generateSession();
+        
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(sender));
+        
+        // Set To: header field of the header.
+        message.addRecipient(javax.mail.Message.RecipientType.TO,
+                                 new InternetAddress(receiver));
+        
+        message.setSubject(subject);
         message.setContent(body);
+        return message;  
+    }
+    
+    
+    public void send() throws MessagingException {
+        MimeMessage message = generateMessage();
+        
         Transport.send(message);
     }
     
@@ -82,13 +90,8 @@ public class OKKoPaMessage {
     
     //testiä
     public static void main(String[] args) throws MessagingException {
-        Properties props = Settings.SMTPPROPS;//new Properties();//System.getProperties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        Properties props = Settings.SMTPPROPS;
         OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com");
-        //msg.setAuthentication("okkopa.2013@gmail.com", "ohtu2013okkopa");
         msg.setText("toimiikoä");
         msg.setText("yksi viesti");
         msg.setSubject("testi123");
