@@ -3,29 +3,32 @@
  * and open the template in the editor.
  */
 package fi.helsinki.cs.okkopa;
+import java.io.FileInputStream;
 import java.util.Properties;
 /**
  *
  * @author phemmila
  */
 public class Settings {
-     //SMTP-settings:
-     public static Properties SMTPPROPS;
-     public static Properties PWDPROPS;
-     public static Properties IMAPPROPS;
- /*   
-     protected static String SMTPAUTHENTICATION;
-     protected static String SMTPUSERNAME;
-     protected static String SMTPPASSWORD;
-     protected static String SMTPHOSTNAME;
-     protected static String SMTPPORT;
-     protected static String SMTPSTARTTLS;
+     //Settings as "Properties"- objects:
+     public final static Properties SMTPPROPS = readSettingXML("smtpsettings.xml");
+     public final static Properties PWDPROPS = readSettingXML("pwdsettings.xml");
+     public final static Properties IMAPPROPS = readSettingXML("imapsettings.xml");
+
      
-     //imap-settings:
-     protected static String IMAPHOSTNAME;
-     protected static String IMAPPORT;
-     protected static String IMAPUSERNAME;
-     protected static String IMAPPASSWORD;
-     protected static String IMAPDEFAULTFOLDER;
-     */
+     
+     
+     private static Properties readSettingXML(String fileName) {
+       try {
+           Properties currentProps = new Properties();
+           FileInputStream currentStream = new FileInputStream(fileName);
+           currentProps.loadFromXML(currentStream);
+           currentStream.close();
+           return currentProps;
+       }
+       catch (Exception e) {
+           return null;
+       }
+       
+    }
 }
