@@ -3,6 +3,7 @@ package fi.helsinki.cs.okkopa.mail.read;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -55,5 +56,9 @@ public class IMAPmessage {
             return null;
         }
         return attachments;
+    }
+
+    public Date getTime() throws MessagingException {
+        return this.message.getReceivedDate();
     }
 }

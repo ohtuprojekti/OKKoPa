@@ -23,37 +23,38 @@ public class Main {
         server = new IMAPserver();
         server.login();
 
-        testFolder("inbox");
+        testFolder("inbox", "processed");
 
         System.out.println("\n-- väli --\n");
 
-        testFolder("processed");
+        testFolder("processed", "another");
 
         server.close();
     }
 
-    private static void testFolder(String emailBox) throws MessagingException, IOException {
+    private static void testFolder(String emailBox, String toBox) throws MessagingException, IOException {
         IMAPfolder folder = new IMAPfolder(server, emailBox);
         IMAPmessage message;
 
         for (int i = 0; i < 40; i++) {
             Message msg;
-            msg = folder.getNextmessage();
+            msg = folder.getNextmessage(toBox);
 
             if (msg == null) {
                 System.out.println("-");
             } else {
                 message = new IMAPmessage(msg);
-                System.out.print(message.getSubject() + " + ");
+                System.out.print(message.getSubject() + " + " + msg.getReceivedDate() + " + ");
                 HashMap<String, InputStream> attachments = message.getAttachments();
                 if (attachments != null) {
                     for (Map.Entry<String, InputStream> attachmentAndName : attachments.entrySet()) {
                         attachment = attachmentAndName.getValue();
                         name = attachmentAndName.getKey();
                         
-                        Tallennus tallennus = new Tallennus();
-                        
-                        tallennus.tiedostonTallennus(attachment, name);
+//                        Tallennus tallennus = new Tallennus();
+//                        
+//                        tallennus.tiedostonTallennus(attachment, name);
+                        System.out.println();
                     }
                 } else {
                     System.out.println("ei liitettä");

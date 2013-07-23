@@ -1,6 +1,11 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
 import com.sun.mail.imap.IMAPFolder;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -16,10 +21,12 @@ public class IMAPfolder {
     private boolean messagesGot = false;
     private Message msg;
     private int index = 0;
+    private IMAPcopy copy;
+    private final String folderName;
 
     /**
      * Opens and formats folder to use.
-     * 
+     *
      * @param server used IMAPserver node.
      * @param folder what folder we want to use.
      * @throws NoSuchProviderException
@@ -27,17 +34,37 @@ public class IMAPfolder {
      */
     public IMAPfolder(IMAPserver server, String folder) throws NoSuchProviderException, MessagingException {
         this.server = server;
+        this.folderName = folder;
         this.folder = this.server.selectAndGetFolder(folder);
+        this.copy = new IMAPcopy(this.server);
     }
-    
+
     /**
-     * Return oldest not already returned message, if no new messages, then return null.
-     * 
+     * Return oldest not already returned message, if no new messages, then
+     * return null. Move last before returned message to processed folder.
+     *
      * @return next message.
      * @throws MessagingException
      */
     public Message getNextmessage() throws MessagingException {
+        return this.getNextmessage("processed");
+    }
+
+    /**
+     * Return oldest not already returned message, if no new messages, then
+     * return null.
+     *
+     * @param whereToMoveAfterProcessed Where we want to move the last given
+     * message. If null not moved.
+     * @return next message.
+     * @throws MessagingException
+     */
+    public Message getNextmessage(String whereToMoveAfterProcessed) throws MessagingException {
         getMessagesIfNotGot();
+
+        if (whereToMoveAfterProcessed != null && index > 0 && messages.length > index + 1) {
+            this.copy.copyMessage(messages[index - 1], this.folderName, whereToMoveAfterProcessed);
+        }
 
         if (folder.getMessageCount() > index) {
             msg = messages[index];
@@ -50,13 +77,32 @@ public class IMAPfolder {
 
     private Message[] getMessages() throws MessagingException {
         messages = folder.getMessages();
+        this.sortMessagesByDate(messages);
         messagesGot = true;
+
         return messages;
+
     }
 
-    private void getMessagesIfNotGot() throws MessagingException {
+    private void sortMessagesByDate(Message[] messages) {
+        Arrays.sort(messages, new Comparator<Message>() {
+            @Override
+            public int compare(Message o1, Message o2) {
+                try {
+                    return o2.getReceivedDate().compareTo(o1.getReceivedDate());
+                } catch (MessagingException ex) {
+                    Logger.getLogger(IMAPfolder.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return 0;
+            }
+        });
+    }
+
+    private boolean getMessagesIfNotGot() throws MessagingException {
         if (messagesGot == false) {
             this.getMessages();
+            return false;
         }
+        return true;
     }
 }
