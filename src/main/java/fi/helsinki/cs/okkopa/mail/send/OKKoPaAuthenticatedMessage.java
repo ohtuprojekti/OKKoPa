@@ -13,7 +13,7 @@ import javax.activation.*;
  *
  * @author anttkaik
  */
-public class OKKoPaMessage {
+public class OKKoPaAuthenticatedMessage {
     
     MimeMessage message;
     Multipart body;
@@ -22,13 +22,17 @@ public class OKKoPaMessage {
     private static final String MAIL_PROPERTY = "mail.smtp.host";
     private static final int VIESTI_INDEX = 0;
     
-    public OKKoPaMessage(String receiver, String sender, Properties properties) throws MessagingException {
+    public OKKoPaAuthenticatedMessage(String receiver, String sender, Properties properties, final String username, final String password) throws MessagingException {
         // Add parameter properties
         this.properties = properties;
 
         
         // Get the default Session object.
-        session = Session.getInstance(properties);
+        session = Session.getInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+        });
        
         message = new MimeMessage(session);
         
@@ -46,8 +50,8 @@ public class OKKoPaMessage {
     }
     
     
-    public OKKoPaMessage(String receiver, String sender) throws MessagingException {
-        this(receiver, sender, System.getProperties());
+    public OKKoPaAuthenticatedMessage(String receiver, String sender, String username, String password) throws MessagingException {
+        this(receiver, sender, System.getProperties(), username, password);
     }
     
 
@@ -86,7 +90,7 @@ public class OKKoPaMessage {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
-        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com");
+        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com", props, "okkopa.2013@gmail.com", "ohtu2013okkopa");
         //msg.setAuthentication("okkopa.2013@gmail.com", "ohtu2013okkopa");
         msg.setText("toimiikoä");
         msg.setText("yksi viesti");
