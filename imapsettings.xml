@@ -5,7 +5,6 @@
      <entry key="imapHostName">localhost</entry>  
      <entry key="imapPort">993</entry>
      <entry key="imapUserName">username</entry>
-     <entry key="imapPassword">password</entry>
      <entry key="imapDefaultFolder">inbox</entry>
     
 </properties>

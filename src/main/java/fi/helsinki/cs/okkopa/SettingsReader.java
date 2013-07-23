@@ -26,29 +26,40 @@ public class SettingsReader {
            FileInputStream imapFileStream = new FileInputStream("imapsettings.xml");
            Properties imapProps = new Properties();
            imapProps.loadFromXML(imapFileStream);
-           imapFileStream.close();
            
            //Set imap values:
            Settings.IMAPDEFAULTFOLDER = imapProps.getProperty("imapDefaultFolder");
            Settings.IMAPHOSTNAME = imapProps.getProperty("imapHostName");
            Settings.IMAPPORT = imapProps.getProperty("imapPort");
            Settings.IMAPUSERNAME = imapProps.getProperty("imapUserName");
-           Settings.IMAPPASSWORD = imapProps.getProperty("imapPassword");
+
            
            //Load smtp-settings:
            FileInputStream smtpFileStream = new FileInputStream("smtpsettings.xml");
            Properties smtpProps = new Properties();
            smtpProps.loadFromXML(smtpFileStream);
-           smtpFileStream.close();
            
            //set smtp values:
            Settings.SMTPHOSTNAME = smtpProps.getProperty("smtpHostName");
            Settings.SMTPPORT = smtpProps.getProperty("smtpPort");
            Settings.SMTPUSERNAME = smtpProps.getProperty("smtpUserName");
-           Settings.SMTPPASSWORD = smtpProps.getProperty("smtpPassword");
+
            Settings.SMTPAUTHENTICATION = smtpProps.getProperty("smtpAuthentication");
            Settings.SMTPSTARTTLS = smtpProps.getProperty("smtpStartTLS");
            
+           //Load passwords:
+           FileInputStream pwdFileStream = new FileInputStream("passwords.xml");
+           Properties pwdProps = new Properties();
+           pwdProps.loadFromXML(pwdFileStream);
+ 
+           Settings.SMTPPASSWORD = pwdProps.getProperty("smtpPassword");
+           Settings.IMAPPASSWORD = pwdProps.getProperty("imapPassword");
+           
+           //Close FileInputStreams:
+           imapFileStream.close();
+           smtpFileStream.close();
+           pwdFileStream.close();
+         
        } catch (Exception e) {
            System.out.println(e.getMessage());
        }    

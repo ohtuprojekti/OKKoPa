@@ -4,7 +4,6 @@
      <entry key="smtpAuthentication">true</entry>
      <entry key="smtpStartTLS">true</entry>
      <entry key="smtpUserName">username</entry>
-     <entry key="smtpPassword">password</entry>
      <entry key="smtpHostName">localhost</entry>
      <entry key="smtpPort">587</entry>
 
