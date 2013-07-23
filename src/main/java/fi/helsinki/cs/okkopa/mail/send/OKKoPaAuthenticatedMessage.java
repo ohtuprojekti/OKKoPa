@@ -41,7 +41,9 @@ public class OKKoPaAuthenticatedMessage extends OKKoPaMessage {
     //testiä
     public static void main(String[] args) throws MessagingException {
         Properties props = Settings.SMTPPROPS;
-        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com", props, "okkopa.2013@gmail.com", "ohtu2013okkopa");
+        Properties passwords = Settings.PWDPROPS;
+        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com", 
+                props, props.getProperty("mail.smtp.user"), passwords.getProperty("smtpPassword"));
         msg.setText("toimiikoä");
         msg.setText("yksi viesti");
         msg.setSubject("testi123");
