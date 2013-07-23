@@ -4,6 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.mail.send;
 
+import fi.helsinki.cs.okkopa.Settings;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -81,7 +82,7 @@ public class OKKoPaMessage {
     
     //testiä
     public static void main(String[] args) throws MessagingException {
-        Properties props = new Properties();//System.getProperties();
+        Properties props = Settings.SMTPPROPS;//new Properties();//System.getProperties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
