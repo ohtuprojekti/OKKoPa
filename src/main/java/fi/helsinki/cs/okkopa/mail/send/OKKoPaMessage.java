@@ -14,7 +14,6 @@ public class OKKoPaMessage {
     
     Multipart body;
     Properties properties;
-    private static final String MAIL_PROPERTY = "mail.smtp.host";
     private static final int VIESTI_INDEX = 0;
     
     String subject;
@@ -91,7 +90,7 @@ public class OKKoPaMessage {
     //testiä
     public static void main(String[] args) throws MessagingException {
         Properties props = Settings.SMTPPROPS;
-        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com");
+        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
         msg.setText("toimiikoä");
         msg.setText("yksi viesti");
         msg.setSubject("testi123");
