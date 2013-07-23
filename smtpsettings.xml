@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>   
+     <entry key="smtpAuthentication">true</entry>
+     <entry key="smtpStartTLS">true</entry>
+     <entry key="smtpUserName">username</entry>
+     <entry key="smtpPassword">password</entry>
+     <entry key="smtpHostName">localhost</entry>
+     <entry key="smtpPort">587</entry>
+
+     
+</properties>
