@@ -10,7 +10,10 @@ package fi.helsinki.cs.okkopa;
  */
 public class Settings {
      //SMTP-settings:
-     protected static String SMTPAUTHENTICATION;
+     public static Properties smtpProps;
+    
+    
+     public static String SMTPAUTHENTICATION;
      protected static String SMTPUSERNAME;
      protected static String SMTPPASSWORD;
      protected static String SMTPHOSTNAME;
