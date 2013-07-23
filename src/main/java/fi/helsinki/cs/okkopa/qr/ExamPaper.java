@@ -1,6 +1,5 @@
 package fi.helsinki.cs.okkopa.qr;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
