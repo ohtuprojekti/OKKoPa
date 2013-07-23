@@ -12,10 +12,10 @@ import java.util.List;
 
 public class QRCodeReader {
 
-    public void readQRCodes(List<ExamPaper> papers) throws NotFoundException {
-        LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) images.get(i));
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-        MultiFormatReader reader = new MultiFormatReader();
-        Result result = reader.decode(bitmap);
-    }
+//    public void readQRCodes(List<ExamPaper> papers) throws NotFoundException {
+//        LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) images.get(i));
+//        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+//        MultiFormatReader reader = new MultiFormatReader();
+//        Result result = reader.decode(bitmap);
+//    }
 }

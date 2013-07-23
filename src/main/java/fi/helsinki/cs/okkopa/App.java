@@ -1,6 +1,5 @@
 package fi.helsinki.cs.okkopa;
-import javax.mail.*;
-import com.google.zxing.*;
+
 
 /**
  * Hello world!
