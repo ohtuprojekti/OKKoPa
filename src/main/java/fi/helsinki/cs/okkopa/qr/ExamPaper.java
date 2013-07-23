@@ -8,7 +8,6 @@ import java.util.List;
 public class ExamPaper {
     private List<BufferedImage> pages;
     private Result result;
-
     
     ExamPaper() {
         pages = new ArrayList<>();
@@ -20,5 +19,9 @@ public class ExamPaper {
     
     public void setResult(Result result) {
         this.result = result;
+    }
+    
+    public Result getResult() {
+        return this.result;
     }
 }

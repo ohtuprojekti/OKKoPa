@@ -11,43 +11,60 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class QRCodeReaderTest {
-    
+
     ExamPaper paper;
     QRCodeReader reader;
-    
+
     @Before
     public void setUp() throws IOException {
         paper = new ExamPaper();
-        InputStream barCodeInputStream = getClass().getResourceAsStream("/");
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/empty_page.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         paper.getPages().add(image);
-        InputStream barCodeInputStream = getClass().getResourceAsStream("/");
-        BufferedImage image = ImageIO.read(barCodeInputStream);
-        paper.getPages().add(image);
-        
+
         reader = new QRCodeReader();
     }
-    
+
     /**
-     * Test reading a file with only a single QR code.
+     * Test reading an exam paper with only a single QR code.
      */
     @Test
-    public void readASingleQRCode() throws NotFoundException {
-        reader.readQRCodes(paper);
+    public void readASingleQRCode() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/basic_qr-0.png");
+        BufferedImage image = ImageIO.read(barCodeInputStream);
+        paper.getPages().add(image);
+        reader.readQRCode(paper);
+        assertEquals("asperhee", paper.getResult().getText());
     }
-    
+
     /**
-     * 
+     *
      */
     @Test(expected = NotFoundException.class)
-    public void readImageWithoutQRCode() throws NotFoundException {
-        BufferedImage image = null;
-        try {
-            InputStream barCodeInputStream = getClass().getResourceAsStream("/images/qr_code_missing.gif");
-            image = ImageIO.read(barCodeInputStream);
-        } catch (Exception ex) {
-            fail(ex.getMessage());
-        }
-        reader.readQRCode(image);
+    public void readExamPaperWithoutQRCode() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/empty_page.png");
+        BufferedImage image = ImageIO.read(barCodeInputStream);
+        paper.getPages().add(image);
+        reader.readQRCode(paper);
     }
+
+    @Test
+    public void readTwoQRCodes() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/three_page-0.png");
+        BufferedImage image = ImageIO.read(barCodeInputStream);
+        paper.getPages().add(image);
+        reader.readQRCode(paper);
+        assertEquals("asperhee", paper.getResult().getText());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void readTwoHalfQRCode() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_half_upsidedown.png");
+        BufferedImage image = ImageIO.read(barCodeInputStream);
+        paper.getPages().add(image);
+        reader.readQRCode(paper);
+    }
+    
+    
+//       TO DO test for two different codes on same page  
 }
