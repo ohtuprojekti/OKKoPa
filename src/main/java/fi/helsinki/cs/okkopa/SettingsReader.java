@@ -24,36 +24,38 @@ public class SettingsReader {
            
            //Load imap-settings:
            FileInputStream imapFileStream = new FileInputStream("imapsettings.xml");
-           Properties imapProps = new Properties();
-           imapProps.loadFromXML(imapFileStream);
-           
-           //Set imap values:
-           Settings.IMAPDEFAULTFOLDER = imapProps.getProperty("imapDefaultFolder");
-           Settings.IMAPHOSTNAME = imapProps.getProperty("imapHostName");
-           Settings.IMAPPORT = imapProps.getProperty("imapPort");
-           Settings.IMAPUSERNAME = imapProps.getProperty("imapUserName");
-
+           Settings.IMAPPROPS = new Properties();
+           Settings.IMAPPROPS.loadFromXML(imapFileStream);
            
            //Load smtp-settings:
            FileInputStream smtpFileStream = new FileInputStream("smtpsettings.xml");
-           Properties smtpProps = new Properties();
-           smtpProps.loadFromXML(smtpFileStream);
-           
-           //set smtp values:
-           Settings.SMTPHOSTNAME = smtpProps.getProperty("smtpHostName");
-           Settings.SMTPPORT = smtpProps.getProperty("smtpPort");
-           Settings.SMTPUSERNAME = smtpProps.getProperty("smtpUserName");
-
-           Settings.SMTPAUTHENTICATION = smtpProps.getProperty("smtpAuthentication");
-           Settings.SMTPSTARTTLS = smtpProps.getProperty("smtpStartTLS");
+           Settings.SMTPPROPS = new Properties();
+           Settings.SMTPPROPS.loadFromXML(smtpFileStream);
            
            //Load passwords:
            FileInputStream pwdFileStream = new FileInputStream("passwords.xml");
-           Properties pwdProps = new Properties();
-           pwdProps.loadFromXML(pwdFileStream);
- 
-           Settings.SMTPPASSWORD = pwdProps.getProperty("smtpPassword");
-           Settings.IMAPPASSWORD = pwdProps.getProperty("imapPassword");
+           Settings.PWDPROPS = new Properties();
+           Settings.PWDPROPS.loadFromXML(pwdFileStream);
+//           
+//           Set imap values:
+//           Settings.IMAPDEFAULTFOLDER = imapProps.getProperty("imapDefaultFolder");
+//           Settings.IMAPHOSTNAME = imapProps.getProperty("imapHostName");
+//           Settings.IMAPPORT = imapProps.getProperty("imapPort");
+//           Settings.IMAPUSERNAME = imapProps.getProperty("imapUserName");
+//
+//           
+//           
+//           set smtp values:
+//           Settings.SMTPHOSTNAME = smtpProps.getProperty("smtpHostName");
+//           Settings.SMTPPORT = smtpProps.getProperty("smtpPort");
+//           Settings.SMTPUSERNAME = smtpProps.getProperty("smtpUserName");
+//
+//           Settings.SMTPAUTHENTICATION = smtpProps.getProperty("smtpAuthentication");
+//           Settings.SMTPSTARTTLS = smtpProps.getProperty("smtpStartTLS");
+//           
+// 
+//           Settings.SMTPPASSWORD = pwdProps.getProperty("smtpPassword");
+//           Settings.IMAPPASSWORD = pwdProps.getProperty("imapPassword");
            
            //Close FileInputStreams:
            imapFileStream.close();

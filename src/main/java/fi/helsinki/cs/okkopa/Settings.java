@@ -10,9 +10,9 @@ import java.util.Properties;
  */
 public class Settings {
      //SMTP-settings:
-     public static Properties smtpProps;
-     public static Properties pwdProps;
-     public static Properties imapProps;
+     public static Properties SMTPPROPS;
+     public static Properties PWDPROPS;
+     public static Properties IMAPPROPS;
  /*   
      protected static String SMTPAUTHENTICATION;
      protected static String SMTPUSERNAME;
