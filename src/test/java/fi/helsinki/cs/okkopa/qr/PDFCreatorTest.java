@@ -26,9 +26,6 @@ public class PDFCreatorTest {
         pages.add(ImageIO.read(barCodeInputStream));
         barCodeInputStream = getClass().getResourceAsStream("/images/empty_page.png");
         pages.add(ImageIO.read(barCodeInputStream));
-        InputStream inputStream = creator.createPDF(pages);
-        File file = new File("test.pdf");
-        FileOutputStream outputStream = new FileOutputStream(file);
-        IOUtils.copy(inputStream, outputStream);
+        creator.createPDF(pages);
     }
 }
