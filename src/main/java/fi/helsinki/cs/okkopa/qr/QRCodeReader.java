@@ -19,6 +19,7 @@ public class QRCodeReader {
                 LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) paper.getPages().get(j));
                 BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                 MultiFormatReader reader = new MultiFormatReader();
+                // if a result (QR code) not found throw exception 
                 try {
                     result = reader.decode(bitmap);
                 } catch (NotFoundException ex) {

@@ -1,7 +1,6 @@
 package fi.helsinki.cs.okkopa.qr;
 
 import com.google.zxing.NotFoundException;
-import com.google.zxing.Result;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +37,7 @@ public class QRCodeReaderTest {
     }
 
     /**
-     *
+     * Test reading an exam paper without QR code.
      */
     @Test(expected = NotFoundException.class)
     public void readExamPaperWithoutQRCode() throws NotFoundException, IOException {
@@ -48,15 +47,21 @@ public class QRCodeReaderTest {
         reader.readQRCode(paper);
     }
 
+    /**
+     * Test reading an exam paper with two same QR codes on same side.
+     */
     @Test
-    public void readTwoQRCodes() throws NotFoundException, IOException {
-        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/three_page-0.png");
+    public void readTwoQRCodesSameSides() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_same.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         paper.getPages().add(image);
         reader.readQRCode(paper);
         assertEquals("asperhee", paper.getResult().getText());
     }
 
+    /**
+     * Test reading an exam paper with two and a half QR codes on same side.
+     */
     @Test(expected = NotFoundException.class)
     public void readTwoHalfQRCode() throws NotFoundException, IOException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_half_upsidedown.png");
@@ -65,6 +70,15 @@ public class QRCodeReaderTest {
         reader.readQRCode(paper);
     }
     
-    
-//       TO DO test for two different codes on same page  
+    /**
+     * Test reading an exam paper with two different QR codes on same side.
+     */
+    @Test (expected = NotFoundException.class)
+    public void readTwoDifferentQRCodesSameSide() throws NotFoundException, IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_different.png");
+        BufferedImage image = ImageIO.read(barCodeInputStream);
+        paper.getPages().add(image);
+        reader.readQRCode(paper);
+    }
+  
 }
