@@ -1,19 +1,18 @@
 package fi.helsinki.cs.okkopa.qr;
 
-import com.google.zxing.Result;
 import java.io.InputStream;
 
 public class ExamPaper {
 
     private InputStream pdfStream;
-    private Result result;
+    private String QRCodeString;
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setQRCodeString(String QRCodeString) {
+        this.QRCodeString = QRCodeString;
     }
 
-    public Result getResult() {
-        return result;
+    public String getQRCodeString() {
+        return QRCodeString;
     }
 
     public InputStream getPdfStream() {
