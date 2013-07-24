@@ -2,6 +2,7 @@ package fi.helsinki.cs.okkopa.mail.read;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import javax.mail.Message;
@@ -16,7 +17,7 @@ import javax.mail.internet.MimeBodyPart;
 public class IMAPmessage {
 
     private Message message;
-    private HashMap<String, InputStream> attachments;
+    private ArrayList<InputStream> attachments;
     private String contentType;
 
     /**
@@ -47,13 +48,10 @@ public class IMAPmessage {
      * @throws IOException
      * @throws MessagingException
      */
-    public HashMap<String, InputStream> getAttachments() throws IOException, MessagingException {
+    public ArrayList<InputStream> getAttachments() throws IOException, MessagingException {
         contentType = this.message.getContentType();
 
-        attachments = new HashMap<String, InputStream>();
-
-        // store attachment file name, separated by comma
-        String attachFiles = "";
+        attachments = new ArrayList<InputStream>();
 
         if (contentType.contains("multipart")) {
             // content may contain attachments
@@ -63,7 +61,7 @@ public class IMAPmessage {
                 MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
                 
                 if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                    attachments.put(part.getFileName(), part.getInputStream());
+                    attachments.add(part.getInputStream());
                 }
             }
 

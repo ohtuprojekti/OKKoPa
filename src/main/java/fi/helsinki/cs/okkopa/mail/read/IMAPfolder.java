@@ -22,7 +22,6 @@ public class IMAPfolder {
     private int index = 0;
     private IMAPcopy copy;
     private final String folderName;
-    private Message old_msg = null;
 
     /**
      * Opens and formats folder to use.
@@ -46,7 +45,7 @@ public class IMAPfolder {
      * @return next message.
      * @throws MessagingException
      */
-    public Message getNextmessage() throws MessagingException {
+    public IMAPmessage getNextmessage() throws MessagingException {
         return this.getNextmessage("processed");
     }
 
@@ -59,21 +58,18 @@ public class IMAPfolder {
      * @return next message.
      * @throws MessagingException
      */
-    public Message getNextmessage(String whereToMoveAfterProcessed) throws MessagingException {
+    public IMAPmessage getNextmessage(String whereToMoveAfterProcessed) throws MessagingException {
         getMessagesIfNotGot();
-
-        if (old_msg != null) {
-            this.copy.copyMessage(old_msg, this.folderName, whereToMoveAfterProcessed);
-        }
 
         if (folder.getMessageCount() > index) { 
             msg = messages[index];
-            old_msg = msg;
             
             index++;
-            return msg;
+            
+            this.copy.copyMessage(msg, this.folderName, whereToMoveAfterProcessed);
+            
+            return new IMAPmessage(msg);
         } else {
-            old_msg = null;
             return null;
         }
     }
@@ -116,5 +112,9 @@ public class IMAPfolder {
      */
     public void close() throws MessagingException {
         this.server.closeFolder(this.folder);
+    }
+
+    public IMAPFolder getIMAPFolder() {
+        return this.folder;
     }
 }

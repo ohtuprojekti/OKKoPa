@@ -21,9 +21,10 @@ public class IMAPserver {
     String subject = null;
     Flags.Flag flag = null;
     private HashMap<String, IMAPFolder> folders;
-    private String IMAPadress = "imap.googlemail.com";
-    private String username = "okkopa.2013@gmail.com";
-    private String password = "ohtu2013okkopa";
+    private String IMAPadress;
+    private String username;
+    private String password;
+    private IMAPFolder newFolder;
 
     /**
      * Formats offline settings ready for login.
@@ -31,7 +32,11 @@ public class IMAPserver {
      * @throws NoSuchProviderException
      * @throws MessagingException
      */
-    public IMAPserver() throws NoSuchProviderException, MessagingException {
+    public IMAPserver(String IMAPaddress, String username, String password) throws NoSuchProviderException, MessagingException {
+        this.IMAPadress = IMAPaddress;
+        this.username = username;
+        this.password = password;
+
         settingsForIMAPSSL();
 
         folders = new HashMap<String, IMAPFolder>();
@@ -40,6 +45,7 @@ public class IMAPserver {
     private void settingsForIMAPSSL() throws NoSuchProviderException, MessagingException {
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
+ //       props.setProperty("mail.imaps.port", "4005");
 
         Session session = Session.getDefaultInstance(props, null);
 
@@ -62,7 +68,8 @@ public class IMAPserver {
     }
 
     /**
-     * Opens desired folder and gives its node back. If used before, gives the same node as last time.
+     * Opens desired folder and gives its node back. If used before, gives the
+     * same node as last time.
      *
      * @param emailBox Which mailbox we wanted to have open and used.
      * @return node to folder.
@@ -97,14 +104,22 @@ public class IMAPserver {
 
     /**
      * Closes specified folder.
+     *
      * @param folder What to close.
      * @throws MessagingException
      */
     public void closeFolder(IMAPFolder folder) throws MessagingException {
         this.folder = folder;
-        
+
         if (this.folder != null && this.folder.isOpen()) {
             this.folder.close(true);
+        }
+    }
+
+    public void createFolder(String newFolder) throws MessagingException {
+        this.newFolder = (IMAPFolder) store.getFolder(newFolder);
+        if (!this.newFolder.exists()) {
+            this.newFolder.create(Folder.HOLDS_MESSAGES);
         }
     }
 }
