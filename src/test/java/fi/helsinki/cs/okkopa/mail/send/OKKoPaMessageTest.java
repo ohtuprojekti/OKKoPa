@@ -48,6 +48,7 @@ public class OKKoPaMessageTest {
         props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "false");
         props.put("mail.smtp.port", "4012");
+        props.put("mail.transport.protocol", "smtp");
     }
     
     @After
@@ -118,7 +119,6 @@ public class OKKoPaMessageTest {
         InputStream is = getClass().getResourceAsStream("/text/TestAttachment.txt");
         msg.addAttachment(is, "text/plain", "TestAttachment");
         msg.send();
-        is.available();
         
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();

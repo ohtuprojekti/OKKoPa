@@ -51,6 +51,7 @@ public class OKKoPaAuthenticatedMessageTest {
         props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "4012");
+        props.put("mail.transport.protocol", "smtp");
     }
     
 
