@@ -2,7 +2,6 @@ package fi.helsinki.cs.okkopa.mail.read;
 
 import com.sun.mail.imap.IMAPFolder;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +22,7 @@ public class IMAPfolder {
     private int index = 0;
     private IMAPcopy copy;
     private final String folderName;
+    private Message old_msg = null;
 
     /**
      * Opens and formats folder to use.
@@ -62,15 +62,18 @@ public class IMAPfolder {
     public Message getNextmessage(String whereToMoveAfterProcessed) throws MessagingException {
         getMessagesIfNotGot();
 
-        if (whereToMoveAfterProcessed != null && index > 0 && messages.length > index + 1) {
-            this.copy.copyMessage(messages[index - 1], this.folderName, whereToMoveAfterProcessed);
+        if (old_msg != null) {
+            this.copy.copyMessage(old_msg, this.folderName, whereToMoveAfterProcessed);
         }
 
-        if (folder.getMessageCount() > index) {
+        if (folder.getMessageCount() > index) { 
             msg = messages[index];
+            old_msg = msg;
+            
             index++;
             return msg;
         } else {
+            old_msg = null;
             return null;
         }
     }
@@ -104,5 +107,14 @@ public class IMAPfolder {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Closes this folder.
+     * 
+     * @throws MessagingException
+     */
+    public void close() throws MessagingException {
+        this.server.closeFolder(this.folder);
     }
 }

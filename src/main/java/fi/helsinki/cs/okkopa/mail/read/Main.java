@@ -1,9 +1,6 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
-import com.sun.mail.imap.IMAPFolder;
-import com.sun.mail.imap.IMAPMessage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +20,7 @@ public class Main {
         server = new IMAPserver();
         server.login();
 
-        testFolder("inbox", "processed");
+        //testFolder("inbox", "processed");
 
         System.out.println("\n-- väli --\n");
 
@@ -61,6 +58,7 @@ public class Main {
                 }
             }
         }
+        folder.close();
     }
 }
 

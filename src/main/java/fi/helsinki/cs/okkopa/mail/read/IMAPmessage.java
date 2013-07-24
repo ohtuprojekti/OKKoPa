@@ -2,7 +2,6 @@ package fi.helsinki.cs.okkopa.mail.read;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import javax.mail.Message;
@@ -11,16 +10,28 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.MimeBodyPart;
 
+/**
+ * Returns attachment, subject and received time from the message.
+ */
 public class IMAPmessage {
 
     private Message message;
     private HashMap<String, InputStream> attachments;
     private String contentType;
 
+    /**
+     * Formats this object to use.
+     * 
+     * @param message What message we want to examine.
+     */
     public IMAPmessage(Message message) {
         this.message = message;
     }
 
+    /**
+     * Return messages subject.
+     * @return Messages subject.
+     */
     public String getSubject() {
         try {
             return message.getSubject();
@@ -29,6 +40,13 @@ public class IMAPmessage {
         }
     }
 
+    /**
+     * Returns all messages attachments as HashMap, where key is filename and value is InputStream.
+     * 
+     * @return HashMam of attachments.
+     * @throws IOException
+     * @throws MessagingException
+     */
     public HashMap<String, InputStream> getAttachments() throws IOException, MessagingException {
         contentType = this.message.getContentType();
 
@@ -58,6 +76,12 @@ public class IMAPmessage {
         return attachments;
     }
 
+    /**
+     * Returns messages received time.
+     * 
+     * @return message received time.
+     * @throws MessagingException
+     */
     public Date getTime() throws MessagingException {
         return this.message.getReceivedDate();
     }

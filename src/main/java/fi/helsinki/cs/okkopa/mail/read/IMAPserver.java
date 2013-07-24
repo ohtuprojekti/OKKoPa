@@ -88,14 +88,23 @@ public class IMAPserver {
      */
     public void close() throws MessagingException {
         for (Entry<String, IMAPFolder> folderItem : folders.entrySet()) {
-            folder = folderItem.getValue();
-            
-            if (folder != null && folder.isOpen()) {
-                folder.close(true);
-            }
+            this.closeFolder(folderItem.getValue());
         }
         if (store != null) {
             store.close();
+        }
+    }
+
+    /**
+     * Closes specified folder.
+     * @param folder What to close.
+     * @throws MessagingException
+     */
+    public void closeFolder(IMAPFolder folder) throws MessagingException {
+        this.folder = folder;
+        
+        if (this.folder != null && this.folder.isOpen()) {
+            this.folder.close(true);
         }
     }
 }
