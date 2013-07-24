@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -26,10 +27,10 @@ public class PDFSplitterTest {
     }
 
     /**
-     * Test loading a PDF with uneven number of pages.
+     * Test loading a PDF with odd number of pages.
      */
     @Test(expected = Exception.class)
-    public void unevenPages() throws IOException, Exception {
+    public void oddPages() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/three_page.pdf");
         splitter.splitPdf(file);
     }
@@ -40,7 +41,7 @@ public class PDFSplitterTest {
     @Test
     public void eligibleDocument() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdf(file);
-        assertEquals(8, examPapers.size());
+        List<BufferedImage> examPapers = splitter.splitPdf(file);
+        assertEquals(16, examPapers.size());
     }
 }

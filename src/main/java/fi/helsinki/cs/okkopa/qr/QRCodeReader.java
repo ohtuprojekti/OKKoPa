@@ -11,26 +11,10 @@ import java.awt.image.BufferedImage;
 
 public class QRCodeReader {
 
-    public void readQRCode(ExamPaper paper) throws NotFoundException {
-        Result result = null;
-        NotFoundException e = null;
-       
-            for (int j = 0; j < paper.getPages().size(); j++) {
-                LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) paper.getPages().get(j));
-                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                MultiFormatReader reader = new MultiFormatReader();
-                // if a result (QR code) not found throw exception 
-                try {
-                    result = reader.decode(bitmap);
-                } catch (NotFoundException ex) {
-                    e = ex;
-                }                
-            }
-            
-            if (result != null) {
-                paper.setResult(result);
-            } else {
-                throw e;
-            }
+    public Result readQRCode(BufferedImage page) throws NotFoundException {
+        LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) page);
+        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+        MultiFormatReader reader = new MultiFormatReader();
+        return reader.decode(bitmap);
     }
 }
