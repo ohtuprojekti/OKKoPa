@@ -4,27 +4,46 @@
  */
 package fi.helsinki.cs.okkopa;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 /**
  *
  * @author phemmila
  */
 public class Settings {
-     //Settings as "Properties"- objects:
-     public final static Properties SMTPPROPS = readSettingXML("smtpsettings.xml");
-     public final static Properties PWDPROPS = readSettingXML("pwdsettings.xml");
-     public final static Properties IMAPPROPS = readSettingXML("imapsettings.xml");
+    
+    
+    public static void main(String args[]) {
+        Properties tempprops = Settings.IMAPPROPS;
+    }
+    
+     /**
+     *Smtp-settings, read from resources/smtpsettings.xml.
+     */
+    public final static Properties SMTPPROPS = readSettingXML("/smtpsettings.xml");
+     /**
+     *Passwords, read from resources/pwdsettings.xml.
+     */
+    
 
-     
+    public final static Properties PWDPROPS = readSettingXML("/pwdsettings.xml");
+   
+    /**
+     *Imap-settings, read from resources/imapsettings.xml
+     */
+    public final static Properties IMAPPROPS = readSettingXML("/imapsettings.xml");
+
+
      private static Properties readSettingXML(String fileName) {
        try {
            Properties currentProps = new Properties();
-           FileInputStream currentStream = new FileInputStream(fileName);
+           InputStream currentStream = Settings.class.getResourceAsStream(fileName);
            currentProps.loadFromXML(currentStream);
            currentStream.close();
            return currentProps;
        }
        catch (Exception e) {
+           System.out.println(e.getMessage());
            return null;
        }
        
