@@ -47,7 +47,7 @@ public class OKKoPaAuthenticatedMessageTest {
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
         user = greenMail.setUser("a@localhost.com", "testiuser", "testipassword");
-        props = Settings.SMTPPROPS;
+        props = new Properties(Settings.SMTPPROPS);
         props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "4012");

@@ -1,7 +1,5 @@
 package fi.helsinki.cs.okkopa.mail.send;
 
-import fi.helsinki.cs.okkopa.Settings;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -23,6 +21,7 @@ public class OKKoPaMessage {
     String subject;
     String receiver;
     String sender;
+    private Session session;
     
     
     /**
@@ -92,7 +91,7 @@ public class OKKoPaMessage {
      */
     private final MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
-        Session session = generateSession();
+        session = generateSession();
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
         
@@ -163,15 +162,15 @@ public class OKKoPaMessage {
     }
     
     
-    //testiä
-    public static void main(String[] args) throws MessagingException {
-        Properties props = Settings.SMTPPROPS;
-        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
-        msg.setText("abc");
-        msg.setText("yksi viesti");
-        msg.setSubject("testi123");
-        //msg.addAttachment("liite.txt");
-        msg.send();
-    }
+//    //testiä
+//    public static void main(String[] args) throws MessagingException {
+//        Properties props = Settings.SMTPPROPS;
+//        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
+//        msg.setText("abc");
+//        msg.setText("yksi viesti");
+//        msg.setSubject("testi123");
+//        //msg.addAttachment("liite.txt");
+//        msg.send();
+//    }
     
 }
