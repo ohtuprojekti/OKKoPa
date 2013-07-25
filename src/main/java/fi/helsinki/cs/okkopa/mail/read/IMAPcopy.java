@@ -42,6 +42,10 @@ public class IMAPcopy {
 
         folderFrom.copyMessages(this.messages, folderTo);
 
+        deleteMessage(this.message);
+    }
+
+    public static void deleteMessage(Message message) throws MessagingException {
         message.setFlag(Flags.Flag.DELETED, true);
     }
 }

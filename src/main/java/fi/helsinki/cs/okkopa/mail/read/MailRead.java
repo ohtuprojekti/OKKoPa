@@ -11,11 +11,11 @@ public class MailRead implements EmailRead {
 
     private IMAPserver server;
     private IMAPfolder IMAPfolder;
-    private String toBox;
+    private String toBox = "processed";
     private Message message;
-    private String IMAPadress;
-    private String username;
-    private String password;
+    private String IMAPadress = "imap.googlemail.com";
+    private String username = "okkopa.2013@gmail.com";
+    private String password = "okkopa2013";
     private IMAPmessage IMAPmessage;
 
     public MailRead() {

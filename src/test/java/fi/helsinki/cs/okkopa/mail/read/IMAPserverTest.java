@@ -2,9 +2,11 @@ package fi.helsinki.cs.okkopa.mail.read;
 
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.user.UserException;
+import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.sun.mail.imap.IMAPFolder;
+import java.security.Security;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -24,7 +26,7 @@ public class IMAPserverTest {
 
     @Before
     public void setUp() throws Exception {
-        ServerSetup sS = new ServerSetup(4006, "localhost", ServerSetup.PROTOCOL_IMAPS);
+        ServerSetup sS = new ServerSetup(4008, "localhost", ServerSetup.PROTOCOL_IMAPS);
         greenMail = new GreenMail(sS);
         greenMail.start();
         user = greenMail.setUser("okkopa@localhost.com", "okkopa", "soooosecret");
@@ -35,8 +37,10 @@ public class IMAPserverTest {
         message.setSubject("subject2576Hf");
         message.setText("viesti");
         user.deliver(message);
-
-        XTrustProvider.install();
+        
+        Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
+        
+        assertTrue(greenMail.waitForIncomingEmail(5000, 1));
     }
 
     @After
@@ -46,35 +50,34 @@ public class IMAPserverTest {
 
     @Test
     public void testGreenMailWorksSomehow() throws InterruptedException, MessagingException, UserException {
-        assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();
         System.out.println("subject of first email " + messages[0].getSubject());
     }
 
     @Test
     public void testServerLogin() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "soooosecret");
+        server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
         server.close();
     }
 
     @Test(expected = MessagingException.class)
     public void testServerLoginWithWrongUsername() throws MessagingException {
-        server = new IMAPserver("localhost", "okkoppa", "soooosecret");
+        server = new IMAPserver("localhost", "okkoppa", "soooosecret", 4008);
         server.login();
         server.close();
     }
 
     @Test(expected = MessagingException.class)
     public void testServerLoginWithWrongPassword() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "sooooosecret");
+        server = new IMAPserver("localhost", "okkopa", "sooooosecret", 4008);
         server.login();
         server.close();
     }
 
     @Test
     public void testReturnsIMAPfolder() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "soooosecret");
+        server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
 
         IMAPFolder = server.selectAndGetFolder("inbox");
@@ -86,7 +89,7 @@ public class IMAPserverTest {
 
     @Test(expected = MessagingException.class)
     public void testReturnsIMAPfolderThatDoesntExist() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "soooosecret");
+        server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
 
         server.selectAndGetFolder("dfrhtsytr");
@@ -98,7 +101,7 @@ public class IMAPserverTest {
     
     @Test
     public void testCreateNewFolder() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "soooosecret");
+        server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
         
         server.createFolder("processed");
@@ -109,7 +112,7 @@ public class IMAPserverTest {
     
     @Test(expected = MessagingException.class)
     public void testCreateNewFolder2() throws MessagingException {
-        server = new IMAPserver("localhost", "okkopa", "soooosecret");
+        server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
         
         server.createFolder("processed");
