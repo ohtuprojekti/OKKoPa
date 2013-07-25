@@ -15,8 +15,9 @@ public class MailRead implements EmailRead {
     private Message message;
     private String IMAPadress = "imap.googlemail.com";
     private String username = "okkopa.2013@gmail.com";
-    private String password = "okkopa2013";
+    private String password = "password";
     private IMAPmessage IMAPmessage;
+    private ArrayList<InputStream> attachments;
 
     public MailRead() {
     }
@@ -40,8 +41,21 @@ public class MailRead implements EmailRead {
 
     @Override
     public ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException {
-        IMAPmessage = IMAPfolder.getNextmessage(toBox);
-        
-        return IMAPmessage.getAttachments();
+        do {
+            IMAPmessage = IMAPfolder.getNextmessage(toBox);
+
+            if (IMAPmessage != null) {
+                attachments = IMAPmessage.getAttachments();
+            } else {
+                attachments = null;
+            }
+            
+            if (attachments != null) {
+                return attachments;
+            }
+
+        } while (IMAPmessage != null);
+
+        return null;
     }
 }

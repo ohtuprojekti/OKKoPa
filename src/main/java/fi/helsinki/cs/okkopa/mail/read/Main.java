@@ -13,13 +13,10 @@ public class Main {
         MailRead server = new MailRead();
         server.connect();
 
-        for (int i = 0; i < 10; i++) {
-            server.getNextAttachment();
-        }
+        server.getNextAttachment();
 
         server.close();
     }
-
 //    class Tallennus {
 //
 //        private InputStream inputStream;
@@ -30,7 +27,7 @@ public class Main {
 //                inputStream = input;
 //
 //                // write the inputStream to a FileOutputStream
-//                outputStream = new FileOutputStream(new File("/cs/fs/home/tatutall/NetBeansProjects/OKKoPa/" + fileName));
+//                outputStream = new FileOutputStream(new File("/path/to" + fileName));
 //
 //                int read = 0;
 //                byte[] bytes = new byte[1024];

@@ -88,7 +88,7 @@ public class IMAPfolder {
             @Override
             public int compare(Message o1, Message o2) {
                 try {
-                    return o2.getReceivedDate().compareTo(o1.getReceivedDate());
+                    return o1.getReceivedDate().compareTo(o2.getReceivedDate());
                 } catch (MessagingException ex) {
                     Logger.getLogger(IMAPfolder.class.getName()).log(Level.SEVERE, null, ex);
                 }
