@@ -125,13 +125,13 @@ public class OKKoPaMessageTest {
         msg.setSubject("otsikko");
         msg.setText("sisältö");
         InputStream is = getClass().getResourceAsStream("/text/TestAttachment.txt");
-        msg.addAttachment(is, "text/plain", "TestAttachment");
+        msg.addAttachment(is, "text/plain", "TestAttachment.txt");
         msg.send();
         
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();
         Multipart mp = (Multipart) messages[0].getContent();
-        assertEquals(mp.getBodyPart(1).getContent().toString(), "liite");
+        assertEquals("liite", mp.getBodyPart(1).getContent().toString());
     }
     
 }
