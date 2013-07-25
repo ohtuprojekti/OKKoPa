@@ -29,23 +29,44 @@ public class IMAPserver {
     /**
      * Formats offline settings ready for login.
      *
+     *
+     * @param IMAPaddress
+     * @param username
+     * @param password
      * @throws NoSuchProviderException
      * @throws MessagingException
      */
     public IMAPserver(String IMAPaddress, String username, String password) throws NoSuchProviderException, MessagingException {
+        this(IMAPaddress, username, password, -1);
+    }
+
+    /**
+     * Formats offline settings ready for login.
+     * 
+     * @param IMAPaddress
+     * @param username
+     * @param password
+     * @param IMAPport
+     * @throws NoSuchProviderException
+     * @throws MessagingException
+     */
+    public IMAPserver(String IMAPaddress, String username, String password, int IMAPport) throws NoSuchProviderException, MessagingException {
         this.IMAPadress = IMAPaddress;
         this.username = username;
         this.password = password;
 
-        settingsForIMAPSSL();
+        settingsForIMAPSSL(IMAPport);
 
         folders = new HashMap<String, IMAPFolder>();
     }
 
-    private void settingsForIMAPSSL() throws NoSuchProviderException, MessagingException {
+    private void settingsForIMAPSSL(int IMAPport) throws NoSuchProviderException, MessagingException {
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
- //       props.setProperty("mail.imaps.port", "4005");
+        
+        if (IMAPport >= 0) {
+            props.setProperty("mail.imaps.port", Integer.toString(IMAPport));
+        }
 
         Session session = Session.getDefaultInstance(props, null);
 
