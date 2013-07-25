@@ -4,10 +4,12 @@
  */
 package fi.helsinki.cs.okkopa.mail.send;
 
+import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import fi.helsinki.cs.okkopa.Settings;
 import java.io.InputStream;
+import java.security.Security;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -41,14 +43,20 @@ public class OKKoPaMessageTest {
     
     @Before
     public void setUp() throws MessagingException {
-        ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTP);
+        ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
         props = Settings.SMTPPROPS;
+        props.put("mail.smtp.user", "OKKoPa");
         props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "false");
         props.put("mail.smtp.port", "4012");
-        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.transport.protocol", "smtps");
+        props.put("mail.smtp.ssl.enable", "true");
+        
+        //XTrustProvider provider = new XTrustProvider();
+        //provider.install();
+        Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
     }
     
     @After

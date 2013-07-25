@@ -11,8 +11,8 @@ import javax.activation.*;
 import javax.mail.util.ByteArrayDataSource;
 
 /**
- *
- * @author anttkaik
+ *  Easily send emails.
+ * 
  */
 public class OKKoPaMessage {
     
@@ -25,7 +25,14 @@ public class OKKoPaMessage {
     String sender;
     
     
-    public OKKoPaMessage(String receiver, String sender, Properties properties) throws MessagingException {
+    /**
+     * Creates new instance from receiver, sender and mailproperties.
+     * @param receiver Receiver email address
+     * @param sender Sender email address
+     * @param properties Properties
+     * @throws MessagingException 
+     */
+    public OKKoPaMessage(String receiver, String sender, Properties properties) throws MessagingException  {
         // Add parameter properties
         this.properties = properties;
         this.receiver = receiver;
@@ -38,31 +45,54 @@ public class OKKoPaMessage {
     }
     
     
+    /**
+     * Creates new instance using System.getproperties.
+     * @param receiver Receiver email address
+     * @param sender Sender email address
+     * @throws MessagingException 
+     */
     public OKKoPaMessage(String receiver, String sender) throws MessagingException {
         this(receiver, sender, System.getProperties());
     }
     
-    
+    /**
+     * Sets the text of the message
+     * Replaces any previously set texts
+     * @param text
+     * @throws MessagingException 
+     */
     public void setText(String text) throws MessagingException {
         BodyPart viesti = body.getBodyPart(VIESTI_INDEX);
         viesti.setText(text);
     }
     
+    /**
+     * Sets new subject to the message
+     * @param subject New subject for the message
+     * @throws MessagingException 
+     */
     public void setSubject(String subject) throws MessagingException {
         this.subject = subject;
     }
     
-    
+    /**
+     * Generates session from properties
+     * This method can be overridden to provide authentication.
+     * @return Generated session
+     */
     protected Session generateSession() {
         return Session.getInstance(properties);
         
     }
     
-    
-    public final MimeMessage generateMessage() throws MessagingException {
+    /**
+     * Builds the message. Typically used before sending.
+     * @return Built message
+     * @throws MessagingException 
+     */
+    private final MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
         Session session = generateSession();
-        
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
         
@@ -75,15 +105,22 @@ public class OKKoPaMessage {
         return message;  
     }
     
-    
+    /**
+     * Sends the message.
+     * @throws MessagingException 
+     */
     public void send() throws MessagingException {
         MimeMessage message = generateMessage();
-        
         Transport.send(message);
     }
     
     
-    //Apumetodi
+    /**
+     * Helper method to avoid copy-paste
+     * @param source File/InputStream/URL
+     * @param name Name of the file
+     * @throws MessagingException 
+     */
     private void addAttachment(DataSource source, String name) throws MessagingException {
         BodyPart bodypart = new MimeBodyPart();
         bodypart.setDataHandler(new DataHandler(source));
@@ -91,18 +128,36 @@ public class OKKoPaMessage {
         body.addBodyPart(bodypart);
     }
     
-    
+    /**
+     * Adds an attachment from local filesystem.
+     * @param fileName Path of the file.
+     * @throws MessagingException 
+     */
     public void addAttachment(String fileName) throws MessagingException {
         DataSource source = new FileDataSource(fileName);   
         addAttachment(source, fileName);
     }
     
-    public void addAttachment(InputStream is, String type, String name) throws IOException, MessagingException {
-        DataSource source = new ByteArrayDataSource(is, type);
+    /**
+     * Adds an attachment from specified inputstream
+     * @param is Inputstream
+     * @param mimeType @see https://en.wikipedia.org/wiki/Internet_media_type
+     * @param name Name of the attachment
+     * @throws IOException 
+     * @throws MessagingException 
+     */
+    public void addAttachment(InputStream is, String mimeType, String name) throws IOException, MessagingException {
+        DataSource source = new ByteArrayDataSource(is, name);
         addAttachment(source, name);
     }
     
-    
+    /**
+     * Adds a pdf attachment
+     * @param is Inputstream of the pdf
+     * @param name Name of the pdf. Must end with .pdf
+     * @throws IOException
+     * @throws MessagingException 
+     */
     public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
         addAttachment(is, "application/pdf", name);
     }
