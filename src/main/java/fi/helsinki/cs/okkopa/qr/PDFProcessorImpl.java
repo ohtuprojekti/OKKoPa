@@ -37,7 +37,9 @@ public class PDFProcessorImpl implements PDFProcessor {
         for (BufferedImage pageImage : examPaper.getPageImages()) {
             try {
                 result = reader.readQRCode(pageImage);
+                System.out.println(result);
             } catch (NotFoundException ex) {
+                System.out.println("ei löytynyt");
                 e = ex;
             }
         }
