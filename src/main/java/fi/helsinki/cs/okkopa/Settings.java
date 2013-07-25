@@ -16,8 +16,6 @@ public class Settings {
      public final static Properties IMAPPROPS = readSettingXML("imapsettings.xml");
 
      
-     
-     
      private static Properties readSettingXML(String fileName) {
        try {
            Properties currentProps = new Properties();
