@@ -92,7 +92,6 @@ public class OKKoPaMessage {
      */
     private final MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
-
         Session session = generateSession();
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
