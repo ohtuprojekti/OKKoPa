@@ -11,12 +11,7 @@ import java.util.Properties;
  * @author phemmila
  */
 public class Settings {
-    
-    
-    public static void main(String args[]) {
-        Properties tempprops = Settings.IMAPPROPS;
-    }
-    
+
      /**
      *Smtp-settings, read from resources/smtpsettings.xml.
      */
