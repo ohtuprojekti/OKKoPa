@@ -125,7 +125,7 @@ public class OKKoPaMessageTest {
         msg.setSubject("otsikko");
         msg.setText("sisältö");
         InputStream is = getClass().getResourceAsStream("/text/TestAttachment.txt");
-        msg.addAttachment(is, "text/plain", "TestAttachment");
+        msg.addAttachment(is, "text/plain", "TestAttachment.txt");
         msg.send();
         
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));

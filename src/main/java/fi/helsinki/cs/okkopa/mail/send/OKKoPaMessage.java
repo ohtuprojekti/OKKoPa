@@ -147,7 +147,7 @@ public class OKKoPaMessage {
      * @throws MessagingException 
      */
     public void addAttachment(InputStream is, String mimeType, String name) throws IOException, MessagingException {
-        DataSource source = new ByteArrayDataSource(is, name);
+        DataSource source = new ByteArrayDataSource(is, mimeType);
         addAttachment(source, name);
     }
     
