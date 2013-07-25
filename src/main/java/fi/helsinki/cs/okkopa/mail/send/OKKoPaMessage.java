@@ -1,10 +1,14 @@
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.Settings;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
+import javax.mail.util.ByteArrayDataSource;
 
 /**
  *
@@ -78,12 +82,29 @@ public class OKKoPaMessage {
         Transport.send(message);
     }
     
-    public void addAttachment(String fileName) throws MessagingException {
+    
+    //Apumetodi
+    private void addAttachment(DataSource source, String name) throws MessagingException {
         BodyPart bodypart = new MimeBodyPart();
-        DataSource source = new FileDataSource(fileName);
         bodypart.setDataHandler(new DataHandler(source));
-        bodypart.setFileName(fileName);
+        bodypart.setFileName(name);
         body.addBodyPart(bodypart);
+    }
+    
+    
+    public void addAttachment(String fileName) throws MessagingException {
+        DataSource source = new FileDataSource(fileName);   
+        addAttachment(source, fileName);
+    }
+    
+    public void addAttachment(InputStream is, String type, String name) throws IOException, MessagingException {
+        DataSource source = new ByteArrayDataSource(is, type);
+        addAttachment(source, name);
+    }
+    
+    
+    public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
+        addAttachment(is, "application/pdf", name);
     }
     
     
@@ -91,10 +112,10 @@ public class OKKoPaMessage {
     public static void main(String[] args) throws MessagingException {
         Properties props = Settings.SMTPPROPS;
         OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
-        msg.setText("toimiikoä");
+        msg.setText("abc");
         msg.setText("yksi viesti");
         msg.setSubject("testi123");
-        msg.addAttachment("liite.txt");
+        //msg.addAttachment("liite.txt");
         msg.send();
     }
     
