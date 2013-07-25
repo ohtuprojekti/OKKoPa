@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
 
 public class QRCodeReader {
 
-    Result readQRCode(BufferedImage image) throws NotFoundException {
-        LuminanceSource source = new BufferedImageLuminanceSource(image);
+    public Result readQRCode(BufferedImage page) throws NotFoundException {
+        LuminanceSource source = new BufferedImageLuminanceSource((BufferedImage) page);
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
         MultiFormatReader reader = new MultiFormatReader();
         return reader.decode(bitmap);
