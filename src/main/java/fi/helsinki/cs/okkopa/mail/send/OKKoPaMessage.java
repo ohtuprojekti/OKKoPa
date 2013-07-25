@@ -23,6 +23,7 @@ public class OKKoPaMessage {
     String subject;
     String receiver;
     String sender;
+    private Session session;
     
     
     public OKKoPaMessage(String receiver, String sender, Properties properties) throws MessagingException {
@@ -61,7 +62,7 @@ public class OKKoPaMessage {
     
     public final MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
-        Session session = generateSession();
+        session = generateSession();
         
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
