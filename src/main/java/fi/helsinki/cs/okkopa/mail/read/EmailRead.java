@@ -8,10 +8,26 @@ import javax.mail.NoSuchProviderException;
 
 public interface EmailRead {
 
+    /**
+     * Closes the connection.
+     */
     void close();
 
+    /**
+     * Connects into the email server.
+     * 
+     * @throws NoSuchProviderException
+     * @throws MessagingException
+     */
     void connect() throws NoSuchProviderException, MessagingException;
 
+    /**
+     * Returns list of next email's attachments as list. 
+     * 
+     * @return null, if no new messages with attachments.
+     * @throws MessagingException
+     * @throws IOException
+     */
     ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException;
     
 }
