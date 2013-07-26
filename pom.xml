@@ -76,6 +76,11 @@
             <artifactId>pdfbox</artifactId>
             <version>1.8.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.levigo.jbig2</groupId>
+            <artifactId>levigo-jbig2-imageio</artifactId>
+            <version>1.3</version>
+        </dependency>
         <!-- Test dependencies -->    
         <dependency>
             <groupId>junit</groupId>
@@ -97,4 +102,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <repositories>
+        <repository>
+            <id>jbig2.googlecode</id>
+            <name>JBIG2 ImageIO-Plugin repository at googlecode.com</name>
+            <url>http://jbig2-imageio.googlecode.com/svn/maven-repository</url>
+        </repository>
+    </repositories>
 </project>

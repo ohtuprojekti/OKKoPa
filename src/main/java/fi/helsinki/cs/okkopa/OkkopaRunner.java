@@ -102,7 +102,7 @@ public class OkkopaRunner implements Runnable {
             try {
                 examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
                 okPapers.add(examPaper);
-            } catch (NotFoundException ex) {
+            } catch (Exception ex) {
                 // QR code not found
                 System.out.println("QR code not found");
             }
