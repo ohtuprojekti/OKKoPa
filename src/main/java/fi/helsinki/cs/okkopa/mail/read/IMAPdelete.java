@@ -5,6 +5,9 @@ import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
+/**
+ * Tests how old messages are kept in processed folder and deletes any older messages.
+ */
 public class IMAPdelete {
 
     private IMAPserver server;
@@ -15,42 +18,46 @@ public class IMAPdelete {
     private long timeDifferenceInMilliSeconds;
     private long differenceInDays;
 
+    /**
+     * Formats object to use.
+     * @param server so it can no where to work.
+     */
     public IMAPdelete(IMAPserver server) {
         this.server = server;
     }
 
+    /**
+     * Deletes all messages that are older than given parameter.
+     * 
+     * @param howManyDaysOldAreToBeDeleted any older messages are deleted.
+     * @throws MessagingException
+     */
     public void deleteOldMessages(int howManyDaysOldAreToBeDeleted) throws MessagingException {
-        System.out.println("avataan kansio");
         
         this.folder = new IMAPfolder(server, "processed");
 
-        System.out.println("kansio avattu");
         for (message = this.folder.getNextmessage(null); howManyDaysOldAreToBeDeleted <= this.HowOld(message); i++) {
-            System.out.println("viesti otettu");
             IMAPdelete.deleteMessage(message.getIMAPMessage());
-            System.out.println("viesti poistettu");
             message = this.folder.getNextmessage(null);
         }       
     }
 
     private int HowOld(IMAPmessage message) throws MessagingException {
-        System.out.println("päivämääriä vertaillaan");
         timeNow = new Date();
         
         timeDifferenceInMilliSeconds = timeNow.getTime() - message.getTime().getTime();
         
         differenceInDays = timeDifferenceInMilliSeconds / 1000 / 60 / 60 / 24;
         
-        System.out.println("ja laskut on suoritettu");
-        
-        System.out.println(differenceInDays);
-        
         return (int) differenceInDays;
     }
 
+    /**
+     * Delete given message from IMAPserver.
+     * @param message
+     * @throws MessagingException
+     */
     public static void deleteMessage(Message message) throws MessagingException {
-        System.out.println("poistetaan");
         message.setFlag(Flags.Flag.DELETED, true);
-        System.out.println("poistettu");
     }
 }
