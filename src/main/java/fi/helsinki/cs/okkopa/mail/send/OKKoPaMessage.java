@@ -80,8 +80,16 @@ public class OKKoPaMessage {
      * @return Generated session
      */
     protected Session generateSession() {
-        return Session.getInstance(properties);
-        
+        if (properties.getProperty("mail.smtp.auth").equals("true")) {
+            return Session.getInstance(properties, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(properties.getProperty("mail.smtp.user"), 
+                            properties.getProperty("mail.smtp.password"));
+                }
+            });
+        } else {
+            return Session.getInstance(properties);
+        }    
     }
     
     /**
