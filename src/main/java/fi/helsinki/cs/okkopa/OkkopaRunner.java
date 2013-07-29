@@ -22,22 +22,28 @@ import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
+    
+    @Autowired
     private EmailRead server;
 
     public OkkopaRunner() {
         pDFProcessor = new PDFProcessorImpl(new PDFSplitter(), new QRCodeReader());
-        server = new MailRead();
     }
 
     @Override
     public void run() {
         try {
             // TEST
+            System.out.println("1. merkki");
             server.connect();
+            System.out.println("2. merkki");
             while (true) {
                 ArrayList<InputStream> attachments = server.getNextAttachment();
                 if (attachments == null) {
