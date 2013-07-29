@@ -23,18 +23,17 @@ public class SettingsTest {
     }
     
     @BeforeClass
-    public void setUpClass() {
-        testSettings = new Settings("/test.xml");
+    public static void setUpClass() {
     }
     
     @AfterClass
     public static void tearDownClass() {
-        
     }
     
     @Before
     public void setUp() {     
         //before each test
+        testSettings = new Settings("src/test/resources/test.xml");
     }
     
     @After
