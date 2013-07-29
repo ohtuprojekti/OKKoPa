@@ -28,6 +28,5 @@ public interface EmailRead {
      * @throws MessagingException
      * @throws IOException
      */
-    ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException;
-    
+    ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException;   
 }

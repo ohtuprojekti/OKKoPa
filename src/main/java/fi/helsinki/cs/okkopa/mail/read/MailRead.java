@@ -4,7 +4,6 @@ import fi.helsinki.cs.okkopa.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 
@@ -17,8 +16,10 @@ public class MailRead implements EmailRead {
     private String username = Settings.IMAPPROPS.getProperty("mail.imap.user");
     private String password = Settings.PWDPROPS.getProperty("imapPassword");
     private int port = Integer.parseInt(Settings.IMAPPROPS.getProperty("mail.imap.port"));
+    private int howManyDaysOldAreToBeDeleted = Integer.parseInt(Settings.IMAPPROPS.getProperty("mail.imap.messages.keep.days"));
     private IMAPmessage IMAPmessage;
     private ArrayList<InputStream> attachments;
+    private IMAPdelete delete;
 
     public MailRead() {
     }
@@ -58,5 +59,10 @@ public class MailRead implements EmailRead {
         } while (IMAPmessage != null);
 
         return null;
+    }
+    
+    public void deleteOldMessages() throws MessagingException {
+        delete = new IMAPdelete(server);
+        delete.deleteOldMessages(howManyDaysOldAreToBeDeleted);
     }
 }
