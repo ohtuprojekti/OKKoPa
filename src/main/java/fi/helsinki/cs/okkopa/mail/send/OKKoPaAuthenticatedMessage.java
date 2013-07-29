@@ -70,7 +70,7 @@ public class OKKoPaAuthenticatedMessage extends OKKoPaMessage {
 //            System.out.println("passwords null");
 //            return;
 //        }
-//        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com", 
+//        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa2.2013@gmail.com", "vaaralahettaja@gmail.com", 
 //                props, props.getProperty("mail.smtp.user"), passwords.getProperty("smtpPassword"));
 //        msg.setText("toimiikoä");
 //        msg.setText("yksi viesti");

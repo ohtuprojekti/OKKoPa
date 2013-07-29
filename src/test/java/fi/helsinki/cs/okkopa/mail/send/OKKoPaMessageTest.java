@@ -38,7 +38,8 @@ public class OKKoPaMessageTest {
     }
     
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws InterruptedException {
+        Thread.sleep(5000);
     }
     
     @Before

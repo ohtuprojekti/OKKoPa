@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>   
-     <entry key="mail.smtp.auth">false</entry>
+     <entry key="mail.smtp.auth">true</entry>
      <entry key="mail.smtp.starttls.enable">true</entry>
      <entry key="mail.smtp.host">smtp.gmail.com</entry>
      <entry key="mail.smtp.port">587</entry>
