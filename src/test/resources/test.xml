@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- password-settings -->
+     <entry key="mail.smtp.password">qwerty12qwerty</entry>
+     <entry key="mail.imap.password">qwerty12qwerty</entry>
+     
+    <!-- smtp-settings -->
+     <entry key="mail.smtp.auth">false</entry>
+     <entry key="mail.smtp.starttls.enable">true</entry>
+     <entry key="mail.smtp.host">smtp.gmail.com</entry>
+     <entry key="mail.smtp.port">587</entry>
+     <entry key="mail.smtp.user">okkopa2.2013</entry> 
+    
+    <!-- imap-settings -->
+     <entry key="mail.imap.host">imap.googlemail.com</entry>  
+     <entry key="mail.imap.port">993</entry>
+     <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
+     <entry key="mail.imap.messages.keepdays">30</entry>
+    
+</properties>

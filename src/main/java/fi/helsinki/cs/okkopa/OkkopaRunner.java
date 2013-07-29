@@ -3,6 +3,7 @@ package fi.helsinki.cs.okkopa;
 import com.google.zxing.NotFoundException;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.read.MailRead;
+import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.mail.send.OKKoPaAuthenticatedMessage;
 import fi.helsinki.cs.okkopa.mail.send.OKKoPaMessage;
 import fi.helsinki.cs.okkopa.qr.DocumentException;
@@ -22,15 +23,22 @@ import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
+    
     private EmailRead server;
+    private ExamPaperSender sender;
 
-    public OkkopaRunner() {
-        pDFProcessor = new PDFProcessorImpl(new PDFSplitter(), new QRCodeReader());
-        server = new MailRead();
+    @Autowired
+    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor) {
+        this.server = server;
+        this.sender = sender;
+        this.pDFProcessor = pDFProcessor;
     }
 
     @Override
@@ -69,18 +77,9 @@ public class OkkopaRunner implements Runnable {
 
     private void sendEmail(ExamPaper examPaper) {
         try {
-            Properties props = Settings.SMTPPROPS;
-            Properties salasanat = Settings.PWDPROPS;
-            OKKoPaMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "okkopa2.2013@gmail.com", props, "okkopa2.2013", salasanat.getProperty("smtpPassword"));
-            msg.addPDFAttachment(examPaper.getPdfStream(), "liite.pdf");
-            msg.setSubject("testipdf");
-            msg.setText("katso liite  " + examPaper.getQRCodeString());
-            msg.send();
-            System.out.println("lähetetty");
+            sender.send(examPaper);
         } catch (MessagingException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println("virhe lähetyksessä" + ex);
         }
     }
 
