@@ -38,7 +38,8 @@ public class OKKoPaMessageTest {
     }
     
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws InterruptedException {
+        Thread.sleep(5000);
     }
     
     @Before
@@ -46,7 +47,7 @@ public class OKKoPaMessageTest {
         ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
-        props = Settings.SMTPPROPS;
+        props = new Properties(Settings.SMTPPROPS);
         props.put("mail.smtp.user", "OKKoPa");
         props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "false");
