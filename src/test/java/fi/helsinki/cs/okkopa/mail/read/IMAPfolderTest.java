@@ -105,7 +105,7 @@ public class IMAPfolderTest {
         
         for (Message message : messages) {
             System.out.println("poisto ");
-            IMAPcopy.deleteMessage(message);
+            IMAPdelete.deleteMessage(message);
         }
         
         messages = inboxFolder.getMessages();

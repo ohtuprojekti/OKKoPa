@@ -1,5 +1,7 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,7 +21,7 @@ public class QRCodeReaderTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void readEmptyPage() throws IOException, NotFoundException {
+    public void readEmptyPage() throws IOException, NotFoundException, ChecksumException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/empty_page.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);
@@ -29,7 +31,7 @@ public class QRCodeReaderTest {
      * Test reading an exam paper with only a single QR code.
      */
     @Test
-    public void readASingleQRCode() throws NotFoundException, IOException {
+    public void readASingleQRCode() throws NotFoundException, IOException, ChecksumException, NotFoundException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/basic_qr-0.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         assertEquals("asperhee", reader.readQRCode(image).getText());
@@ -39,7 +41,7 @@ public class QRCodeReaderTest {
      * Test reading an exam paper without QR code.
      */
     @Test(expected = NotFoundException.class)
-    public void readExamPaperWithoutQRCode() throws NotFoundException, IOException {
+    public void readExamPaperWithoutQRCode() throws NotFoundException, IOException, ChecksumException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/empty_page.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);
@@ -49,7 +51,7 @@ public class QRCodeReaderTest {
      * Test reading an exam paper with two same QR codes on same side.
      */
     @Test
-    public void readTwoQRCodesSameSide() throws NotFoundException, IOException {
+    public void readTwoQRCodesSameSide() throws NotFoundException, IOException, ChecksumException, NotFoundException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_same.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         assertEquals("asperhee", reader.readQRCode(image).getText());
@@ -59,7 +61,7 @@ public class QRCodeReaderTest {
      * Test reading an exam paper with two and a half QR codes on same side.
      */
     @Test(expected = NotFoundException.class)
-    public void readTwoAndAHalfQRCode() throws NotFoundException, IOException {
+    public void readTwoAndAHalfQRCode() throws NotFoundException, IOException, ChecksumException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_half_upsidedown.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);
@@ -69,7 +71,7 @@ public class QRCodeReaderTest {
      * Test reading an exam paper with two different QR codes on same side.
      */
     @Test(expected = NotFoundException.class)
-    public void readTwoDifferentQRCodesSameSide() throws NotFoundException, IOException {
+    public void readTwoDifferentQRCodesSameSide() throws NotFoundException, IOException, ChecksumException, FormatException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_different.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);

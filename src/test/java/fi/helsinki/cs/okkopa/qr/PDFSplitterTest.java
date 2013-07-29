@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +22,7 @@ public class PDFSplitterTest {
      * Test loading a wrong type of file.
      */
     @Test(expected = IOException.class)
-    public void wrongFileType() throws IOException, Exception {
+    public void wrongFileType() throws IOException, DocumentException, COSVisitorException {
         InputStream file = getClass().getResourceAsStream("/text/testEmpty");
         splitter.splitPdf(file);
     }
@@ -29,8 +30,8 @@ public class PDFSplitterTest {
     /**
      * Test loading a PDF with odd number of pages.
      */
-    @Test(expected = Exception.class)
-    public void oddPages() throws IOException, Exception {
+    @Test(expected = DocumentException.class)
+    public void oddPages() throws IOException, DocumentException, COSVisitorException {
         InputStream file = getClass().getResourceAsStream("/pdf/three_page.pdf");
         splitter.splitPdf(file);
     }
@@ -41,7 +42,7 @@ public class PDFSplitterTest {
     @Test
     public void eligibleDocument() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<BufferedImage> examPapers = splitter.splitPdf(file);
-        assertEquals(16, examPapers.size());
+        List<ExamPaper> examPapers = splitter.splitPdf(file);
+        assertEquals(8, examPapers.size());
     }
 }

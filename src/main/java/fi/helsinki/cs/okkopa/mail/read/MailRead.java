@@ -1,9 +1,9 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
+import fi.helsinki.cs.okkopa.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 
@@ -12,19 +12,21 @@ public class MailRead implements EmailRead {
     private IMAPserver server;
     private IMAPfolder IMAPfolder;
     private String toBox = "processed";
-    private Message message;
-    private String IMAPadress = "imap.googlemail.com";
-    private String username = "okkopa.2013@gmail.com";
-    private String password = "password";
+    private String IMAPadress = Settings.IMAPPROPS.getProperty("mail.imap.host");
+    private String username = Settings.IMAPPROPS.getProperty("mail.imap.user");
+    private String password = Settings.PWDPROPS.getProperty("imapPassword");
+    private int port = Integer.parseInt(Settings.IMAPPROPS.getProperty("mail.imap.port"));
+    private int howManyDaysOldAreToBeDeleted = Integer.parseInt(Settings.IMAPPROPS.getProperty("mail.imap.messages.keep.days"));
     private IMAPmessage IMAPmessage;
     private ArrayList<InputStream> attachments;
+    private IMAPdelete delete;
 
     public MailRead() {
     }
 
     @Override
     public void connect() throws NoSuchProviderException, MessagingException {
-        server = new IMAPserver(IMAPadress, username, password);
+        server = new IMAPserver(IMAPadress, username, password, port);
         server.login();
 
         IMAPfolder = new IMAPfolder(server, "inbox");
@@ -57,5 +59,10 @@ public class MailRead implements EmailRead {
         } while (IMAPmessage != null);
 
         return null;
+    }
+    
+    public void deleteOldMessages() throws MessagingException {
+        delete = new IMAPdelete(server);
+        delete.deleteOldMessages(howManyDaysOldAreToBeDeleted);
     }
 }
