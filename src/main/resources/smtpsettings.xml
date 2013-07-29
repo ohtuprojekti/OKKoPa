@@ -5,5 +5,5 @@
      <entry key="mail.smtp.starttls.enable">true</entry>
      <entry key="mail.smtp.host">smtp.gmail.com</entry>
      <entry key="mail.smtp.port">587</entry>
-     <entry key="mail.smtp.user">okkopa.2013</entry> 
+     <entry key="mail.smtp.user">okkopa2.2013</entry> 
 </properties>

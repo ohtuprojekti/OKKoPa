@@ -10,6 +10,6 @@ public class OkkopaMain {
         ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
         OkkopaRunner runner = new OkkopaRunner();
-        scheduler.scheduleAtFixedRate(runner, 0, 1000, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(runner, 0, 60, TimeUnit.SECONDS);
     }
 }

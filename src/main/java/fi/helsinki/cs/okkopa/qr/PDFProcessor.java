@@ -8,7 +8,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 
 public interface PDFProcessor {
 
-    String readQRCode(ExamPaper examPaper) throws NotFoundException;
+    String readQRCode(ExamPaper examPaper) throws Exception;
 
     /**
      * Converts a PDF-document to a list of images, one per page.

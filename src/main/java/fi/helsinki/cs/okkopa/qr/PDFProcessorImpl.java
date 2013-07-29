@@ -1,11 +1,15 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 
 public class PDFProcessorImpl implements PDFProcessor {
@@ -31,13 +35,19 @@ public class PDFProcessorImpl implements PDFProcessor {
     }
 
     @Override
-    public String readQRCode(ExamPaper examPaper) throws NotFoundException {
+    public String readQRCode(ExamPaper examPaper) throws Exception {
         Result result = null;
-        NotFoundException e = null;
+        Exception e = null;
         for (BufferedImage pageImage : examPaper.getPageImages()) {
             try {
                 result = reader.readQRCode(pageImage);
+                System.out.println(result);
             } catch (NotFoundException ex) {
+                System.out.println("ei löytynyt");
+                e = ex;
+            } catch (ChecksumException ex) {
+                e = ex;
+            } catch (FormatException ex) {
                 e = ex;
             }
         }

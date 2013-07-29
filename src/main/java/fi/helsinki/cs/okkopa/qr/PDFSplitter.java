@@ -51,7 +51,8 @@ public class PDFSplitter {
         List<PDPage> pdPages = document.getDocumentCatalog().getAllPages();
         ArrayList<BufferedImage> pages = new ArrayList<>();
         for (PDPage pdPage : pdPages) {
-            pages.add(pdPage.convertToImage());
+            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 100));
+            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 50));
         }
         return pages;
     }
