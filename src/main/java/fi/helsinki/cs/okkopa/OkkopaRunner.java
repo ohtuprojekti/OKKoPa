@@ -30,10 +30,11 @@ public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
     
-    @Autowired
     private EmailRead server;
 
-    public OkkopaRunner() {
+    @Autowired
+    public OkkopaRunner(EmailRead server) {
+        this.server = server;
         pDFProcessor = new PDFProcessorImpl(new PDFSplitter(), new QRCodeReader());
     }
 
@@ -75,6 +76,7 @@ public class OkkopaRunner implements Runnable {
 
     private void sendEmail(ExamPaper examPaper) {
         try {
+            
             Properties props = Settings.SMTPPROPS;
             Properties salasanat = Settings.PWDPROPS;
             OKKoPaMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "okkopa2.2013@gmail.com", props, "okkopa2.2013", salasanat.getProperty("smtpPassword"));
