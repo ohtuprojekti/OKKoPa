@@ -58,25 +58,25 @@ public class OKKoPaAuthenticatedMessage extends OKKoPaMessage {
     }
     
     
-    //testiä
-    public static void main(String[] args) throws MessagingException {
-        Properties props = Settings.SMTPPROPS;
-        Properties passwords = Settings.PWDPROPS;
-        if (props == null) {
-            System.out.println("props null");
-            return;
-        }
-        if (passwords == null) {
-            System.out.println("passwords null");
-            return;
-        }
-        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "vaaralahettaja@gmail.com", 
-                props, props.getProperty("mail.smtp.user"), passwords.getProperty("smtpPassword"));
-        msg.setText("toimiikoä");
-        msg.setText("yksi viesti");
-        msg.setSubject("testi123");
-        //msg.addAttachment("liite.txt");
-        msg.send();
-    }
+//    //testiä
+//    public static void main(String[] args) throws MessagingException {
+//        Properties props = Settings.SMTPPROPS;
+//        Properties passwords = Settings.PWDPROPS;
+//        if (props == null) {
+//            System.out.println("props null");
+//            return;
+//        }
+//        if (passwords == null) {
+//            System.out.println("passwords null");
+//            return;
+//        }
+//        OKKoPaAuthenticatedMessage msg = new OKKoPaAuthenticatedMessage("okkopa2.2013@gmail.com", "vaaralahettaja@gmail.com", 
+//                props, props.getProperty("mail.smtp.user"), passwords.getProperty("smtpPassword"));
+//        msg.setText("toimiikoä");
+//        msg.setText("yksi viesti");
+//        msg.setSubject("testi123");
+//        //msg.addAttachment("liite.txt");
+//        msg.send();
+//    }
     
 }

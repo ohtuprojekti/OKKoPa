@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>  
-     <entry key="smtpPassword">qwerty12qwerty</entry>
-     <entry key="imapPassword">qwerty12qwerty</entry>
+     <entry key="smtpPassword">passwordd</entry>
+     <entry key="imapPassword">passwordd</entry>
 </properties>
