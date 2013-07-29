@@ -26,7 +26,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
     }    
     
     private String getReceiver(ExamPaper examPaper) {
-        return examPaper.getQRCodeString();
+        return "okkopa.2013@gmail.com";//examPaper.getQRCodeString();
     }
     
     @Override

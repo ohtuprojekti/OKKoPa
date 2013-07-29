@@ -6,12 +6,17 @@
      <entry key="mail.smtp.password">qwerty12qwerty</entry>
      <entry key="mail.imap.password">qwerty12qwerty</entry>
      
+     <!-- mail settings -->
+     <entry key="mail.transport.protocol">smtps</entry>
+     
     <!-- smtp-settings -->
-     <entry key="mail.smtp.auth">true</entry>
+     <entry key="mail.smtp.auth">false</entry>
      <entry key="mail.smtp.starttls.enable">true</entry>
-     <entry key="mail.smtp.host">smtp.gmail.com</entry>
-     <entry key="mail.smtp.port">587</entry>
-     <entry key="mail.smtp.user">okkopa2.2013</entry> 
+     <entry key="mail.smtp.host">localhost</entry>
+     <entry key="mail.smtp.port">4012</entry>
+     <entry key="mail.smtp.user">OKKoPa</entry> 
+     <entry key="mail.smtp.ssl.enable">true</entry> 
+     
     
     <!-- imap-settings -->
      <entry key="mail.imap.host">imap.googlemail.com</entry>  

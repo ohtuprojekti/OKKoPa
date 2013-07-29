@@ -1,22 +1,14 @@
 package fi.helsinki.cs.okkopa;
 
-import com.google.zxing.NotFoundException;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
-import fi.helsinki.cs.okkopa.mail.read.MailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
-import fi.helsinki.cs.okkopa.mail.send.OKKoPaAuthenticatedMessage;
-import fi.helsinki.cs.okkopa.mail.send.OKKoPaMessage;
 import fi.helsinki.cs.okkopa.qr.DocumentException;
 import fi.helsinki.cs.okkopa.qr.ExamPaper;
 import fi.helsinki.cs.okkopa.qr.PDFProcessor;
-import fi.helsinki.cs.okkopa.qr.PDFProcessorImpl;
-import fi.helsinki.cs.okkopa.qr.PDFSplitter;
-import fi.helsinki.cs.okkopa.qr.QRCodeReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;

@@ -49,7 +49,7 @@ public class Settings {
     private static Properties readSettingXML(String fileName) {
        try {
            Properties currentProps = new Properties();
-           InputStream currentStream = Settings.class.getResourceAsStream(fileName);
+           InputStream currentStream = new FileInputStream(fileName);
            currentProps.loadFromXML(currentStream);
            currentStream.close();
            return currentProps;

@@ -10,7 +10,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <context:annotation-config />
     <context:component-scan base-package="fi.helsinki.cs.okkopa" />
     <bean id="productionSettings" class="fi.helsinki.cs.okkopa.Settings">
-        <constructor-arg value="/settings.xml" />
+        <constructor-arg value="src/main/resources/settings.xml" />
     </bean>
     
 </beans>
