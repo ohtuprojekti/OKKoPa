@@ -12,10 +12,7 @@ public class OkkopaMain {
         
         ApplicationContext ctx = new FileSystemXmlApplicationContext("src/main/resources/spring-context.xml");
         ctx.getBean("okkopaRunner");
-        
-     //   Settings st = (Settings) ctx.getBean("productionSettings");
-     //   System.out.println(st.getSettings().getProperty("mail.imap.host"));
-        
+
         ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
         OkkopaRunner runner = (OkkopaRunner) ctx.getBean("okkopaRunner");

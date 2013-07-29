@@ -17,12 +17,14 @@ import static org.junit.Assert.*;
  */
 public class SettingsTest {
     
+    private Settings testSettings;
+    
     public SettingsTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
-
+    public void setUpClass() {
+        testSettings = new Settings("/test.xml");
     }
     
     @AfterClass
@@ -41,33 +43,15 @@ public class SettingsTest {
     }
 
     @Test
-    public void imapPropsNotNull() {
-        assertNotNull("Loading \"imapsettings.xml\" caused an exception. Check for correct path or whether the file exists.",Settings.IMAPPROPS);
+    public void testSettingNotNull() {
+        assertNotNull("Loading \"test.xml\" caused an exception. Check for correct path or whether the file exists.",testSettings.getSettings());
     }
-    
-    @Test
-    public void smtpPropsNotNull() {
-        assertNotNull("Loading \"smtpsettings.xml\" caused an exception. Check for correct path or whether the file exists.",Settings.SMTPPROPS);
-    }
-    
-    @Test
-    public void pwdPropsNotNull() {
-        assertNotNull("Loading \"pwdsettings.xml\" caused an exception. Check for correct path or whether the file exists.",Settings.PWDPROPS);
-    }
+  
     
     @Test 
-    public void imapPropsContainsValues() {
-       assertTrue("imapsettings.xml has no content, should contain at least 1 key value pair.",Settings.IMAPPROPS.size() > 0);
+    public void testSettingContainsValues() {
+       assertTrue("test.xml has no content, should contain at least 1 key value pair.",testSettings.getSettings().size() == 11);
     }
-    
-    @Test 
-    public void smtpPropsContainsValues() {
-       assertTrue("smtpsettings.xml has no content, should contain at least 1 key value pair.",Settings.SMTPPROPS.size() > 0);
-    }
-    
-    @Test
-    public void pwdPropsContainsValues() {
-        assertTrue("pwdsettings.xml has no content, should contain at least 1 key value pair.", Settings.PWDPROPS.size() > 0);
-    }
+
 
 }

@@ -7,20 +7,23 @@ package fi.helsinki.cs.okkopa.mail.send;
 import fi.helsinki.cs.okkopa.Settings;
 import fi.helsinki.cs.okkopa.qr.ExamPaper;
 import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author anttkaik
  */
+@Component
 public class ExamPaperSenderImpl implements ExamPaperSender {
 
-    public ExamPaperSenderImpl() {
-    }
+    Settings settings;
     
+    @Autowired
+    public ExamPaperSenderImpl(Settings settings) {
+        this.settings = settings;
+    }    
     
     private String getReceiver(ExamPaper examPaper) {
         return examPaper.getQRCodeString();
@@ -28,8 +31,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
     
     @Override
     public void send(ExamPaper examPaper) throws MessagingException {
-        Properties props = Settings.SMTPPROPS;
-        OKKoPaMessage msg = new OKKoPaMessage(getReceiver(examPaper), "OKKoPa@cs.helsinki.fi", props);
+        OKKoPaMessage msg = new OKKoPaMessage(getReceiver(examPaper), "OKKoPa@cs.helsinki.fi", settings.getSettings());
         msg.setSubject("");
         msg.setText("");
         try {
@@ -37,6 +39,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         } catch (IOException ex) {
             throw new MessagingException("Error while reading pdf stream");
         }
+        msg.send();
     }
     
 }

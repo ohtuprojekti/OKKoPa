@@ -14,6 +14,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
  *
  * @author heha
  */
+
 public interface PDFProcessor {
 
     String readQRCode(ExamPaper examPaper) throws Exception;

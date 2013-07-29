@@ -11,10 +11,12 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.Splitter;
+import org.springframework.stereotype.Component;
 
 /**
  * Converts a PDF-document to a list of images, one per page.
  */
+@Component
 public class PDFSplitter {
 
     /**

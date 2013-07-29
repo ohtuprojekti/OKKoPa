@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PDFProcessorImpl implements PDFProcessor {
 
     PDFSplitter splitter;
     QRCodeReader reader;
-
+    @Autowired
     public PDFProcessorImpl(PDFSplitter splitter, QRCodeReader reader) {
         this.splitter = splitter;
         this.reader = reader;
