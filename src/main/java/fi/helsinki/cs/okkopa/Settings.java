@@ -29,4 +29,10 @@ public class Settings {
        }
        
     }
+    
+    public static void main(String[] args) {
+        Settings st = new Settings("/settings.xml");
+        System.out.println(st.getSettings().getProperty("mail.message.body"));
+        
+    }
 }
