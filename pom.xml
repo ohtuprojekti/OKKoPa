@@ -92,6 +92,7 @@
                                 </transformer>
                             </transformers>
                             <outputFile>${basedir}/target/OKKoPa.jar</outputFile>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
