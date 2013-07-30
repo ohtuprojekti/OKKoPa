@@ -78,7 +78,7 @@ public class IMAPserver {
             folder.open(Folder.READ_WRITE);
         }
     }
-
+    
     /**
      * Logins into given IMAP-server with username and password.
      *
