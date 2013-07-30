@@ -50,8 +50,8 @@ public class PDFSplitterTest {
      */
     @Test
     public void eligibleDocument() throws IOException, Exception {
-        InputStream file = getClass().getResourceAsStream("/pdf/packed2.pdf");
+        InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
         List<ExamPaper> examPapers = splitter.splitPdf(file);
-        assertEquals(8, examPapers.size());
+        assertEquals(20, examPapers.size());
     }
 }
