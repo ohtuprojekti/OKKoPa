@@ -47,7 +47,7 @@ public class OKKoPaMessageTest {
         ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
-        props = (new Settings("src/test/resources/smtptestsettings.xml")).getSettings();
+        props = (new Settings("/smtptestsettings.xml")).getSettings();
         
         //XTrustProvider provider = new XTrustProvider();
         //provider.install();
