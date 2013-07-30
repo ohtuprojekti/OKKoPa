@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.ghost4j.renderer.RendererException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +36,7 @@ public class PDFProcessorImpl implements PDFProcessor {
     public List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException {
         try {
             return splitter.splitPdf(pdfStream);
-        } catch (IOException | COSVisitorException ex) {
+        } catch (IOException | org.ghost4j.document.DocumentException | RendererException ex) {
             throw new DocumentException(ex.getMessage());
         }
     }
