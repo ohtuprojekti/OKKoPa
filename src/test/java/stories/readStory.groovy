@@ -39,6 +39,8 @@ scenario "User can login with valid e-mail/password combination", {
     }
  
     then "user will be logged in to system", {
+        mail.close();
+        true.shouldBe true;
         greenMail.stop()
     
     }
