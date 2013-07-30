@@ -4,7 +4,7 @@
 
     <!-- password-settings -->
      <entry key="mail.smtp.password"></entry>
-     <entry key="mail.imap.password"></entry>
+     <entry key="mail.imap.password">soooosecret</entry>
      
      <!-- mail settings -->
      <entry key="mail.transport.protocol">smtps</entry>
@@ -19,9 +19,9 @@
      
     
     <!-- imap-settings -->
-     <entry key="mail.imap.host">imap.googlemail.com</entry>  
-     <entry key="mail.imap.port">993</entry>
-     <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
+     <entry key="mail.imap.host">localhost</entry>  
+     <entry key="mail.imap.port">4011</entry>
+     <entry key="mail.imap.user">okkopa</entry>
      <entry key="mail.imap.messages.keepdays">30</entry>
     
 </properties>
