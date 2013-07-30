@@ -33,7 +33,7 @@ public class SettingsTest {
     @Before
     public void setUp() {     
         //before each test
-        testSettings = new Settings("src/test/resources/test.xml");
+        testSettings = new Settings("/test.xml");
     }
     
     @After
