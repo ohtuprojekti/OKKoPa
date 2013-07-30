@@ -1,3 +1,4 @@
+
 package stories
 
 import fi.helsinki.cs.okkopa.qr.*
@@ -15,3 +16,4 @@ scenario "Reading an image file with only QR code", {
     then "the result should be ??", {
     }
 }
+
