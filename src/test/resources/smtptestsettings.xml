@@ -3,8 +3,8 @@
 <properties>
 
     <!-- password-settings -->
-     <entry key="mail.smtp.password">qwerty12qwerty</entry>
-     <entry key="mail.imap.password">qwerty12qwerty</entry>
+     <entry key="mail.smtp.password"></entry>
+     <entry key="mail.imap.password"></entry>
      
      <!-- mail settings -->
      <entry key="mail.transport.protocol">smtps</entry>
