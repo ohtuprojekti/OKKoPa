@@ -9,7 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +41,10 @@ public class PDFProcessorImpl implements PDFProcessor {
             return splitter.splitPdf(pdfStream);
         } catch (IOException | COSVisitorException ex) {
             throw new DocumentException(ex.getMessage());
+        } catch (PdfException ex) {
+            Logger.getLogger(PDFProcessorImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     @Override
