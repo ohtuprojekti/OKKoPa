@@ -7,7 +7,6 @@ description "PDF processing test"
 scenario "Reading an image file with only QR code", {
  
     given "an image file",{
-        PDFProcessor processor = new PDFProcessorImpl();
     }
  
     when "QR code is read", {
