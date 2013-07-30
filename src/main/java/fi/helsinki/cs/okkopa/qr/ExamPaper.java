@@ -2,6 +2,7 @@ package fi.helsinki.cs.okkopa.qr;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExamPaper {
@@ -9,6 +10,7 @@ public class ExamPaper {
     private InputStream pdfStream;
     private String QRCodeString;
     private List<BufferedImage> pageImages;
+    private boolean pageImagesIsSet;
 
     public void setQRCodeString(String QRCodeString) {
         this.QRCodeString = QRCodeString;
@@ -32,5 +34,13 @@ public class ExamPaper {
 
     public void setPageImages(List<BufferedImage> pageImages) {
         this.pageImages = pageImages;
+    }
+
+    void setPageImage(BufferedImage pageAsImage) {
+        if (pageImagesIsSet == false) {
+            this.pageImages = new ArrayList<>();
+            pageImagesIsSet = true;
+        }
+        this.pageImages.add(this.pageImages.size(), pageAsImage);
     }
 }
