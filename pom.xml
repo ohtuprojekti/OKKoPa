@@ -91,6 +91,7 @@
                                     <mainClass>fi.helsinki.cs.okkopa.OkkopaMain</mainClass>
                                 </transformer>
                             </transformers>
+                            <outputFile>${basedir}/target/OKKoPa.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
