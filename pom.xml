@@ -15,26 +15,45 @@
         <org.springframework.version>3.2.3.RELEASE</org.springframework.version>
     </properties>
     
+    <profiles>
+        <profile>
+            <id>easyb</id>
+  
+            <!-- When skipITs is defined, don't run easyb tests. -->  
+            <activation>
+                <property>
+                    <name>!skipITs</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.easyb</groupId>
+                        <artifactId>maven-easyb-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration> 
+                            <easybTestDirectory>src/test/java/stories</easybTestDirectory>
+                            <storyType>html</storyType>
+                            <storyReport>${basedir}/target/easyb/easyb-report.html</storyReport>
+                        </configuration> 
+                    </plugin>			
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+    
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.easyb</groupId>
-                <artifactId>maven-easyb-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration> 
-                    <easybTestDirectory>src/test/java/stories</easybTestDirectory>
-                    <storyType>html</storyType>
-                    <storyReport>${basedir}/target/easyb/easyb-report.html</storyReport>
-                </configuration> 
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
