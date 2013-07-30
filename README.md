@@ -2,5 +2,3 @@
 Kokeidenpalautusjärjestelmä OKKoPa
 ======
 Ohjelmistotuotantoprojekti kesä 2013
-
-[JAR](https://drone.io/github.com/ohtuprojekti/OKKoPa/files/target/OKKoPa.jar)
