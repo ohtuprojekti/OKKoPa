@@ -2,18 +2,16 @@ package fi.helsinki.cs.okkopa;
 
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
-import fi.helsinki.cs.okkopa.qr.DocumentException;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
+import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.qr.ExamPaper;
 import fi.helsinki.cs.okkopa.qr.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -80,22 +78,15 @@ public class OkkopaRunner implements Runnable {
         List<ExamPaper> processPDF = new ArrayList<>();
         try {
             processPDF = pDFProcessor.splitPDF(inputStream);
-        } catch (IOException ex) {
-            // Not pdf-format
-            System.out.println("Not pdf-format");
         } catch (DocumentException ex) {
-            // Odd number of pages
-            System.out.println("Odd number of pages");
-        } catch (COSVisitorException ex) {
-            Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         for (ExamPaper examPaper : processPDF) {
             try {
                 examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
                 okPapers.add(examPaper);
-            } catch (Exception ex) {
-                // QR code not found
-                System.out.println("QR code not found");
+            } catch (NotFoundException ex) {
+                System.out.println("QR code not found " + ex);
             }
         }
         return okPapers;

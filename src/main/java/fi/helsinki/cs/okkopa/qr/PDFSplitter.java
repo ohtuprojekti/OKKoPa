@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
