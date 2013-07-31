@@ -112,7 +112,7 @@ scenario "User can,t login with invalid e-mail/password combination", {
 //        mail.connect()
 //    }
 // 
-//    then "user will be logged in to system", {
+//    then "", {
 //        ArrayList<InputStream> attachments = mail.getNextAttachment()
 //        attachments.shouldNotBe null
 //        mail.close();
