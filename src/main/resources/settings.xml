@@ -30,5 +30,6 @@
      <entry key="mail.message.attachmentname">Liitteen nimi</entry>
 
     <!-- Other settings -->     
-     <entry key="tikli.enable">true / false?</entry>
+     <entry key="tikli.enable">true</entry>
+
 </properties>

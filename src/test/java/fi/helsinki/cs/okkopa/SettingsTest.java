@@ -4,6 +4,8 @@
  */
 package fi.helsinki.cs.okkopa;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,7 +33,7 @@ public class SettingsTest {
     }
     
     @Before
-    public void setUp() {     
+    public void setUp() throws FileNotFoundException, IOException {     
         //before each test
         testSettings = new Settings("/test.xml");
     }
@@ -49,7 +51,7 @@ public class SettingsTest {
     
     @Test 
     public void testSettingContainsValues() {
-       assertTrue("test.xml has no content, should contain at least 1 key value pair.",testSettings.getSettings().size() == 11);
+       assertTrue("test.xml has no content, should contain 11 key value pairs.",testSettings.getSettings().size() == 11);
     }
 
 
