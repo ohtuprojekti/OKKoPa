@@ -4,6 +4,8 @@
  */
 package fi.helsinki.cs.okkopa;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,7 +33,7 @@ public class SettingsTest {
     }
     
     @Before
-    public void setUp() {     
+    public void setUp() throws FileNotFoundException, IOException {     
         //before each test
         testSettings = new Settings("/test.xml");
     }
