@@ -16,6 +16,6 @@ public class OkkopaMain {
         ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
         OkkopaRunner runner = (OkkopaRunner) ctx.getBean("okkopaRunner");
-        scheduler.scheduleAtFixedRate(runner, 0, 60, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(runner, 0, 1, TimeUnit.MINUTES);
     }
 }

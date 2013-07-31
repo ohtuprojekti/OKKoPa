@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.exampaper;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ public class ExamPaper {
         this.pageImages = pageImages;
     }
 
-    void setPageImage(BufferedImage pageAsImage) {
+    public void setPageImage(BufferedImage pageAsImage) {
         if (pageImagesIsSet == false) {
             this.pageImages = new ArrayList<>();
             pageImagesIsSet = true;
