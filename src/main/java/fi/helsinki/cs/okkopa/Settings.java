@@ -1,10 +1,13 @@
 package fi.helsinki.cs.okkopa;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Settings {
 
-    public Settings(String fileName) {
+    public Settings(String fileName) throws FileNotFoundException, IOException {
         this.settings = readSettingXML(fileName);
     }
     
@@ -15,17 +18,19 @@ public class Settings {
     }
     
     
-    private Properties readSettingXML(String fileName) {
-       try {
+    private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
            Properties currentProps = new Properties();
+        try {
            InputStream currentStream = getClass().getResourceAsStream(fileName);
            currentProps.loadFromXML(currentStream);
            currentStream.close();
            return currentProps;
        }
        catch (Exception e) {
-           System.out.println(e.getMessage());
-           return null;
+           FileInputStream fis = new FileInputStream(fileName);
+           currentProps.loadFromXML(fis);
+           fis.close();
+           return currentProps;
        }
        
     }
