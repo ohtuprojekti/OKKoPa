@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.io.IOException;
 import java.io.InputStream;

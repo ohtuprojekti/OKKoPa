@@ -17,7 +17,7 @@ public class OKKoPaMessage {
     Multipart body;
     Properties properties;
     private static final int VIESTI_INDEX = 0;
-    
+    private static final String PDF_MIME_NAME = "application/pdf";
     String subject;
     String receiver;
     String sender;
@@ -166,7 +166,7 @@ public class OKKoPaMessage {
      * @throws MessagingException 
      */
     public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
-        addAttachment(is, "application/pdf", name);
+        addAttachment(is, PDF_MIME_NAME, name);
     }
     
     

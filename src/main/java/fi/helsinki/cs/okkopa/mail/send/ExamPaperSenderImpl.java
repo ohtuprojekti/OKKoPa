@@ -5,8 +5,9 @@
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.Settings;
-import fi.helsinki.cs.okkopa.qr.ExamPaper;
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import java.io.IOException;
+import java.util.Properties;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExamPaperSenderImpl implements ExamPaperSender {
 
-    Settings settings;
+    Properties properties;
     
     @Autowired
     public ExamPaperSenderImpl(Settings settings) {
-        this.settings = settings;
+        this.properties = settings.getSettings();
     }    
     
     private String getReceiver(ExamPaper examPaper) {
@@ -31,11 +32,18 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
     
     @Override
     public void send(ExamPaper examPaper) throws MessagingException {
-        OKKoPaMessage msg = new OKKoPaMessage(getReceiver(examPaper), "OKKoPa@cs.helsinki.fi", settings.getSettings());
-        msg.setSubject("");
-        msg.setText("");
+        String sender = properties.getProperty("mail.message.replyto");
+        String subject = properties.getProperty("mail.message.topic");
+        String text = properties.getProperty("mail.message.body");
+        String attachmentName = properties.getProperty("mail.attachmentname");
+        if (!attachmentName.endsWith(".pdf")) {
+            attachmentName += ".pdf";
+        }
+        OKKoPaMessage msg = new OKKoPaMessage(getReceiver(examPaper), sender, properties);
+        msg.setSubject(subject);
+        msg.setText(text);
         try {
-            msg.addPDFAttachment(examPaper.getPdfStream(), "liite.pdf");
+            msg.addPDFAttachment(examPaper.getPdfStream(), attachmentName);
         } catch (IOException ex) {
             throw new MessagingException("Error while reading pdf stream");
         }

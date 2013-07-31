@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.mail.send;
 
-import fi.helsinki.cs.okkopa.qr.ExamPaper;
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import javax.mail.MessagingException;
 
 /**

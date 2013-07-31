@@ -4,7 +4,7 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.qr.ExamPaper;
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.qr.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +60,6 @@ public class OkkopaRunner implements Runnable {
                     } catch (NotFoundException ex) {
                         System.out.println("Ei kansisivua.");
                     }
-                    
                     sendEmails(processPDF);
                     if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
                         saveToTikli(processPDF);
