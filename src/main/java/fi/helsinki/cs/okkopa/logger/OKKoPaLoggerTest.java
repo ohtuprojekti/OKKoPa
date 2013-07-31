@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 public class OKKoPaLoggerTest {
 
-    private static final Logger LOGGER = Logger.getLogger("GLOBAL");
+    private static final Logger LOGGER = Logger.getLogger(OKKoPaLoggerTest.class.getName());
 
     public static void main(String[] args) {
 

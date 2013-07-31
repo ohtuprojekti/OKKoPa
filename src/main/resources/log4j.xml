@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
 
+    <!--LEVELS = ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
+    <!--Write to console-->
     <appender name="default.console" class="org.apache.log4j.ConsoleAppender">
         <param name="target" value="System.out"/>
-        <param name="threshold" value="debug" />
+        <param name="threshold" value="info" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %-5p [%c{1}] %m %n "/>
         </layout>
     </appender>  
+    <!--Write to file-->
     <appender name="default.file" class="org.apache.log4j.FileAppender">
         <param name="file" value="log.out"/>
-        <param name="threshold" value="debug" />
+        <param name="threshold" value="info" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%c{1}] %m %n" />
+            <param name="ConversionPattern" value="%d %-5p [%c{1}] %m %n" />
         </layout>
     </appender>  
-    <!--Root logger-->
-    <logger name="fi.helsinki.cs.OKKoPaLogger" additivity="false">
-        <level value="info"/>
-        <appender-ref ref="default.file"/>
-    </logger>
-    <root>
-        <priority value ="warn" />
+    <appender name="rolling.file" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="rollinglog.out"/>
+        <param name="threshold" value="info" />
+        <param name="MaxFileSize" value="10MB"/>
+        <param name="MaxBackupIndex" value="3"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%c{1}] %m %n" />
+        </layout>
+    </appender>
+    <!--Loggers-->
+    <logger name="fi.helsinki.cs.okkopa.logger.OKKoPaLoggerTest" additivity="true"> 
+        <!--additivity true if child loggers inherit their parent's appenders.-->
+        <level value="error"/>
         <appender-ref ref="default.console" />
-        <appender-ref ref="default.file" />
-    </root>
+    </logger>
+    <!--Root-->
+    <root>
+        <priority value ="info" />
+        <!--<appender-ref ref="default.console" />
+        <appender-ref ref="default.file" /> -->
+        <appender-ref ref="rolling.file"/>
+    </root> 
 
 </log4j:configuration>  
