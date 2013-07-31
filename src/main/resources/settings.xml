@@ -11,7 +11,7 @@
      <entry key="mail.smtp.starttls.enable">true</entry>
      <entry key="mail.smtp.host">smtp.gmail.com</entry>
      <entry key="mail.smtp.port">587</entry>
-     <entry key="mail.smtp.user">okkopa2.2013</entry> 
+     <entry key="mail.smtp.user">okkopa2.2013@gmail.com</entry> 
     
     <!-- imap-settings -->
      <entry key="mail.imap.host">imap.googlemail.com</entry>  
@@ -20,6 +20,8 @@
      <entry key="mail.imap.messages.keepdays">30</entry>
     
     <!-- Message settings -->
+
+
      <entry key="mail.message.body">
          Sähköpostin sisältö tähän.
          Mitenhän toimii monen rivin postit?
@@ -27,9 +29,21 @@
      </entry>
      <entry key="mail.message.topic">Sähköpostin otsikko tähän</entry>
      <entry key="mail.message.replyto">Sähköpostin vastausosoite tähän</entry>
-     <entry key="mail.message.attachmentname">Liitteen nimi</entry>
+     <entry key="mail.message.attachmentname">liite.pdf</entry>
 
     <!-- Other settings -->     
      <entry key="tikli.enable">true</entry>
+     <entry key="main.minutesbetweenruns">1</entry>
 
+     <!-- Exception handling -->
+     <entry key="mail.deletemailswithoutattachment">false</entry>
+     <entry key="pdfprocessor.saveunreadableattachments">true</entry>
+     <entry key="pdfprocessor.saveexamswithunreadableqrcodes">true</entry>
+
+     <entry key="mail.send.retryattemps">1</entry>
+     <entry key="mail.send.retrydelayinminutes">1</entry>
+     
+     <entry key="tikli.retryattempts">1</entry>
+     <entry key="tikli.retrydealyinminutes">1</entry>
+     
 </properties>
