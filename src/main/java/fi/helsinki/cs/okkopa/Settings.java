@@ -19,7 +19,7 @@ public class Settings {
     
     
     private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
-           Properties currentProps = new Properties();
+      Properties currentProps = new Properties();
         try {
            InputStream currentStream = getClass().getResourceAsStream(fileName);
            currentProps.loadFromXML(currentStream);
@@ -27,6 +27,7 @@ public class Settings {
            return currentProps;
        }
        catch (Exception e) {
+           System.out.println(e.getMessage());
            FileInputStream fis = new FileInputStream(fileName);
            currentProps.loadFromXML(fis);
            fis.close();
@@ -34,4 +35,5 @@ public class Settings {
        }
        
     }
+    
 }
