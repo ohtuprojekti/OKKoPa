@@ -1,25 +1,29 @@
 package fi.helsinki.cs.okkopa.qr;
 
-import com.google.zxing.NotFoundException;
-import java.io.IOException;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
+import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import java.io.InputStream;
 import java.util.List;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 
 public interface PDFProcessor {
 
-    String readQRCode(ExamPaper examPaper) throws Exception;
+    /**
+     * Takes an ExamPaper and reads a QR code from it.
+     * 
+     * @param examPaper Input ExamPaper.
+     * @return Read QR code as a String.
+     * @throws NotFoundException If QR code was not found.
+     */
+    String readQRCode(ExamPaper examPaper) throws NotFoundException;
 
     /**
      * Converts a PDF-document to a list of images, one per page.
      * 
-     * @param pdfStream PDF-file as InputStream.
-     * @return
-     * @throws IOException If file is not in PDF format.
-     * @throws DocumentException If document has odd number of pages.
-     * @throws COSVisitorException If something goes wrong with the InputStream 
-     * of PDF-file. 
+     * @param pdfStream PDF file as an InputStream
+     * @return A list of ExamPapers, one per two pages of the input PDF.
+     * @throws DocumentException If document is not in the right format or has
+     *                            an odd number of pages.
      */
-    List<ExamPaper> splitPDF(InputStream pdfStream) throws IOException, DocumentException, COSVisitorException;
+    List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException;
     
 }

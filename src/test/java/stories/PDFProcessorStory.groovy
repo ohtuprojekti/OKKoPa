@@ -1,13 +1,13 @@
+
 package stories
 
-import fi.helsinki.cs.okkopa.qr.QRCodeReader
+import fi.helsinki.cs.okkopa.qr.*
 
-description "QR code reading"
+description "PDF processing test"
  
 scenario "Reading an image file with only QR code", {
  
     given "an image file",{
-        reader = new QRCodeReader()
     }
  
     when "QR code is read", {
@@ -16,3 +16,4 @@ scenario "Reading an image file with only QR code", {
     then "the result should be ??", {
     }
 }
+

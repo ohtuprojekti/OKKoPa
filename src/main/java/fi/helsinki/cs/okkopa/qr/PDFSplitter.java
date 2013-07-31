@@ -1,20 +1,19 @@
 package fi.helsinki.cs.okkopa.qr;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.util.Splitter;
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfException;
+import org.springframework.stereotype.Component;
 
 /**
  * Converts a PDF-document to a list of images, one per page.
  */
+@Component
 public class PDFSplitter {
 
     /**
@@ -28,45 +27,49 @@ public class PDFSplitter {
      * @throws COSVisitorException If something goes wrong with the InputStream 
      * of PDF-file.
      */
-    public List<ExamPaper> splitPdf(InputStream pdfStream) throws IOException, DocumentException, COSVisitorException {
-        PDDocument document = PDDocument.load(pdfStream);
-        if (document.getNumberOfPages() % 2 != 0) {
+    public List<ExamPaper> splitPdf(InputStream pdfStream) throws IOException, DocumentException, COSVisitorException, PdfException {
+        
+        PdfDecoder pdf = new PdfDecoder(true);
+        pdf.openPdfFileFromInputStream(pdfStream, true);
+        
+        if (pdf.getPageCount() % 2 != 0) {
             throw new DocumentException("Odd number of pages");
         }
-        List<PDDocument> examPdfs = splitExams(document);
 
         ArrayList<ExamPaper> examPapers = new ArrayList<>();
-        for (PDDocument examPdf : examPdfs) {
+        
+        for (int i = 0; i < pdf.getPageCount() / 2; i++) {
             ExamPaper examPaper = new ExamPaper();
-            examPaper.setPageImages(extractImages(examPdf));
-            examPaper.setPdfStream(getPdfStream(examPdf));
+            
+            examPaper.setPageImage(pdf.getPageAsImage(2 * i));
+            examPaper.setPageImage(pdf.getPageAsImage(2 * i + 1));
+            
+            examPaper.setPdfStream(pdfStream);
             examPapers.add(examPaper);
-            examPdf.close();
         }
-        document.close();
         return examPapers;
     }
 
-    private ArrayList<BufferedImage> extractImages(PDDocument document) throws IOException {
-        List<PDPage> pdPages = document.getDocumentCatalog().getAllPages();
-        ArrayList<BufferedImage> pages = new ArrayList<>();
-        for (PDPage pdPage : pdPages) {
-            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 100));
-            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 50));
-        }
-        return pages;
-    }
+//    private ArrayList<BufferedImage> extractImages(PDDocument document) throws IOException {
+//        List<PDPage> pdPages = document.getDocumentCatalog().getAllPages();
+//        ArrayList<BufferedImage> pages = new ArrayList<>();
+//        for (PDPage pdPage : pdPages) {
+//            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 100));
+//            pages.add(pdPage.convertToImage(BufferedImage.TYPE_INT_RGB, 50));
+//        }
+//        return pages;
+//    }
 
-    private List<PDDocument> splitExams(PDDocument document) throws IOException {
-        Splitter splitter = new Splitter();
-        splitter.setSplitAtPage(2);
-        List<PDDocument> exams = splitter.split(document);
-        return exams;
-    }
-
-    private InputStream getPdfStream(PDDocument document) throws COSVisitorException, IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        document.save(os);
-        return new ByteArrayInputStream(os.toByteArray());
-    }
+//    private List<PDDocument> splitExams(PDDocument document) throws IOException {
+//        Splitter splitter = new Splitter();
+//        splitter.setSplitAtPage(2);
+//        List<PDDocument> exams = splitter.split(document);
+//        return exams;
+//    }
+//
+//    private InputStream getPdfStream(PDDocument document) throws COSVisitorException, IOException {
+//        ByteArrayOutputStream os = new ByteArrayOutputStream();
+//        document.save(os);
+//        return new ByteArrayInputStream(os.toByteArray());
+//    }
 }

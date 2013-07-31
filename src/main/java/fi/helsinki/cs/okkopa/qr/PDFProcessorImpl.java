@@ -1,8 +1,9 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import fi.helsinki.cs.okkopa.exception.NotFoundException;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,12 +12,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.jpedal.exception.PdfException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PDFProcessorImpl implements PDFProcessor {
 
     PDFSplitter splitter;
     QRCodeReader reader;
 
+    @Autowired
     public PDFProcessorImpl(PDFSplitter splitter, QRCodeReader reader) {
         this.splitter = splitter;
         this.reader = reader;
@@ -30,30 +36,32 @@ public class PDFProcessorImpl implements PDFProcessor {
      * @throws DocumentException If document has odd number of pages.
      */
     @Override
-    public List<ExamPaper> splitPDF(InputStream pdfStream) throws IOException, DocumentException, COSVisitorException {
-        return splitter.splitPdf(pdfStream);
+    public List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException {
+        try {
+            return splitter.splitPdf(pdfStream);
+        } catch (IOException | COSVisitorException ex) {
+            throw new DocumentException(ex.getMessage());
+        } catch (PdfException ex) {
+            Logger.getLogger(PDFProcessorImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
-    public String readQRCode(ExamPaper examPaper) throws Exception {
+    public String readQRCode(ExamPaper examPaper) throws NotFoundException {
         Result result = null;
         Exception e = null;
         for (BufferedImage pageImage : examPaper.getPageImages()) {
             try {
                 result = reader.readQRCode(pageImage);
-                System.out.println(result);
-            } catch (NotFoundException ex) {
-                System.out.println("ei löytynyt");
-                e = ex;
-            } catch (ChecksumException ex) {
-                e = ex;
-            } catch (FormatException ex) {
+            } catch (com.google.zxing.NotFoundException | ChecksumException | FormatException ex) {
                 e = ex;
             }
         }
-        if (result == null) {
-            throw e;
+        if (result != null) {
+            return result.getText();
+        } else {
+            throw new fi.helsinki.cs.okkopa.exception.NotFoundException(e.getMessage());
         }
-        return result.getText();
     }
 }

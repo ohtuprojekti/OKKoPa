@@ -1,36 +1,37 @@
 package fi.helsinki.cs.okkopa;
 
-import com.google.zxing.NotFoundException;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
-import fi.helsinki.cs.okkopa.mail.read.MailRead;
-import fi.helsinki.cs.okkopa.mail.send.OKKoPaAuthenticatedMessage;
-import fi.helsinki.cs.okkopa.mail.send.OKKoPaMessage;
-import fi.helsinki.cs.okkopa.qr.DocumentException;
+import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
+import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.qr.ExamPaper;
 import fi.helsinki.cs.okkopa.qr.PDFProcessor;
-import fi.helsinki.cs.okkopa.qr.PDFProcessorImpl;
-import fi.helsinki.cs.okkopa.qr.PDFSplitter;
-import fi.helsinki.cs.okkopa.qr.QRCodeReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
     private EmailRead server;
+    private ExamPaperSender sender;    
+    private Settings settings;
 
-    public OkkopaRunner() {
-        pDFProcessor = new PDFProcessorImpl(new PDFSplitter(), new QRCodeReader());
-        server = new MailRead();
+    @Autowired
+    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings) {
+        this.server = server;
+        this.sender = sender;
+        this.pDFProcessor = pDFProcessor;
+        this.settings = settings;
     }
 
     @Override
@@ -47,9 +48,26 @@ public class OkkopaRunner implements Runnable {
                 for (InputStream inputStream : attachments) {
                     // PDF to exam papers
                     List<ExamPaper> processPDF = processPdf(inputStream);
-                    for (ExamPaper examPaper : processPDF) {
-                        sendEmail(examPaper);
+                    if (processPDF.isEmpty()) {
+                        System.out.println("tyhjä lista...");
+                        continue;
                     }
+                    ExamPaper cover = processPDF.get(0);
+                    Integer id = null;
+                    try {
+                        id = getCoverPageCourseID(cover);
+                        processPDF.remove(0);
+                    } catch (NotFoundException ex) {
+                        System.out.println("Ei kansisivua.");
+                    }
+                    
+                    sendEmails(processPDF);
+                    if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
+                        saveToTikli(processPDF);
+                    
+                    }
+
+
                     IOUtils.closeQuietly(inputStream);
                 }
             }
@@ -67,20 +85,25 @@ public class OkkopaRunner implements Runnable {
         }
     }
 
-    private void sendEmail(ExamPaper examPaper) {
+    public int getCoverPageCourseID(ExamPaper examPaper) throws NotFoundException {
         try {
-            Properties props = Settings.SMTPPROPS;
-            Properties salasanat = Settings.PWDPROPS;
-            OKKoPaMessage msg = new OKKoPaAuthenticatedMessage("okkopa.2013@gmail.com", "okkopa2.2013@gmail.com", props, "okkopa2.2013", salasanat.getProperty("smtpPassword"));
-            msg.addPDFAttachment(examPaper.getPdfStream(), "liite.pdf");
-            msg.setSubject("testipdf");
-            msg.setText("katso liite  " + examPaper.getQRCodeString());
-            msg.send();
-            System.out.println("lähetetty");
-        } catch (MessagingException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
+            return Integer.parseInt(examPaper.getQRCodeString());
+        } catch (NumberFormatException ex) {
+            throw new NotFoundException("Course ID not found.");
+        }
+    }
+
+    private void saveToTikli(List<ExamPaper> examPapers) {
+        
+    }
+
+    private void sendEmails(List<ExamPaper> examPapers) {
+        for (ExamPaper examPaper : examPapers) {
+            try {
+                sender.send(examPaper);
+            } catch (MessagingException ex) {
+                System.out.println("virhe lähetyksessä" + ex);
+            }
         }
     }
 
@@ -89,22 +112,15 @@ public class OkkopaRunner implements Runnable {
         List<ExamPaper> processPDF = new ArrayList<>();
         try {
             processPDF = pDFProcessor.splitPDF(inputStream);
-        } catch (IOException ex) {
-            // Not pdf-format
-            System.out.println("Not pdf-format");
         } catch (DocumentException ex) {
-            // Odd number of pages
-            System.out.println("Odd number of pages");
-        } catch (COSVisitorException ex) {
-            Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         for (ExamPaper examPaper : processPDF) {
             try {
                 examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
                 okPapers.add(examPaper);
-            } catch (Exception ex) {
-                // QR code not found
-                System.out.println("QR code not found");
+            } catch (NotFoundException ex) {
+                System.out.println("QR code not found " + ex);
             }
         }
         return okPapers;

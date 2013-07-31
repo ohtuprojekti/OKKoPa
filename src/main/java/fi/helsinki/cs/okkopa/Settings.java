@@ -1,50 +1,36 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-/**
- *
- * @author phemmila
- */
+
 public class Settings {
-    
-    
-    public static void main(String args[]) {
-        Properties tempprops = Settings.IMAPPROPS;
+
+    public Settings(String fileName) throws FileNotFoundException, IOException {
+        this.settings = readSettingXML(fileName);
     }
     
-     /**
-     *Smtp-settings, read from resources/smtpsettings.xml.
-     */
-    public final static Properties SMTPPROPS = readSettingXML("/smtpsettings.xml");
-     /**
-     *Passwords, read from resources/pwdsettings.xml.
-     */
+    private Properties settings;
+
+    public Properties getSettings() {
+        return this.settings;
+    }
     
-
-    public final static Properties PWDPROPS = readSettingXML("/pwdsettings.xml");
-   
-    /**
-     *Imap-settings, read from resources/imapsettings.xml
-     */
-    public final static Properties IMAPPROPS = readSettingXML("/imapsettings.xml");
-
-
-     private static Properties readSettingXML(String fileName) {
-       try {
+    
+    private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
            Properties currentProps = new Properties();
-           InputStream currentStream = Settings.class.getResourceAsStream(fileName);
+        try {
+           InputStream currentStream = getClass().getResourceAsStream(fileName);
            currentProps.loadFromXML(currentStream);
            currentStream.close();
            return currentProps;
        }
        catch (Exception e) {
-           System.out.println(e.getMessage());
-           return null;
+           FileInputStream fis = new FileInputStream(fileName);
+           currentProps.loadFromXML(fis);
+           fis.close();
+           return currentProps;
        }
        
     }

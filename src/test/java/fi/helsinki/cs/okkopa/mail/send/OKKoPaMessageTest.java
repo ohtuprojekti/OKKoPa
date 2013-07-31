@@ -8,6 +8,8 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import fi.helsinki.cs.okkopa.Settings;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.Security;
 import java.util.Properties;
@@ -43,17 +45,11 @@ public class OKKoPaMessageTest {
     }
     
     @Before
-    public void setUp() throws MessagingException {
+    public void setUp() throws MessagingException, FileNotFoundException, IOException {
         ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
-        props = new Properties(Settings.SMTPPROPS);
-        props.put("mail.smtp.user", "OKKoPa");
-        props.put("mail.smtp.host", "localhost");
-        props.put("mail.smtp.auth", "false");
-        props.put("mail.smtp.port", "4012");
-        props.put("mail.transport.protocol", "smtps");
-        props.put("mail.smtp.ssl.enable", "true");
+        props = (new Settings("/smtptestsettings.xml")).getSettings();
         
         //XTrustProvider provider = new XTrustProvider();
         //provider.install();
@@ -69,14 +65,14 @@ public class OKKoPaMessageTest {
 
     @Test
     public void testSetText() throws Exception {
-        OKKoPaMessage msg = new OKKoPaMessage("a", "b");
+        OKKoPaMessage msg = new OKKoPaMessage("a", "b", props);
         msg.setText("viestin sisalto");
         assertEquals(msg.body.getBodyPart(0).getContent().toString(), "viestin sisalto");
     }
 
     @Test
     public void testSetSubject() throws Exception {
-        OKKoPaMessage msg = new OKKoPaMessage("a", "b");
+        OKKoPaMessage msg = new OKKoPaMessage("a", "b", props);
         msg.setSubject("aihe");
         assertEquals(msg.subject, "aihe");
     }

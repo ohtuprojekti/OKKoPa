@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.exception;
 
 public class DocumentException extends Exception {
 
