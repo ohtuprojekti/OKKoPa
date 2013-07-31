@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.qr;
 
+
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -54,4 +55,17 @@ public class PDFSplitterTest {
         List<ExamPaper> examPapers = splitter.splitPdf(file);
         assertEquals(20, examPapers.size());
     }
+    
+    /**
+     * Test checking single paper containing two pages per exam paper.
+     */
+    @Test
+    public void twoPapersPerPDF() throws IOException, Exception {
+        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
+        List<ExamPaper> examPapers = splitter.splitPdf(file);
+        for (ExamPaper examPaper : examPapers) {
+            assertEquals(2, examPaper.getPageImages().size());
+        }
+    }
+    
 }

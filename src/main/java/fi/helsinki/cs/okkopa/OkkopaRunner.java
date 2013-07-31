@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.apache.pdfbox.io.IOUtils;
@@ -20,15 +22,16 @@ import org.springframework.stereotype.Component;
 public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
-    
     private EmailRead server;
-    private ExamPaperSender sender;
+    private ExamPaperSender sender;    
+    private Settings settings;
 
     @Autowired
-    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor) {
+    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
+        this.settings = settings;
     }
 
     @Override
@@ -45,9 +48,26 @@ public class OkkopaRunner implements Runnable {
                 for (InputStream inputStream : attachments) {
                     // PDF to exam papers
                     List<ExamPaper> processPDF = processPdf(inputStream);
-                    for (ExamPaper examPaper : processPDF) {
-                        sendEmail(examPaper);
+                    if (processPDF.isEmpty()) {
+                        System.out.println("tyhjä lista...");
+                        continue;
                     }
+                    ExamPaper cover = processPDF.get(0);
+                    Integer id = null;
+                    try {
+                        id = getCoverPageCourseID(cover);
+                        processPDF.remove(0);
+                    } catch (NotFoundException ex) {
+                        System.out.println("Ei kansisivua.");
+                    }
+                    
+                    sendEmails(processPDF);
+                    if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
+                        saveToTikli(processPDF);
+                    
+                    }
+
+
                     IOUtils.closeQuietly(inputStream);
                 }
             }
@@ -65,11 +85,25 @@ public class OkkopaRunner implements Runnable {
         }
     }
 
-    private void sendEmail(ExamPaper examPaper) {
+    public int getCoverPageCourseID(ExamPaper examPaper) throws NotFoundException {
         try {
-            sender.send(examPaper);
-        } catch (MessagingException ex) {
-            System.out.println("virhe lähetyksessä" + ex);
+            return Integer.parseInt(examPaper.getQRCodeString());
+        } catch (NumberFormatException ex) {
+            throw new NotFoundException("Course ID not found.");
+        }
+    }
+
+    private void saveToTikli(List<ExamPaper> examPapers) {
+        
+    }
+
+    private void sendEmails(List<ExamPaper> examPapers) {
+        for (ExamPaper examPaper : examPapers) {
+            try {
+                sender.send(examPaper);
+            } catch (MessagingException ex) {
+                System.out.println("virhe lähetyksessä" + ex);
+            }
         }
     }
 
