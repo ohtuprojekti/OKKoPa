@@ -11,6 +11,9 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.image.BufferedImage;
 import org.springframework.stereotype.Component;
 
+/**
+ * Reads QR code from single image. 
+ */
 @Component
 public class QRCodeReader {
 

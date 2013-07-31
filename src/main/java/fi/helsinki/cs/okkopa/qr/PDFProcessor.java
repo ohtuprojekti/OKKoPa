@@ -17,8 +17,8 @@ public interface PDFProcessor {
     String readQRCode(ExamPaper examPaper) throws NotFoundException;
 
     /**
+     * Converts a PDF-document to a list of images, one per page.
      * 
-     *
      * @param pdfStream PDF file as an InputStream
      * @return A list of ExamPapers, one per two pages of the input PDF.
      * @throws DocumentException If document is not in the right format or has

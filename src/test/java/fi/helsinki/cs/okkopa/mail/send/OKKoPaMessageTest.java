@@ -8,6 +8,8 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import fi.helsinki.cs.okkopa.Settings;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.Security;
 import java.util.Properties;
@@ -43,7 +45,7 @@ public class OKKoPaMessageTest {
     }
     
     @Before
-    public void setUp() throws MessagingException {
+    public void setUp() throws MessagingException, FileNotFoundException, IOException {
         ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
