@@ -1,11 +1,11 @@
 package fi.helsinki.cs.okkopa.qr;
 
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class PDFSplitter {
      * @throws COSVisitorException If something goes wrong with the InputStream 
      * of PDF-file.
      */
-    public List<ExamPaper> splitPdf(InputStream pdfStream) throws IOException, DocumentException, COSVisitorException, PdfException {
+    public List<ExamPaper> splitPdf(InputStream pdfStream) throws IOException, DocumentException, PdfException {
         
         PdfDecoder pdf = new PdfDecoder(true);
         pdf.openPdfFileFromInputStream(pdfStream, true);
