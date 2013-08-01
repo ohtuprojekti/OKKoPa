@@ -1,7 +1,9 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.pdfprocessor;
 
+import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -25,7 +27,7 @@ public class PDFSplitterTest {
     @Test(expected = PdfException.class)
     public void wrongFileType() throws IOException, DocumentException, PdfException {
         InputStream file = getClass().getResourceAsStream("/text/testEmpty");
-        splitter.splitPdf(file);
+        splitter.splitPdfToExamPapersWithImages(file);
     }
 
     /**
@@ -34,7 +36,7 @@ public class PDFSplitterTest {
     @Test(expected = DocumentException.class)
     public void oddPages() throws IOException, DocumentException, PdfException {
         InputStream file = getClass().getResourceAsStream("/pdf/three_page.pdf");
-        splitter.splitPdf(file);
+        splitter.splitPdfToExamPapersWithImages(file);
     }
 
     /**
@@ -43,7 +45,7 @@ public class PDFSplitterTest {
     @Test
     public void eligibleDocument() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdf(file);
+        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
         assertEquals(20, examPapers.size());
     }
     
@@ -53,10 +55,20 @@ public class PDFSplitterTest {
     @Test
     public void twoPapersPerPDF() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdf(file);
+        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
         for (ExamPaper examPaper : examPapers) {
             assertEquals(2, examPaper.getPageImages().size());
         }
     }
     
+    @Test
+    public void imagesNotNull() throws IOException, Exception {
+        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
+        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
+        for (ExamPaper examPaper : examPapers) {
+            for (BufferedImage image : examPaper.getPageImages()) {
+                assertNotNull(image);
+            }
+        }
+    }    
 }

@@ -5,7 +5,7 @@ import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
-import fi.helsinki.cs.okkopa.qr.PDFProcessor;
+import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
