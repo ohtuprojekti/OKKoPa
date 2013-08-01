@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jpedal.exception.PdfException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -29,11 +30,12 @@ public class PDFProcessorImplTest {
     }
 
     @Test
-    public void testReadQRCode() throws DocumentException {
+    public void testReadQRCode() throws DocumentException, PdfException {
         List<ExamPaper> splitPDF = processor.splitPDF(getClass().getResourceAsStream("/pdf/all.pdf"));
         int errors = 0;
         for (ExamPaper examPaper : splitPDF) {
             try {
+                examPaper.setPageImages(processor.getPageImages(examPaper));
                 processor.readQRCode(examPaper);
             } catch (NotFoundException ex) {
                 errors++;

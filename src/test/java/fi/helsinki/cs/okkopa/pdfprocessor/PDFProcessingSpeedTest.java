@@ -43,6 +43,7 @@ public class PDFProcessingSpeedTest {
         splittingTime = System.currentTimeMillis() - splittingTime;
         double readingTime = System.currentTimeMillis();
         int paperAmount = examPapers.size();
+        long memorySum = 0;
         while (!examPapers.isEmpty()) {
             ExamPaper examPaper = examPapers.remove(0);
             examPaper.setPageImages(pdfProcessor.getPageImages(examPaper));
@@ -51,41 +52,13 @@ public class PDFProcessingSpeedTest {
             // SLOW BUT LOW MEMORY
 //            runtime.gc();
             long memory = runtime.totalMemory() - runtime.freeMemory();
-            System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
+            memorySum += bytesToMegabytes(memory);
         }
         readingTime = System.currentTimeMillis() - readingTime;
 
-        System.out.println("It took " + splittingTime + " to split " + paperAmount + " ExamPapers");
-        System.out.println("It took " + readingTime + " to read " + paperAmount + " ExamPapers");
-        System.out.println("It took a total of " + (splittingTime + readingTime) + " milliseconds");
-
-        //System.out.println("It took "+(System.currentTimeMillis()-startTime) + " to split and read "+examPapers.size() + " exam papers.");
+        System.out.println("It took " + splittingTime + "ms to split " + paperAmount + " ExamPapers.");
+        System.out.println("It took " + readingTime + "ms to read " + paperAmount + " ExamPapers.");
+        System.out.println("It took a total of " + (splittingTime + readingTime) + " milliseconds.");
+        System.out.println("Used average " + memorySum / paperAmount + "MB of memory per examPaper.");
     }
-//    @Test
-//    public void testQRReadingSpeed() throws DocumentException {
-//        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-//        examPapers = pdfProcessor.splitPDF(file);
-//        List<ExamPaper> examPapers2 = new ArrayList<ExamPaper>();
-//        examPapers2.addAll(examPapers);
-//        examPapers.addAll(examPapers2);
-//        examPapers2.addAll(examPapers);
-//        examPapers.addAll(examPapers2);  
-//        examPapers2.addAll(examPapers);
-//        examPapers.addAll(examPapers2); 
-//        
-//        
-//        double startTime = System.currentTimeMillis();
-//        for (ExamPaper examPaper : examPapers) {
-//            List<BufferedImage> imgs = examPaper.getPageImages();
-//            System.out.println("----------------");
-//            System.out.println("images: "+imgs.size());
-//            try {
-//                pdfProcessor.readQRCode(examPaper);
-//            } catch (NotFoundException ex) {
-//                System.out.println("qr code not found");
-//            }
-//        }
-//        System.out.println("It took "+(System.currentTimeMillis()-startTime)+
-//                " to read " + examPapers.size() + " ExamPapers.");
-//    }
 }
