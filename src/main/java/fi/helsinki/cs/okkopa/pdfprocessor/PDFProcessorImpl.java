@@ -18,7 +18,7 @@ public class PDFProcessorImpl implements PDFProcessor {
 
     private PDFSplitter splitter;
     private QRCodeReader reader;
-    private final double[] SCALERS = {1 / 3, 1, 2.5 / 3, 2 / 3, 1.5 / 3};
+    private final double[] SCALERS = {1.0 / 3.0, 1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0};
 
     @Autowired
     public PDFProcessorImpl(PDFSplitter splitter, QRCodeReader reader) {
