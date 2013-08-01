@@ -20,8 +20,6 @@
      <entry key="mail.imap.messages.keepdays">30</entry>
     
     <!-- Message settings -->
-
-
      <entry key="mail.message.body">
          Sähköpostin sisältö tähän.
          Mitenhän toimii monen rivin postit?
@@ -45,5 +43,7 @@
      
      <entry key="tikli.retryattempts">1</entry>
      <entry key="tikli.retrydealyinminutes">1</entry>
+     
+     <entry key="logger.showcompletestack">false</entry>
      
 </properties>

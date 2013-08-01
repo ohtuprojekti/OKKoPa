@@ -38,7 +38,7 @@ scenario "User can login with valid e-mail/password combination", {
     }
  
     when "", {
-        mail = new MailRead(new Settings("/smtptestsettings.xml"))
+        mail = new MailRead(new Settings("smtptestsettings.xml"))
         mail.connect()
     }
  

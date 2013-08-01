@@ -74,13 +74,15 @@ public class OkkopaRunner implements Runnable {
             }
         } catch (NoSuchProviderException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
+            
         } catch (MessagingException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
+            
         } catch (IOException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
         } finally {
             server.close();
         }
@@ -125,5 +127,13 @@ public class OkkopaRunner implements Runnable {
             }
         }
         return okPapers;
+    }
+    
+    private void exceptionHandler(Exception ex) {
+        //Currently just logging exceptions. Should exception handling be in its own class?
+            if (settings.getSettings().getProperty("logger.showcompletestack").equals("true"))
+                LOGGER.error(ex.toString(),ex);
+            else
+                LOGGER.error(ex.toString());
     }
 }
