@@ -29,6 +29,7 @@ public class PDFSplitter {
 
         PdfDecoder pdf = new PdfDecoder(true);
         pdf.openPdfFileFromInputStream(pdfStream, true);
+        pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
 
         if (pdf.getPageCount() % 2 != 0) {
             throw new DocumentException("Odd number of pages");

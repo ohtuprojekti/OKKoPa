@@ -1,6 +1,5 @@
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
-import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.awt.image.BufferedImage;
@@ -70,5 +69,17 @@ public class PDFSplitterTest {
                 assertNotNull(image);
             }
         }
-    }    
+    }
+    
+    @Test
+    public void imagesHaveSize() throws IOException, Exception {
+        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
+        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
+        for (ExamPaper examPaper : examPapers) {
+            for (BufferedImage image : examPaper.getPageImages()) {
+                assertFalse(image.getHeight() == 0);
+                assertFalse(image.getWidth() == 0);
+            }
+        }
+    } 
 }
