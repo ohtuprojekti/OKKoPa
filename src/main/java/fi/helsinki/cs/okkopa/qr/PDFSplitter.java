@@ -11,7 +11,7 @@ import org.jpedal.exception.PdfException;
 import org.springframework.stereotype.Component;
 
 /**
- * Converts a PDF-document to a list of images, one per page.
+ * Converts a PDF-document to a list of images.
  */
 @Component
 public class PDFSplitter {
