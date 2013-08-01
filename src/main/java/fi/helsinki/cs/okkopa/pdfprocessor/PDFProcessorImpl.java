@@ -5,6 +5,10 @@ import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,9 +54,13 @@ public class PDFProcessorImpl implements PDFProcessor {
             for (BufferedImage pageImage : pageImages) {
                 int newWidth = (int) (pageImage.getWidth() * scaler);
                 int newHeight = (int) (pageImage.getHeight() * scaler);
-                BufferedImage scaledImage = (BufferedImage) pageImage.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
+                BufferedImage resized = new BufferedImage(newWidth, newHeight, pageImage.getType());
+                Graphics2D g = resized.createGraphics();
+                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(pageImage, 0, 0, newWidth, newHeight, 0, 0, pageImage.getWidth(), pageImage.getHeight(), null);
+                g.dispose();
                 try {
-                    return reader.readQRCode(scaledImage).getText();
+                    return reader.readQRCode(resized).getText();
                 } catch (com.google.zxing.NotFoundException | ChecksumException | FormatException ex) {
                     e = ex;
                 }
