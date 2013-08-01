@@ -1,5 +1,6 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.pdfprocessor;
 
+import fi.helsinki.cs.okkopa.pdfprocessor.QRCodeReader;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
