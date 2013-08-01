@@ -7,15 +7,12 @@ import java.util.List;
 
 
 /**
- * Single exam paper containing two-page PDDocument, QR code information
- * as a String and a list containing PDDocument extracted to two images.
+ * Single exam paper a list of page images and QR code information.
  */
 public class ExamPaper {
 
-    private InputStream pdfStream;
     private String QRCodeString;
     private List<BufferedImage> pageImages;
-    private boolean pageImagesIsSet;
 
     public String getQRCodeString() {
         return QRCodeString;
@@ -25,27 +22,18 @@ public class ExamPaper {
         this.QRCodeString = QRCodeString;
     }
 
-    public InputStream getPdfStream() {
-        return pdfStream;
-    }
-
-    public void setPdfStream(InputStream pdfStream) {
-        this.pdfStream = pdfStream;
-    }
-
     public List<BufferedImage> getPageImages() {
         return pageImages;
     }
 
-    public void setPageImages(List<BufferedImage> pageImages) {
-        this.pageImages = pageImages;
-    }
-
-    public void setPageImage(BufferedImage pageAsImage) {
-        if (pageImagesIsSet == false) {
+    public void addPageImage(BufferedImage pageAsImage) {
+        if (pageImages == null) {
             this.pageImages = new ArrayList<>();
-            pageImagesIsSet = true;
         }
-        this.pageImages.add(this.pageImages.size(), pageAsImage);
+        this.pageImages.add(pageAsImage);
+    }
+    
+    public InputStream getPdfStream() {
+        return null;
     }
 }
