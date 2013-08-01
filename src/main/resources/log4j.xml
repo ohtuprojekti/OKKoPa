@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
 
     <!--LEVELS = ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
     <!--Write to console-->
@@ -35,11 +35,21 @@
         <level value="error"/>
         <appender-ref ref="default.console" />
     </logger>
+    <logger name="org.springframework"> 
+        <level value="off"/>
+    </logger>
+    <logger name="fi.helsinki.cs.okkopa.OkkopaRunner" additivity="true"> 
+        <!--additivity true if child loggers inherit their parent's appenders.-->
+        <level value="info"/>
+        <appender-ref ref="default.console" />
+    </logger>
+    
+    
     <!--Root-->
     <root>
         <priority value ="info" />
-        <!--<appender-ref ref="default.console" />
-        <appender-ref ref="default.file" /> -->
+        <appender-ref ref="default.console" />
+        <!--<appender-ref ref="default.file" /> -->
         <appender-ref ref="rolling.file"/>
     </root> 
 
