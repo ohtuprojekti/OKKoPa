@@ -58,6 +58,7 @@ public class OkkopaRunner implements Runnable {
                     try {
                         id = getCoverPageCourseID(cover);
                         processPDF.remove(0);
+                        LOGGER.info("Löytyi kansisivu, id: "+id);
                     } catch (NotFoundException ex) {
                         LOGGER.info("Ei kansisivua.");
                     }
@@ -96,7 +97,7 @@ public class OkkopaRunner implements Runnable {
     }
 
     private void saveToTikli(List<ExamPaper> examPapers) {
-        
+        LOGGER.info("Tässä vaiheessa tallennettaisiin paperit Tikliin");
     }
 
     private void sendEmails(List<ExamPaper> examPapers) {

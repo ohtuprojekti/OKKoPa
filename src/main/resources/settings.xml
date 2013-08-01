@@ -36,7 +36,7 @@
      <!-- Exception handling -->
      <entry key="mail.deletemailswithoutattachment">false</entry>
      <entry key="pdfprocessor.saveunreadableattachments">true</entry>
-     <entry key="pdfprocessor.saveexamswithunreadableqrcodes">true</entry>
+     <entry key="pdfprocessor.saveunreadableqrcodes">true</entry>
 
      <entry key="mail.send.retryattemps">1</entry>
      <entry key="mail.send.retrydelayinminutes">1</entry>
