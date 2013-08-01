@@ -5,12 +5,9 @@
 package fi.helsinki.cs.okkopa.exampaper;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import org.apache.pdfbox.io.IOUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -25,7 +22,6 @@ public class ExamPaperFileContainer implements ExamPaperContainer {
         IOUtils.copy(examPaper.getPdfStream(), outputStream);
         outputStream.close();
         examPaper.getPdfStream().close();
- 
     }
       
     /**
