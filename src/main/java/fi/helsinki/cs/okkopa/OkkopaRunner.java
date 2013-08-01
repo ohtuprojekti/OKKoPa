@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.apache.commons.io.IOUtils;
+import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,10 @@ public class OkkopaRunner implements Runnable {
 
     private PDFProcessor pDFProcessor;
     private EmailRead server;
-    private ExamPaperSender sender;    
+    private ExamPaperSender sender;
     private Settings settings;
     private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
-    
+
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings) {
         this.server = server;
@@ -39,7 +40,7 @@ public class OkkopaRunner implements Runnable {
         try {
             // TEST
             server.connect();
-            
+
             while (true) {
                 ArrayList<InputStream> attachments = server.getNextAttachment();
                 if (attachments == null) {
@@ -47,27 +48,7 @@ public class OkkopaRunner implements Runnable {
                     break;
                 }
                 for (InputStream inputStream : attachments) {
-                    // PDF to exam papers
-                    List<ExamPaper> processPDF = processPdf(inputStream);
-                    if (processPDF.isEmpty()) {
-                        LOGGER.info("Tyhjä lista.");
-                        continue;
-                    }
-                    ExamPaper cover = processPDF.get(0);
-                    Integer id = null;
-                    try {
-                        id = getCoverPageCourseID(cover);
-                        processPDF.remove(0);
-                    } catch (NotFoundException ex) {
-                        LOGGER.info("Ei kansisivua.");
-                    }
-                    sendEmails(processPDF);
-                    if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
-                        saveToTikli(processPDF);
-                    
-                    }
-
-
+                    processAttachment(inputStream);
                     IOUtils.closeQuietly(inputStream);
                 }
             }
@@ -94,7 +75,6 @@ public class OkkopaRunner implements Runnable {
     }
 
     private void saveToTikli(List<ExamPaper> examPapers) {
-        
     }
 
     private void sendEmails(List<ExamPaper> examPapers) {
@@ -124,5 +104,53 @@ public class OkkopaRunner implements Runnable {
             }
         }
         return okPapers;
+    }
+
+    private void sendEmail(ExamPaper examPaper) {
+        try {
+            sender.send(examPaper);
+        } catch (MessagingException ex) {
+            System.out.println("virhe lähetyksessä" + ex);
+        }
+    }
+
+    private void processAttachment(InputStream inputStream) {
+        // PDF to exam papers
+        List<ExamPaper> processPDF = new ArrayList<>();
+        try {
+            processPDF = pDFProcessor.splitPDF(inputStream);
+        } catch (DocumentException ex) {
+            System.out.println(ex.getMessage());
+        }
+        for (ExamPaper examPaper : processPDF) {
+            try {
+                examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
+            } catch (PdfException ex) {
+                System.out.println(ex.getMessage());
+            }
+            try {
+                examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
+            } catch (NotFoundException ex) {
+                System.out.println(ex.getMessage());
+            }
+            sendEmail(examPaper);
+        }
+//                    if (processPDF.isEmpty()) {
+//                        LOGGER.info("Tyhjä lista.");
+//                        continue;
+//                    }
+//                    ExamPaper cover = processPDF.get(0);
+//                    Integer id = null;
+//                    try {
+//                        id = getCoverPageCourseID(cover);
+//                        processPDF.remove(0);
+//                    } catch (NotFoundException ex) {
+//                        LOGGER.info("Ei kansisivua.");
+//                    }
+//                    sendEmails(processPDF);
+//                    if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
+//                        saveToTikli(processPDF);
+//
+//                    }
     }
 }

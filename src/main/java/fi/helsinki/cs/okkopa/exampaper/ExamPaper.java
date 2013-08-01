@@ -11,8 +11,10 @@ import java.util.List;
  */
 public class ExamPaper {
 
+    private InputStream splitPdfStream;
     private String QRCodeString;
     private List<BufferedImage> pageImages;
+    private InputStream pdfStream;
 
     public String getQRCodeString() {
         return QRCodeString;
@@ -34,6 +36,22 @@ public class ExamPaper {
     }
     
     public InputStream getPdfStream() {
-        return null;
+        return pdfStream;
+    }
+
+    public void setPdfStream(InputStream pdfStream) {
+        this.pdfStream = pdfStream;
+    }
+
+    public InputStream getSplitPdfStream() {
+        return splitPdfStream;
+    }
+
+    public void setSplitPdfStream(InputStream splitPdf) {
+        this.splitPdfStream = splitPdf;
+    }
+
+    public void setPageImages(List<BufferedImage> pageImages) {
+        this.pageImages = pageImages;
     }
 }

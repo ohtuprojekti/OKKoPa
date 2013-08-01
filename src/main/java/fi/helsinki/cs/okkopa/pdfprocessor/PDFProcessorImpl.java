@@ -12,7 +12,10 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,8 +43,8 @@ public class PDFProcessorImpl implements PDFProcessor {
     @Override
     public List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException {
         try {
-            return splitter.splitPdfToExamPapersWithImages(pdfStream);
-        } catch (IOException | PdfException | DocumentException ex) {
+            return splitter.splitToExamPapersWithPDFStreams(pdfStream);
+        } catch (IOException | PdfException | DocumentException | COSVisitorException ex) {
             throw new DocumentException(ex.getMessage());
         }
     }
@@ -67,5 +70,18 @@ public class PDFProcessorImpl implements PDFProcessor {
             }
         }
         throw new NotFoundException(e.getMessage());
+    }
+
+    @Override
+    public List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException {
+        PdfDecoder pdf = new PdfDecoder(true);
+        pdf.openPdfFileFromInputStream(examPaper.getSplitPdfStream(), true);
+        pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
+
+        ArrayList<BufferedImage> pageImages = new ArrayList<>();
+        for (int i = 1; i <= pdf.getPageCount(); i++) {
+            pageImages.add(pdf.getPageAsImage(i));
+        }
+        return pageImages;
     }
 }
