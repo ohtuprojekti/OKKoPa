@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Manages and reads XML files.
+ */
+
 public class Settings {
 
     public Settings(String fileName) throws FileNotFoundException, IOException {
@@ -15,8 +19,7 @@ public class Settings {
 
     public Properties getSettings() {
         return this.settings;
-    }
-    
+    }   
     
     private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
       Properties currentProps = new Properties();
