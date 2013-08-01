@@ -58,6 +58,7 @@ public class OkkopaRunner implements Runnable {
                     try {
                         id = getCoverPageCourseID(cover);
                         processPDF.remove(0);
+                        LOGGER.info("Löytyi kansisivu, id: "+id);
                     } catch (NotFoundException ex) {
                         LOGGER.info("Ei kansisivua.");
                     }
@@ -73,13 +74,15 @@ public class OkkopaRunner implements Runnable {
             }
         } catch (NoSuchProviderException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
+            
         } catch (MessagingException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
+            
         } catch (IOException ex) {
             // TODO
-            LOGGER.error(ex.toString());
+            exceptionHandler(ex);
         } finally {
             server.close();
         }
@@ -94,7 +97,7 @@ public class OkkopaRunner implements Runnable {
     }
 
     private void saveToTikli(List<ExamPaper> examPapers) {
-        
+        LOGGER.info("Tässä vaiheessa tallennettaisiin paperit Tikliin");
     }
 
     private void sendEmails(List<ExamPaper> examPapers) {
@@ -124,5 +127,13 @@ public class OkkopaRunner implements Runnable {
             }
         }
         return okPapers;
+    }
+    
+    private void exceptionHandler(Exception ex) {
+        //Currently just logging exceptions. Should exception handling be in its own class?
+            if (settings.getSettings().getProperty("logger.showcompletestack").equals("true"))
+                LOGGER.error(ex.toString(),ex);
+            else
+                LOGGER.error(ex.toString());
     }
 }
