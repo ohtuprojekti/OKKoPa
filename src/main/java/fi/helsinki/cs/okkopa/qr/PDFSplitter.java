@@ -41,10 +41,10 @@ public class PDFSplitter {
         for (int i = 0; i < pdf.getPageCount() / 2; i++) {
             ExamPaper examPaper = new ExamPaper();
             
-            examPaper.setPageImage(pdf.getPageAsImage(2 * i));
-            examPaper.setPageImage(pdf.getPageAsImage(2 * i + 1));
+            examPaper.addPageImage(pdf.getPageAsImage(2 * i));
+            examPaper.addPageImage(pdf.getPageAsImage(2 * i + 1));
             
-            examPaper.setPdfStream(pdfStream);
+            //examPaper.setPdfStream(pdfStream);
             examPapers.add(examPaper);
         }
         return examPapers;
