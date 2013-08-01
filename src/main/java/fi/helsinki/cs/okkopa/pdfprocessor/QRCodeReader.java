@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
