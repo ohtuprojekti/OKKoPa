@@ -5,13 +5,13 @@ import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.logger.OKKoPaLoggerTest;
 import fi.helsinki.cs.okkopa.qr.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.apache.pdfbox.io.IOUtils;
@@ -25,7 +25,8 @@ public class OkkopaRunner implements Runnable {
     private EmailRead server;
     private ExamPaperSender sender;    
     private Settings settings;
-
+    private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
+    
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings) {
         this.server = server;
@@ -39,17 +40,18 @@ public class OkkopaRunner implements Runnable {
         try {
             // TEST
             server.connect();
+            
             while (true) {
                 ArrayList<InputStream> attachments = server.getNextAttachment();
                 if (attachments == null) {
-                    System.out.println("Ei lisää viestejä.");
+                    LOGGER.info("Ei uusia viestejä.");
                     break;
                 }
                 for (InputStream inputStream : attachments) {
                     // PDF to exam papers
                     List<ExamPaper> processPDF = processPdf(inputStream);
                     if (processPDF.isEmpty()) {
-                        System.out.println("tyhjä lista...");
+                        LOGGER.info("Tyhjä lista.");
                         continue;
                     }
                     ExamPaper cover = processPDF.get(0);
@@ -58,7 +60,7 @@ public class OkkopaRunner implements Runnable {
                         id = getCoverPageCourseID(cover);
                         processPDF.remove(0);
                     } catch (NotFoundException ex) {
-                        System.out.println("Ei kansisivua.");
+                        LOGGER.info("Ei kansisivua.");
                     }
                     sendEmails(processPDF);
                     if (id != null && settings.getSettings().getProperty("tikli.enable").equals("true")) {
@@ -72,13 +74,13 @@ public class OkkopaRunner implements Runnable {
             }
         } catch (NoSuchProviderException ex) {
             // TODO
-            System.out.println("ei provideria");
+            LOGGER.error(ex.toString());
         } catch (MessagingException ex) {
             // TODO
-            System.out.println("messaging ex " + ex);
+            LOGGER.error(ex.toString());
         } catch (IOException ex) {
             // TODO
-            System.out.println("io ex");
+            LOGGER.error(ex.toString());
         } finally {
             server.close();
         }
