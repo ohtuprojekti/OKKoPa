@@ -7,11 +7,7 @@ package fi.helsinki.cs.okkopa.pdfprocessor;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.jpedal.exception.PdfException;
 import org.junit.Before;
@@ -33,6 +29,11 @@ public class PDFProcessingSpeedTest {
         reader = new QRCodeReader();
         pdfProcessor = new PDFProcessorImpl(splitter, reader);
     }
+    private static final long MEGABYTE = 1024L * 1024L;
+
+    public static long bytesToMegabytes(long bytes) {
+        return bytes / MEGABYTE;
+    }
 
     @Test
     public void testAllSpeeds() throws DocumentException, PdfException, NotFoundException {
@@ -41,14 +42,21 @@ public class PDFProcessingSpeedTest {
         List<ExamPaper> examPapers = pdfProcessor.splitPDF(file);
         splittingTime = System.currentTimeMillis() - splittingTime;
         double readingTime = System.currentTimeMillis();
-        for (ExamPaper examPaper : examPapers) {
+        int paperAmount = examPapers.size();
+        while (!examPapers.isEmpty()) {
+            ExamPaper examPaper = examPapers.remove(0);
             examPaper.setPageImages(pdfProcessor.getPageImages(examPaper));
             examPaper.setQRCodeString(pdfProcessor.readQRCode(examPaper));
+            Runtime runtime = Runtime.getRuntime();
+            // SLOW BUT LOW MEMORY
+//            runtime.gc();
+            long memory = runtime.totalMemory() - runtime.freeMemory();
+            System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
         }
         readingTime = System.currentTimeMillis() - readingTime;
 
-        System.out.println("It took " + splittingTime + " to split " + examPapers.size() + "ExamPapers");
-        System.out.println("It took " + readingTime + " to read " + examPapers.size() + "ExamPapers");
+        System.out.println("It took " + splittingTime + " to split " + paperAmount + " ExamPapers");
+        System.out.println("It took " + readingTime + " to read " + paperAmount + " ExamPapers");
         System.out.println("It took a total of " + (splittingTime + readingTime) + " milliseconds");
 
         //System.out.println("It took "+(System.currentTimeMillis()-startTime) + " to split and read "+examPapers.size() + " exam papers.");
