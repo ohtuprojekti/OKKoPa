@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
