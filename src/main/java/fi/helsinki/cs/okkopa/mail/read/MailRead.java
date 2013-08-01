@@ -69,6 +69,7 @@ public class MailRead implements EmailRead {
         return null;
     }
     
+    @Override
     public void deleteOldMessages() throws MessagingException {
         delete = new IMAPdelete(server);
         delete.deleteOldMessages(howManyDaysOldAreToBeDeleted);
