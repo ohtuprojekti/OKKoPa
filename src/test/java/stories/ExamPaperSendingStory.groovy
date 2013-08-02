@@ -28,7 +28,7 @@ scenario "Sending an exam paper and then receiving an email", {
         setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
         greenMail = new GreenMail(setup); //uses test ports by default
         greenMail.start();
-        settings = new Settings("/smtptestsettings.xml");
+        settings = new Settings("smtptestsettings.xml");
         (new Security()).setProperty("ssl.SocketFactory.provider", (new DummySSLSocketFactory()).class.getName());
         
         PDFSplitter splitter = new PDFSplitter();

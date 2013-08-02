@@ -35,7 +35,7 @@ public class SettingsTest {
     @Before
     public void setUp() throws FileNotFoundException, IOException {     
         //before each test
-        testSettings = new Settings("/test.xml");
+        testSettings = new Settings("test.xml");
     }
     
     @After

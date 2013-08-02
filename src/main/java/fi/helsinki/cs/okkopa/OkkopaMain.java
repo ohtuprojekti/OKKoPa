@@ -12,9 +12,10 @@ public class OkkopaMain {
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");
 
-        ScheduledExecutorService scheduler =
-                Executors.newScheduledThreadPool(1);
+//        ScheduledExecutorService scheduler =
+//                Executors.newScheduledThreadPool(1);
         OkkopaRunner runner = (OkkopaRunner) ctx.getBean("okkopaRunner");
-        scheduler.scheduleWithFixedDelay(runner, 0, 1, TimeUnit.MINUTES);
+        runner.run();
+//        scheduler.scheduleWithFixedDelay(runner, 0, 1, TimeUnit.MINUTES);
     }
 }

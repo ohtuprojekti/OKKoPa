@@ -35,7 +35,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         String sender = properties.getProperty("mail.message.replyto");
         String subject = properties.getProperty("mail.message.topic");
         String text = properties.getProperty("mail.message.body");
-        String attachmentName = properties.getProperty("mail.attachmentname");
+        String attachmentName = properties.getProperty("mail.message.attachmentname");
         if (!attachmentName.endsWith(".pdf")) {
             attachmentName += ".pdf";
         }

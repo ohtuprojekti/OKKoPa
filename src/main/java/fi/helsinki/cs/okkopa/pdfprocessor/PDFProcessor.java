@@ -3,8 +3,10 @@ package fi.helsinki.cs.okkopa.pdfprocessor;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.List;
+import org.jpedal.exception.PdfException;
 
 public interface PDFProcessor {
 
@@ -27,4 +29,5 @@ public interface PDFProcessor {
      */
     List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException;
     
+    List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException;
 }
