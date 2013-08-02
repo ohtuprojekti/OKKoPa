@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import org.apache.commons.io.IOUtils;
 import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +38,19 @@ public class OkkopaRunner implements Runnable {
     @Override
     public void run() {
         try {
+            LOGGER.debug("kirjaudutaan sisään");
             server.connect();
+            LOGGER.debug("kirjauduttu sisään");
             while (true) {
-                ArrayList<InputStream> attachments = server.getNextAttachment();
+                LOGGER.debug("Haetan vanhimman viestin liitteet");
+                ArrayList<InputStream> attachments = server.getNextMessagesAttachments();
+                LOGGER.debug("Vanhimman viestin liitteet haettu");
                 if (attachments == null) {
                     LOGGER.info("Ei uusia viestejä.");
                     break;
                 }
                 for (InputStream inputStream : attachments) {
+                    LOGGER.debug("käsitellään liitettä");
                     processAttachment(inputStream);
                     IOUtils.closeQuietly(inputStream);
                 }
@@ -65,34 +70,48 @@ public class OkkopaRunner implements Runnable {
             logException(ex);
             // nothing to process, return
             return;
+        } 
+        ExamPaper courseInfo = examPapers.get(0);
+        try {
+            int courseID = getCourseInfo(courseInfo);
+            examPapers.remove(courseInfo);
+        } catch (NotFoundException ex) {
+            logException(ex);
+            //LOGGER.log(Level.SEVERE, null, ex);
         }
-        ExamPaper courseInfo = examPapers.remove(0);
+        
         while(!examPapers.isEmpty()) {
             ExamPaper examPaper = examPapers.remove(0);
-            try {
-                examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
-            } catch (PdfException ex) {
-                logException(ex);
-                continue;
-            }
-            try {
-                examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
-            } catch (NotFoundException ex) {
-                logException(ex);
-                continue;
-            }
-            sendEmail(examPaper);
-            saveToTikli(examPaper);
-            // LOW MEMORY USE MODE
-            //Runtime runtime = Runtime.getRuntime();
-            // runtime.gc();
+            processExamPaper(examPaper);
         }
     }
+    
+    
+    private void processExamPaper(ExamPaper examPaper) {
+        try {
+            examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
+        } catch (PdfException ex) {
+            logException(ex);
+            return;
+        }
+        try {
+            examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
+        } catch (NotFoundException ex) {
+            logException(ex);
+            return;
+        }
+        sendEmail(examPaper);
+        saveToTikli(examPaper);
+        LOGGER.debug("ExamPaper lähetetty ja tallennettu tikliin");
+        return;
+    }
+    
 
     public int getCourseInfo(ExamPaper examPaper) throws NotFoundException {
         try {
+            examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
             return Integer.parseInt(examPaper.getQRCodeString());
-        } catch (NumberFormatException ex) {
+        } catch (PdfException | NumberFormatException ex) {
             throw new NotFoundException("Course ID not found.");
         }
     }

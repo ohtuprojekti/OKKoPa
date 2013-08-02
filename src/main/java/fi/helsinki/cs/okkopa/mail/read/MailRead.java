@@ -50,7 +50,7 @@ public class MailRead implements EmailRead {
     }
 
     @Override
-    public ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException {
+    public ArrayList<InputStream> getNextMessagesAttachments() throws MessagingException, IOException {
         do {
             IMAPmessage = IMAPfolder.getNextmessage(toBox);
 
