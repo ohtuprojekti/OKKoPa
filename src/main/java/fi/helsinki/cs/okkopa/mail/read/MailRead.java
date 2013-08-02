@@ -18,10 +18,11 @@ public class MailRead implements EmailRead {
     private String username;
     private String password;
     private int port;
-    private int howManyDaysOldAreToBeDeleted;
+    private int ProcessedHowManyDaysOldAreToBeDeleted;
     private IMAPmessage IMAPmessage;
     private ArrayList<InputStream> attachments;
     private IMAPdelete delete;
+    private String processedFolderToEmpty;
 
     @Autowired
     public MailRead(Settings settings) {
@@ -29,7 +30,8 @@ public class MailRead implements EmailRead {
         username = settings.getSettings().getProperty("mail.imap.user");
         password = settings.getSettings().getProperty("mail.imap.password");
         port = Integer.parseInt(settings.getSettings().getProperty("mail.imap.port"));
-        howManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getSettings().getProperty("mail.imap.messages.keepdays"));
+        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getSettings().getProperty("mail.imap.processed.keepdays"));
+        processedFolderToEmpty = settings.getSettings().getProperty("mail.imap.processed.name");
     }
 
     @Override
@@ -50,7 +52,7 @@ public class MailRead implements EmailRead {
     }
 
     @Override
-    public ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException {
+    public ArrayList<InputStream> getNextMessagesAttachments() throws MessagingException, IOException {
         do {
             IMAPmessage = IMAPfolder.getNextmessage(toBox);
 
@@ -72,6 +74,6 @@ public class MailRead implements EmailRead {
     @Override
     public void deleteOldMessages() throws MessagingException {
         delete = new IMAPdelete(server);
-        delete.deleteOldMessages(howManyDaysOldAreToBeDeleted);
+        delete.deleteOldMessages(ProcessedHowManyDaysOldAreToBeDeleted, processedFolderToEmpty);
     }
 }

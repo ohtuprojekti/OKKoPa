@@ -32,9 +32,9 @@ public class IMAPdelete {
      * @param howManyDaysOldAreToBeDeleted any older messages are deleted.
      * @throws MessagingException
      */
-    public void deleteOldMessages(int howManyDaysOldAreToBeDeleted) throws MessagingException {
+    public void deleteOldMessages(int howManyDaysOldAreToBeDeleted, String folderToEmpty) throws MessagingException {
         
-        this.folder = new IMAPfolder(server, "processed");
+        this.folder = new IMAPfolder(server, folderToEmpty);
 
         for (message = this.folder.getNextmessage(null); howManyDaysOldAreToBeDeleted <= this.HowOld(message); i++) {
             IMAPdelete.deleteMessage(message.getIMAPMessage());
