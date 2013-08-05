@@ -82,4 +82,8 @@ public class IMAPmessage {
     public Date getTime() throws MessagingException {
         return this.message.getReceivedDate();
     }
+    
+    public Message getIMAPMessage() {
+        return message;
+    }
 }

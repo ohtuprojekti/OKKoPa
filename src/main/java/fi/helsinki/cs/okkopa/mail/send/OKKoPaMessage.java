@@ -1,7 +1,5 @@
 package fi.helsinki.cs.okkopa.mail.send;
 
-import fi.helsinki.cs.okkopa.Settings;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -19,10 +17,11 @@ public class OKKoPaMessage {
     Multipart body;
     Properties properties;
     private static final int VIESTI_INDEX = 0;
-    
+    private static final String PDF_MIME_NAME = "application/pdf";
     String subject;
     String receiver;
     String sender;
+    private Session session;
     
     
     /**
@@ -81,8 +80,16 @@ public class OKKoPaMessage {
      * @return Generated session
      */
     protected Session generateSession() {
-        return Session.getInstance(properties);
-        
+        if (properties.getProperty("mail.smtp.auth").equals("true")) {
+            return Session.getInstance(properties, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(properties.getProperty("mail.smtp.user"), 
+                            properties.getProperty("mail.smtp.password"));
+                }
+            });
+        } else {
+            return Session.getInstance(properties);
+        }    
     }
     
     /**
@@ -92,7 +99,7 @@ public class OKKoPaMessage {
      */
     private final MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
-        Session session = generateSession();
+        session = generateSession();
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
         
@@ -159,19 +166,19 @@ public class OKKoPaMessage {
      * @throws MessagingException 
      */
     public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
-        addAttachment(is, "application/pdf", name);
+        addAttachment(is, PDF_MIME_NAME, name);
     }
     
     
-    //testiä
-    public static void main(String[] args) throws MessagingException {
-        Properties props = Settings.SMTPPROPS;
-        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
-        msg.setText("abc");
-        msg.setText("yksi viesti");
-        msg.setSubject("testi123");
-        //msg.addAttachment("liite.txt");
-        msg.send();
-    }
+//    //testiä
+//    public static void main(String[] args) throws MessagingException {
+//        Properties props = Settings.SMTPPROPS;
+//        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
+//        msg.setText("abc");
+//        msg.setText("yksi viesti");
+//        msg.setSubject("testi123");
+//        //msg.addAttachment("liite.txt");
+//        msg.send();
+//    }
     
 }

@@ -61,13 +61,15 @@ public class IMAPfolder {
     public IMAPmessage getNextmessage(String whereToMoveAfterProcessed) throws MessagingException {
         getMessagesIfNotGot();
 
-        if (folder.getMessageCount() > index) { 
+        if (folder.getMessageCount() > index) {
             msg = messages[index];
-            
+
             index++;
-            
-            this.copy.copyMessage(msg, this.folderName, whereToMoveAfterProcessed);
-            
+
+            if (whereToMoveAfterProcessed != null) {
+                this.copy.copyMessage(msg, this.folderName, whereToMoveAfterProcessed);
+            }
+
             return new IMAPmessage(msg);
         } else {
             return null;
@@ -90,7 +92,7 @@ public class IMAPfolder {
                 try {
                     return o1.getReceivedDate().compareTo(o2.getReceivedDate());
                 } catch (MessagingException ex) {
-                    Logger.getLogger(IMAPfolder.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("some error with comparing dates");
                 }
                 return 0;
             }
@@ -107,7 +109,7 @@ public class IMAPfolder {
 
     /**
      * Closes this folder.
-     * 
+     *
      * @throws MessagingException
      */
     public void close() throws MessagingException {

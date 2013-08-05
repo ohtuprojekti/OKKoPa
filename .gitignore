@@ -1,2 +1,3 @@
-target
-src/main/resources/pwdsettings.xml
+/target
+log.out
+rollinglog.out

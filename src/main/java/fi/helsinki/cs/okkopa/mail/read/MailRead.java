@@ -4,28 +4,39 @@ import fi.helsinki.cs.okkopa.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+@Component
 public class MailRead implements EmailRead {
 
     private IMAPserver server;
     private IMAPfolder IMAPfolder;
     private String toBox = "processed";
-    private String IMAPadress = Settings.IMAPPROPS.getProperty("mail.imap.host");
-    private String username = Settings.IMAPPROPS.getProperty("mail.imap.user");
-    private String password = Settings.PWDPROPS.getProperty("imapPassword");
-    private int port = Integer.parseInt(Settings.IMAPPROPS.getProperty("mail.imap.port"));
+    private String IMAPaddress;
+    private String username;
+    private String password;
+    private int port;
+    private int ProcessedHowManyDaysOldAreToBeDeleted;
     private IMAPmessage IMAPmessage;
     private ArrayList<InputStream> attachments;
+    private IMAPdelete delete;
+    private String processedFolderToEmpty;
 
-    public MailRead() {
+    @Autowired
+    public MailRead(Settings settings) {
+        IMAPaddress = settings.getSettings().getProperty("mail.imap.host");
+        username = settings.getSettings().getProperty("mail.imap.user");
+        password = settings.getSettings().getProperty("mail.imap.password");
+        port = Integer.parseInt(settings.getSettings().getProperty("mail.imap.port"));
+        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getSettings().getProperty("mail.imap.processed.keepdays"));
+        processedFolderToEmpty = settings.getSettings().getProperty("mail.imap.processed.name");
     }
 
     @Override
     public void connect() throws NoSuchProviderException, MessagingException {
-        server = new IMAPserver(IMAPadress, username, password, port);
+        server = new IMAPserver(IMAPaddress, username, password, port);
         server.login();
 
         IMAPfolder = new IMAPfolder(server, "inbox");
@@ -41,7 +52,7 @@ public class MailRead implements EmailRead {
     }
 
     @Override
-    public ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException {
+    public ArrayList<InputStream> getNextMessagesAttachments() throws MessagingException, IOException {
         do {
             IMAPmessage = IMAPfolder.getNextmessage(toBox);
 
@@ -58,5 +69,11 @@ public class MailRead implements EmailRead {
         } while (IMAPmessage != null);
 
         return null;
+    }
+    
+    @Override
+    public void deleteOldMessages() throws MessagingException {
+        delete = new IMAPdelete(server);
+        delete.deleteOldMessages(ProcessedHowManyDaysOldAreToBeDeleted, processedFolderToEmpty);
     }
 }

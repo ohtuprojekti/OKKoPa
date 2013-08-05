@@ -28,6 +28,12 @@ public interface EmailRead {
      * @throws MessagingException
      * @throws IOException
      */
-    ArrayList<InputStream> getNextAttachment() throws MessagingException, IOException;
+    ArrayList<InputStream> getNextMessagesAttachments() throws MessagingException, IOException;
     
+    /**
+     * Deletes old messages from processed folder.
+     * How old messages are specified in settings file.
+     * @throws MessagingException
+     */
+    void deleteOldMessages() throws MessagingException;
 }
