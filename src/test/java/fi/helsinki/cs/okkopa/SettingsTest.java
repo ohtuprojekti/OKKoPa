@@ -51,7 +51,7 @@ public class SettingsTest {
     
     @Test 
     public void testSettingContainsValues() {
-       assertTrue("test.xml has no content, should contain 11 key value pairs.",testSettings.getSettings().size() == 11);
+       assertTrue("test.xml has no content, should contain 11 key value pairs.",testSettings.getSettings().size() == 12);
     }
 
 

@@ -44,11 +44,11 @@
         <appender-ref ref="default.console" />
     </logger>    
     <!--Root-->
-    <!--<root>
+    <root>
         <priority value ="info" />
-        <appender-ref ref="default.console" />
-        <appender-ref ref="default.file" />
+        <!--<appender-ref ref="default.console" />
+        <appender-ref ref="default.file" />-->
         <appender-ref ref="rolling.file"/>
-    </root>-->
+    </root>
 
 </log4j:configuration>  
