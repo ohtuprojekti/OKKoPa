@@ -33,7 +33,7 @@ public class OkkopaDatabase {
         TableUtils.createTableIfNotExists(connectionSource, QRCode.class);
     }
 
-    String getUserID(String qrcodeString) throws SQLException, NotFoundException {
+    public String getUserID(String qrcodeString) throws SQLException, NotFoundException {
         QRCode qrCode = qrcodeDao.queryForId(qrcodeString);
         if (qrCode == null)
             throw new NotFoundException();
