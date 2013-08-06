@@ -5,7 +5,17 @@
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.exception.DocumentException;
+import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.util.Splitter;
+import org.jpedal.exception.PdfException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +28,9 @@ import static org.junit.Assert.*;
  * @author tirna
  */
 public class SaveTest {
+         Save save ;
+        PDFSplitter splitter ;
+        List<ExamPaper> papers ;
     
     public SaveTest() {
     }
@@ -31,7 +44,10 @@ public class SaveTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        save = new Save();
+        splitter = new PDFSplitter();
+        papers = new ArrayList<>();
     }
     
     @After
@@ -41,14 +57,7 @@ public class SaveTest {
     /**
      * Test of saveToFile method, of class Save.
      */
-    @Test
-    public void testSaveToFile() throws IOException {
-        System.out.println("saveToFile");
-        Save instance = new Save();
-        instance.saveToFile();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+   
 
     /**
      * Test of delete method, of class Save.
@@ -56,10 +65,8 @@ public class SaveTest {
     @Test
     public void testDelete() throws IOException {
         System.out.println("delete");
-        Save instance = new Save();
-        instance.delete();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        save.delete();
+       
     }
 
     /**
@@ -68,10 +75,8 @@ public class SaveTest {
     @Test
     public void testList() throws IOException {
         System.out.println("list");
-        Save instance = new Save();
-        instance.list();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        save.list();
+       
     }
 
     /**
@@ -79,12 +84,24 @@ public class SaveTest {
      */
     @Test
     public void testSaveExamPaper() throws IOException {
-        System.out.println("saveExamPaper");
-        ExamPaper examPaper = null;
-        Save instance = new Save();
-        instance.saveExamPaper(examPaper);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        try {
+            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
+        } catch (DocumentException ex) {
+            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PdfException ex) {
+            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (COSVisitorException ex) {
+            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        save.saveExamPaper(papers.get(0));
+        Save save2 = new Save();
+        save2.saveExamPaper(papers.get(1));
+        Save save3 = new Save();
+        save3.saveExamPaper(papers.get(5));
+        assertTrue(!save.folderName.isEmpty());
+        
+
     }
 
   

@@ -3,13 +3,11 @@ package fi.helsinki.cs.okkopa.mail.writeToDisk;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -31,7 +29,7 @@ public class Save implements Saver {
     public Save() throws IOException {
         folderName();
         File folder = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName);
-        this.fileName = ""+mydate.get(Calendar.HOUR_OF_DAY)+":"+mydate.get(Calendar.MINUTE)+":"+mydate.get(Calendar.SECOND)+":"+mydate.get(Calendar.MILLISECOND);
+        this.fileName = "" + mydate.get(Calendar.HOUR_OF_DAY) + ":" + mydate.get(Calendar.MINUTE) + ":" + mydate.get(Calendar.SECOND) + ":" + mydate.get(Calendar.MILLISECOND);
         if (!folder.exists()) {
             folder.mkdir();
         }
@@ -39,8 +37,6 @@ public class Save implements Saver {
         openFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/src/test/resources/pdf/all.pdf");
 
     }
-
-
 
     @Override
     public void delete() {
@@ -82,10 +78,6 @@ public class Save implements Saver {
         }
     }
 
-    private File getResourceFile(String name) throws URISyntaxException {
-        return new File(getClass().getResource(folderName + "/" + name).toURI());
-    }
-
     @Override
     public void saveExamPaper(ExamPaper examPaper) {
 
@@ -122,7 +114,7 @@ public class Save implements Saver {
     private String folderName() {
         mydate = Calendar.getInstance();
         mydate.setTimeInMillis(System.currentTimeMillis());
-        folderName =mydate.get(Calendar.DAY_OF_MONTH) + "." + mydate.get(Calendar.MONTH) + "." + mydate.get(Calendar.YEAR);
+        folderName = mydate.get(Calendar.DAY_OF_MONTH) + "." + mydate.get(Calendar.MONTH) + "." + mydate.get(Calendar.YEAR);
         return folderName;
     }
 
@@ -148,6 +140,6 @@ public class Save implements Saver {
 
         //save.saveToFile();
         // save.delete();
-         save.list();
+        save.list();
     }
 }
