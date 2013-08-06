@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface Saver {
 
-    void saveToFile();
+   
     void saveExamPaper(ExamPaper examPaper);
 
     void delete();
