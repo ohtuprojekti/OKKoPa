@@ -34,7 +34,7 @@ public class Save implements Saver {
         this.fileName = "" + System.currentTimeMillis();
         File folder = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/"+ folderName);
         folder.mkdir();
-        //saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/fail/exm.pdf");
+//        saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/"+ folderName+"/"+fileName+".pdf");
         openFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/src/test/resources/pdf/all.pdf");
         
     }
@@ -103,15 +103,15 @@ public class Save implements Saver {
 
     @Override
     public void saveExamPaper(ExamPaper examPaper) {
-         File savefile;
+        
      
-            //savefile = getResourceFile(folderName+"/"+System.currentTimeMillis()+".pdf");
-            savefile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa "+ folderName + fileName);
+           saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/"+ folderName+"/"+fileName+".pdf");
+          // saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa "+ folderName + fileName);
        
         
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(savefile);
+            outputStream = new FileOutputStream(saveFile);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,7 +148,7 @@ public class Save implements Saver {
         }
         save.saveExamPaper(papers.get(0));
          //save.saveToFile();
-       // save.delete();
+        save.delete();
         save.list();
     }
 }
