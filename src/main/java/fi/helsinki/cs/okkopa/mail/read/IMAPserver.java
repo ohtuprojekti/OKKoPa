@@ -57,19 +57,16 @@ public class IMAPserver {
 
         settingsForIMAPSSL(IMAPport);
 
-        folders = new HashMap<String, IMAPFolder>();
+        folders = new HashMap<>();
     }
 
     private void settingsForIMAPSSL(int IMAPport) throws NoSuchProviderException, MessagingException {
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
-        
         if (IMAPport >= 0) {
             props.setProperty("mail.imaps.port", Integer.toString(IMAPport));
         }
-
         Session session = Session.getDefaultInstance(props, null);
-
         store = session.getStore("imaps");
     }
 
