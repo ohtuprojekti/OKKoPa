@@ -5,6 +5,7 @@
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class SaveTest {
      * Test of saveToFile method, of class Save.
      */
     @Test
-    public void testSaveToFile() {
+    public void testSaveToFile() throws IOException {
         System.out.println("saveToFile");
         Save instance = new Save();
         instance.saveToFile();
@@ -53,7 +54,7 @@ public class SaveTest {
      * Test of delete method, of class Save.
      */
     @Test
-    public void testDelete() {
+    public void testDelete() throws IOException {
         System.out.println("delete");
         Save instance = new Save();
         instance.delete();
@@ -65,7 +66,7 @@ public class SaveTest {
      * Test of list method, of class Save.
      */
     @Test
-    public void testList() {
+    public void testList() throws IOException {
         System.out.println("list");
         Save instance = new Save();
         instance.list();
@@ -77,7 +78,7 @@ public class SaveTest {
      * Test of saveExamPaper method, of class Save.
      */
     @Test
-    public void testSaveExamPaper() {
+    public void testSaveExamPaper() throws IOException {
         System.out.println("saveExamPaper");
         ExamPaper examPaper = null;
         Save instance = new Save();
@@ -86,15 +87,5 @@ public class SaveTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of main method, of class Save.
-     */
-    @Test
-    public void testMain() throws Exception {
-        System.out.println("main");
-        String[] args = null;
-        Save.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  
 }
