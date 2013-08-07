@@ -48,6 +48,7 @@ public class Save implements Saver {
      */
     @Override
     public void delete() {
+        saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/" + fileName + ".pdf");
         if (saveFile.delete()) {
             System.out.println(saveFile.getName() + " is deleted!");
         } else {

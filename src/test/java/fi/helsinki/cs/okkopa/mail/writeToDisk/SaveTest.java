@@ -86,6 +86,10 @@ public class SaveTest {
     @Test
     public void testList() throws IOException {
         System.out.println("list");
+        assertEquals(save.list().get(0), "14:27:10:306.pdf");
+        assertEquals(save.list().get(1), "14:27:10:619.pdf");
+        assertEquals(save.list().get(2), "14:27:10:656.pdf");
+        
         
 
 
