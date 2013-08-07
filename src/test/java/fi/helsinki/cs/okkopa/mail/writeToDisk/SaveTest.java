@@ -77,7 +77,7 @@ public class SaveTest {
         save.delete();
         save.delete();
         save.delete();
-        assertTrue(!size);
+        assertTrue(size);
     }
 
     /**
@@ -86,7 +86,7 @@ public class SaveTest {
     @Test
     public void testList() throws IOException {
         System.out.println("list");
-        save.list();
+        
 
 
     }

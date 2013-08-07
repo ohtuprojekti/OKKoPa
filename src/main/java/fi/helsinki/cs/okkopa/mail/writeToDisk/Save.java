@@ -20,8 +20,8 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.jpedal.exception.PdfException;
 
 /**
- *
- *
+ *Create a folder per day(if we run it everyday) and save files to folder. lists  all files by date
+ *and delete file.
  */
 public class Save implements Saver {
 
@@ -43,6 +43,9 @@ public class Save implements Saver {
 
     }
 
+    /**
+     *delete the youngest file.
+     */
     @Override
     public void delete() {
         if (saveFile.delete()) {
@@ -54,6 +57,11 @@ public class Save implements Saver {
 
     }
 
+    /**
+     * Sort all of files in folder by lastModified date..
+     *
+     * @return sorted list of files in folder
+     */
     @Override
     public ArrayList list() {
         File f = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/");
@@ -88,6 +96,11 @@ public class Save implements Saver {
       
     }
 
+    /**
+     *Save ExamPapers to local disk. 
+     *
+     * @param examPaper,
+     */
     @Override
     public void saveExamPaper(ExamPaper examPaper) {
 
