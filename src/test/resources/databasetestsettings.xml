@@ -36,7 +36,6 @@
     <!-- Other settings -->     
      <entry key="tikli.enable">true</entry>
      <entry key="main.minutesbetweenruns">1</entry>
-     <entry key="reference.anonymous.size">9</entry>
 
      <!-- Exception handling -->
      <entry key="mail.deletemailswithoutattachment">false</entry>

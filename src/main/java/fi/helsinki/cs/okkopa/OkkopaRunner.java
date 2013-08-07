@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa;
 
+import fi.helsinki.cs.okkopa.database.OkkopaDatabase;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
@@ -8,6 +9,7 @@ import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,13 +28,15 @@ public class OkkopaRunner implements Runnable {
     private ExamPaperSender sender;
     private Settings settings;
     private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
+    private OkkopaDatabase okkopaDatabase;
 
     @Autowired
-    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings) {
+    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings, OkkopaDatabase okkopaDatabase) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
         this.settings = settings;
+        this.okkopaDatabase = okkopaDatabase;
     }
 
     @Override
@@ -97,9 +101,25 @@ public class OkkopaRunner implements Runnable {
         try {
             examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
         } catch (NotFoundException ex) {
+            //Todo: pdf:n tallennus
             logException(ex);
             return;
         }
+        
+        if (examPaper.getQRCodeString().isEmpty()) {
+            //Todo: pdf:n tallennus
+            return;           
+        }
+        try {
+            examPaper.setUserid(fetchUserId(examPaper.getQRCodeString()));
+        } catch (SQLException | NotFoundException ex) {
+            //Todo: rekisteröitymättömien käsittely
+        }
+        
+        //Todo: tähän sähköpostiosoitteen resolvaus / muodostaminen
+        examPaper.setEmail(fetchEmail(examPaper.getUserid()));
+        
+
         sendEmail(examPaper);
         saveToTikli(examPaper);
         LOGGER.debug("ExamPaper lähetetty ja tallennettu tikliin");
@@ -135,5 +155,17 @@ public class OkkopaRunner implements Runnable {
         } else {
             LOGGER.error(ex.toString());
         }
+    }
+    
+    private String fetchUserId(String qrcode) throws SQLException, NotFoundException {     
+        if (Character.isDigit(qrcode.charAt(0)))
+            return okkopaDatabase.getUserID(qrcode); 
+        return qrcode;
+    }
+    
+    private String fetchEmail(String userId) {
+        //todo: tänne magia, jolla käyttäjätunnus muutetaan sähköpostiosoitteeksi
+        //esim: return userId+"@cs.helsinki.fi";
+        return "okkopa2.2013@gmail.com";
     }
 }
