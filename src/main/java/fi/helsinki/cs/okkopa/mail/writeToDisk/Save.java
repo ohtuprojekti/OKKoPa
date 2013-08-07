@@ -1,24 +1,16 @@
-package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
-import fi.helsinki.cs.okkopa.exception.DocumentException;
-import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
+package fi.helsinki.cs.okkopa.mail.writeToDisk;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.jpedal.exception.PdfException;
 
 /**
  *Create a folder per day(if we run it everyday) and save files to folder. lists  all files by date
@@ -68,9 +60,9 @@ public class Save implements Saver {
     public ArrayList<File> list() {
         File f = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/");
         File[] files = f.listFiles();
-        Arrays.sort(files, new Comparator() {
+        Arrays.sort(files, new Comparator<File>() {
             @Override
-            public int compare(Object o1, Object o2) {
+            public int compare(File o1, File o2) {
 
                 if (((File) o2).lastModified() > ((File) o1).lastModified()) {
                     return -1;
@@ -102,13 +94,6 @@ public class Save implements Saver {
      */
     @Override
     public void saveExamPaper(ExamPaper examPaper) {
-
-
-//           saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/"+ folderName+"/"+fileName+".pdf");
-
-        // saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa "+ folderName + fileName);
-//        String fileName = ""+System.currentTimeMillis();
-//        File saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName() + "/" + fileName + ".pdf");
 
         FileOutputStream outputStream = null;
         try {
@@ -152,4 +137,5 @@ public class Save implements Saver {
 //        save.delete();
 //
 //    }
+
 }

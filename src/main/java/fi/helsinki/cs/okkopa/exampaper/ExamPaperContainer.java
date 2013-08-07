@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.exampaper;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.IOException;
 
 /**
