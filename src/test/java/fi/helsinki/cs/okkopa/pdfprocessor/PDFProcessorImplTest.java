@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import java.io.InputStream;

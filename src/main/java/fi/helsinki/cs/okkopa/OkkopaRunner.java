@@ -5,15 +5,16 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.Save;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
+import fi.helsinki.cs.okkopa.ldap.LdapConnector;
+import fi.helsinki.cs.okkopa.model.Student;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
@@ -30,14 +31,16 @@ public class OkkopaRunner implements Runnable {
     private Settings settings;
     private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
     private OkkopaDatabase okkopaDatabase;
+    private LdapConnector ldapConnector;
 
     @Autowired
-    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings, OkkopaDatabase okkopaDatabase) {
+    public OkkopaRunner(EmailRead server, ExamPaperSender sender, PDFProcessor pDFProcessor, Settings settings, OkkopaDatabase okkopaDatabase, LdapConnector ldapConnector) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
         this.settings = settings;
         this.okkopaDatabase = okkopaDatabase;
+        this.ldapConnector = ldapConnector;
     }
 
     @Override
@@ -92,7 +95,9 @@ public class OkkopaRunner implements Runnable {
     }
     
     
-    private void processExamPaper(ExamPaper examPaper)  {
+
+    private void processExamPaper(ExamPaper examPaper) {
+        String currentUserId;
         try {
             examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
         } catch (PdfException ex) {
@@ -115,15 +120,21 @@ public class OkkopaRunner implements Runnable {
 //            return;           
 //        }
         try {
-            examPaper.setUserid(fetchUserId(examPaper.getQRCodeString()));
+            currentUserId = fetchUserId(examPaper.getQRCodeString());
         } catch (SQLException | NotFoundException ex) {
+            currentUserId = "tähän haetaan käyttäjätunnus jostain";
             //Todo: rekisteröitymättömien käsittely
         }
-        
-        //Todo: tähän sähköpostiosoitteen resolvaus / muodostaminen
-        examPaper.setEmail(fetchEmail(examPaper.getUserid()));
-        
 
+//        Get email and student number from LDAP:
+//        try {    
+//            examPaper.setStudent(ldapConnector.fetchStudent(currentUserId));
+//        } catch (NotFoundException | LDAPException | GeneralSecurityException ex) {
+//            logException(ex);
+//        }
+        
+        examPaper.setStudent(new Student(currentUserId,"dummyemail@helsinki.fi","dummystudentnumber"));
+        
         sendEmail(examPaper);
         saveToTikli(examPaper);
         LOGGER.debug("ExamPaper lähetetty ja tallennettu tikliin");
@@ -167,9 +178,4 @@ public class OkkopaRunner implements Runnable {
         return qrcode;
     }
     
-    private String fetchEmail(String userId) {
-        //todo: tänne magia, jolla käyttäjätunnus muutetaan sähköpostiosoitteeksi
-        //esim: return userId+"@cs.helsinki.fi";
-        return "okkopa2.2013@gmail.com";
-    }
 }
