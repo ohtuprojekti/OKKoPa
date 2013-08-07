@@ -12,10 +12,6 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author anttkaik
- */
 @Component
 public class ExamPaperSenderImpl implements ExamPaperSender {
 
@@ -43,7 +39,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         msg.setSubject(subject);
         msg.setText(text);
         try {
-            msg.addPDFAttachment(examPaper.getPdfStream(), attachmentName);
+            msg.addPDFAttachment(examPaper.getPdf(), attachmentName);
         } catch (IOException ex) {
             throw new MessagingException("Error while reading pdf stream");
         }

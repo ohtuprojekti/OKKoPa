@@ -17,6 +17,7 @@ public class Reference {
     public boolean checkReferenceNumber(int number) {
         return this.number.checkReferenceNumber(number);
     }
+    
     public int getReferenceNumber() {
         return this.number.getReferenceNumber();
     }

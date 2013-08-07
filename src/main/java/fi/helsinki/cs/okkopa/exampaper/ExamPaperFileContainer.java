@@ -51,9 +51,9 @@ public class ExamPaperFileContainer implements ExamPaperContainer {
             return;
         }
         FileOutputStream outputStream = new FileOutputStream(savefile);
-        IOUtils.copy(examPaper.getPdfStream(), outputStream);
+        IOUtils.copy(examPaper.getPdf(), outputStream);
         outputStream.close();
-        examPaper.getPdfStream().close();
+        examPaper.getPdf().close();
     }
       
     /**
