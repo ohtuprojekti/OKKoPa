@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -26,20 +27,20 @@ import org.jpedal.exception.PdfException;
 public class Save implements Saver {
 
     File saveFile;
-    File openFile;
+    //File openFile;
     String folderName;
     private String fileName;
     private Calendar mydate;
 
-    public Save() throws IOException {
+    public Save() {
         folderName();
-        File folder = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName);
+        File folder = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName);
         this.fileName = "" + mydate.get(Calendar.HOUR_OF_DAY) + ":" + mydate.get(Calendar.MINUTE) + ":" + mydate.get(Calendar.SECOND) + ":" + mydate.get(Calendar.MILLISECOND);
         if (!folder.exists()) {
             folder.mkdir();
         }
-        saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/" + fileName + ".pdf");
-        openFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/src/test/resources/pdf/all.pdf");
+        //saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
+        //openFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/src/test/resources/pdf/all.pdf");
 
     }
 
@@ -48,7 +49,7 @@ public class Save implements Saver {
      */
     @Override
     public void delete() {
-        saveFile = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/" + fileName + ".pdf");
+        saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
         if (saveFile.delete()) {
             System.out.println(saveFile.getName() + " is deleted!");
         } else {
@@ -64,12 +65,9 @@ public class Save implements Saver {
      * @return sorted list of files in folder
      */
     @Override
-    public ArrayList list() {
-        File f = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/");
-        String listOfFiles = "";
+    public ArrayList<File> list() {
+        File f = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/");
         File[] files = f.listFiles();
-        ArrayList<String> list = new ArrayList();
-
         Arrays.sort(files, new Comparator() {
             @Override
             public int compare(Object o1, Object o2) {
@@ -83,15 +81,15 @@ public class Save implements Saver {
                 }
             }
         });
-
+        ArrayList<File> list = new ArrayList();
         for (int i = 0; i < files.length; i++) {
 
             if (files[i].isFile()) {
-                listOfFiles = files[i].getName();
-                list.add(listOfFiles);
+                list.add(files[i]);
                
             }
         }
+        
         System.out.println(list);
         return list;
       
@@ -115,21 +113,9 @@ public class Save implements Saver {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(saveFile);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            IOUtils.copy(examPaper.getPdfStream(), outputStream);
-        } catch (IOException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+            IOUtils.copy(examPaper.getPdf(), outputStream);       
             outputStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            examPaper.getPdfStream().close();
+            examPaper.getPdf().close();
         } catch (IOException ex) {
             Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -138,32 +124,32 @@ public class Save implements Saver {
     private String folderName() {
         mydate = Calendar.getInstance();
         mydate.setTimeInMillis(System.currentTimeMillis());
-        folderName = mydate.get(Calendar.DAY_OF_MONTH) + "." + mydate.get(Calendar.MONTH) + "." + mydate.get(Calendar.YEAR);
+        folderName = "fails/"+mydate.get(Calendar.DAY_OF_MONTH) + "." + mydate.get(Calendar.MONTH) + "." + mydate.get(Calendar.YEAR);
         return folderName;
     }
 
     //testiä
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-        Save save = new Save();
-        PDFSplitter splitter = new PDFSplitter();
-        List<ExamPaper> papers = null;
-        try {
-            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
-        } catch (DocumentException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PdfException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (COSVisitorException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        save.saveExamPaper(papers.get(0));
-        Save save2 = new Save();
-        save2.saveExamPaper(papers.get(1));
-        Save save3 = new Save();
-        save3.saveExamPaper(papers.get(5));
-
-        save.list();
-        save.delete();
-
-    }
+//    public static void main(String[] args) throws FileNotFoundException, IOException {
+//        Save save = new Save();
+//        PDFSplitter splitter = new PDFSplitter();
+//        List<ExamPaper> papers = null;
+//        try {
+//            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
+//        } catch (DocumentException ex) {
+//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (PdfException ex) {
+//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (COSVisitorException ex) {
+//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        save.saveExamPaper(papers.get(0));
+//        Save save2 = new Save();
+//        save2.saveExamPaper(papers.get(1));
+//        Save save3 = new Save();
+//        save3.saveExamPaper(papers.get(5));
+//
+//        save.list();
+//        save.delete();
+//
+//    }
 }

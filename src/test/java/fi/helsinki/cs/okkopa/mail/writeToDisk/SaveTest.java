@@ -108,9 +108,9 @@ public class SaveTest {
      */
     @Test
     public void testSaveExamPaper() throws IOException {
-
+        File openFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/src/test/resources/pdf/all.pdf");
         try {
-            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
+            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(openFile));
         } catch (DocumentException ex) {
             Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PdfException ex) {

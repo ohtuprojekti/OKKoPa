@@ -6,6 +6,7 @@ import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.mail.writeToDisk.Save;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +92,7 @@ public class OkkopaRunner implements Runnable {
     }
     
     
-    private void processExamPaper(ExamPaper examPaper) {
+    private void processExamPaper(ExamPaper examPaper)  {
         try {
             examPaper.setPageImages(pDFProcessor.getPageImages(examPaper));
         } catch (PdfException ex) {
@@ -101,15 +102,18 @@ public class OkkopaRunner implements Runnable {
         try {
             examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
         } catch (NotFoundException ex) {
+            Save save = null;
+            save = new Save();
+            save.saveExamPaper(examPaper);
             //Todo: pdf:n tallennus
             logException(ex);
             return;
         }
         
-        if (examPaper.getQRCodeString().isEmpty()) {
-            //Todo: pdf:n tallennus
-            return;           
-        }
+//        if (examPaper.getQRCodeString().isEmpty()) {
+//            //Todo: pdf:n tallennus
+//            return;           
+//        }
         try {
             examPaper.setUserid(fetchUserId(examPaper.getQRCodeString()));
         } catch (SQLException | NotFoundException ex) {

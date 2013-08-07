@@ -10,5 +10,5 @@ public interface Saver {
 
     void delete();
 
-    ArrayList list();
+    ArrayList<File> list();
 }
