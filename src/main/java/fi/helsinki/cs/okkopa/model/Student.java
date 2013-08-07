@@ -17,6 +17,7 @@ public class Student {
     public Student() {
         
     }
+    
     public Student(String username, String email, String studentNumber) {
         this.username = username;
         this.email = email;
