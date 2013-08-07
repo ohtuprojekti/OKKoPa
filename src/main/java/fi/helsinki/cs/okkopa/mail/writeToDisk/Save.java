@@ -39,7 +39,7 @@ public class Save implements Saver {
         if (!folder.exists()) {
             folder.mkdir();
         }
-        //saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
+        saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
         //openFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/src/test/resources/pdf/all.pdf");
 
     }
@@ -49,7 +49,7 @@ public class Save implements Saver {
      */
     @Override
     public void delete() {
-        saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
+        //saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
         if (saveFile.delete()) {
             System.out.println(saveFile.getName() + " is deleted!");
         } else {
