@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -18,6 +19,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.jpedal.exception.PdfException;
 
+/**
+ *
+ *
+ */
 public class Save implements Saver {
 
     File saveFile;
@@ -50,10 +55,11 @@ public class Save implements Saver {
     }
 
     @Override
-    public void list() {
+    public ArrayList list() {
         File f = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/" + folderName + "/");
         String listOfFiles = "";
         File[] files = f.listFiles();
+        ArrayList<String> list = new ArrayList();
 
         Arrays.sort(files, new Comparator() {
             @Override
@@ -73,9 +79,13 @@ public class Save implements Saver {
 
             if (files[i].isFile()) {
                 listOfFiles = files[i].getName();
-                System.out.println(listOfFiles);
+                list.add(listOfFiles);
+               
             }
         }
+        System.out.println(list);
+        return list;
+      
     }
 
     @Override
@@ -138,8 +148,8 @@ public class Save implements Saver {
         Save save3 = new Save();
         save3.saveExamPaper(papers.get(5));
 
-        //save.saveToFile();
-        // save.delete();
         save.list();
+        save.delete();
+
     }
 }

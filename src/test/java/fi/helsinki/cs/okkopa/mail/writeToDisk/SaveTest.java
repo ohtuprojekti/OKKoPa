@@ -7,9 +7,11 @@ package fi.helsinki.cs.okkopa.mail.writeToDisk;
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,28 +30,34 @@ import static org.junit.Assert.*;
  * @author tirna
  */
 public class SaveTest {
-         Save save ;
-        PDFSplitter splitter ;
-        List<ExamPaper> papers ;
-    
+
+    Save save;
+    PDFSplitter splitter;
+    List<ExamPaper> papers;
+    File folder;
+    File saveFile;
+    Calendar mydate;
+    String fileName;
     public SaveTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() throws IOException {
         save = new Save();
         splitter = new PDFSplitter();
         papers = new ArrayList<>();
+        folder = new File("/cs/fs/home/tirna/OKKoPa/OKKoPa/7.7.2013");
+       
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -57,16 +65,19 @@ public class SaveTest {
     /**
      * Test of saveToFile method, of class Save.
      */
-   
-
     /**
      * Test of delete method, of class Save.
      */
     @Test
     public void testDelete() throws IOException {
         System.out.println("delete");
+
+        boolean size = save.list().containsAll(papers);
         save.delete();
-       
+        save.delete();
+        save.delete();
+        save.delete();
+        assertTrue(!size);
     }
 
     /**
@@ -76,7 +87,16 @@ public class SaveTest {
     public void testList() throws IOException {
         System.out.println("list");
         save.list();
-       
+
+
+    }
+
+    @Test
+    public void testFolderIsExist() throws IOException {
+        System.out.println("Is folder exist?");
+        assertTrue(folder.exists());
+
+
     }
 
     /**
@@ -84,7 +104,7 @@ public class SaveTest {
      */
     @Test
     public void testSaveExamPaper() throws IOException {
-        
+
         try {
             papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
         } catch (DocumentException ex) {
@@ -99,10 +119,9 @@ public class SaveTest {
         save2.saveExamPaper(papers.get(1));
         Save save3 = new Save();
         save3.saveExamPaper(papers.get(5));
+
         assertTrue(!save.folderName.isEmpty());
-        
+
 
     }
-
-  
 }
