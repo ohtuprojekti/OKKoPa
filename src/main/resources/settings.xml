@@ -37,8 +37,8 @@ Näemmä hyvin.
     <!-- Database settings -->
     <entry key="ldap.useraccount">tunnus tähän</entry>
     <entry key="ldap.password">salasana tähän</entry>
-    <entry key="ldap.certificate.file">/ldapcert</entry>
-    <entry key="ldap.certificate.secret">okkopa2013</entry>
+    <entry key="ldap.keystore.file">/keystore</entry>
+    <entry key="ldap.keystore.secret">okkopa2013</entry>
     <entry key="ldap.server.address">ldap-internal.it.helsinki.fi</entry>
     <entry key="ldap.server.port">636</entry>
 

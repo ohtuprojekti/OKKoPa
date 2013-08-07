@@ -17,9 +17,6 @@ public class ExamPaper {
     private List<BufferedImage> pageImages;
     private InputStream pdfStream;
     private Student student;
-    private String email, userid;
-
-
     
     public void setStudent(Student student) {
         this.student = student;

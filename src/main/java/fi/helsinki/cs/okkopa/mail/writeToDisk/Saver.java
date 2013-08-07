@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
 import java.util.ArrayList;
 

@@ -17,6 +17,7 @@ import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ public class LdapConnector {
     }
 
     public Student fetchStudent(String username) throws LDAPException, GeneralSecurityException, NotFoundException {
-        SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getSettings().getProperty("ldap.certificate.file"), settings.getSettings().getProperty("ldap.certificate.secret").toCharArray()), new TrustAllTrustManager(true));
+        SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getSettings().getProperty("ldap.keystore.file"), settings.getSettings().getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
         LDAPConnection ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getSettings().getProperty("ldap.server.address"), Integer.parseInt(settings.getSettings().getProperty("ldap.server.port")));
         SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, username), null);
 
@@ -65,7 +66,7 @@ public class LdapConnector {
 //
 //    public static void test() {
 //        try {
-//            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager("src/main/resources/hyad_root", "okkopa2013".toCharArray()), new TrustAllTrustManager(true));
+//            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager("src/main/resources/keystore", "okkopa2013".toCharArray()), new TrustAllTrustManager(true));
 //            LDAPConnection ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), "ldap-internal.it.helsinki.fi", 636);
 //            SearchResult result = ldc.search("ou=org,o=hy", SearchScope.SUBORDINATE_SUBTREE, "(ou=A02700)", null);
 //            System.out.println("Found: " + result.getEntryCount() + " results.");
@@ -76,6 +77,7 @@ public class LdapConnector {
 //
 //            ldc.close();
 //        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
 //        }
 //
 //
