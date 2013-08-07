@@ -5,7 +5,7 @@
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.Settings;
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.IOException;
 import java.util.Properties;
 import javax.mail.MessagingException;
@@ -27,7 +27,7 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
     }    
     
     private String getReceiver(ExamPaper examPaper) {
-        return examPaper.getEmail();
+        return examPaper.getStudent().getEmail();
     }
     
     @Override

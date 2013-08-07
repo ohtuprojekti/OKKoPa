@@ -4,6 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.exampaper;
 
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

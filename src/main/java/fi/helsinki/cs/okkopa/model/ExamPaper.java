@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.exampaper;
+package fi.helsinki.cs.okkopa.model;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -15,23 +15,16 @@ public class ExamPaper {
     private String QRCodeString;
     private List<BufferedImage> pageImages;
     private InputStream pdfStream;
-    private String email, userid;
+    private Student student;
 
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
+    
+    public void setStudent(Student student) {
+        this.student = student;
     }
     
-    public String getEmail() {
-        return email;
+    public Student getStudent() {
+        return this.student;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    } 
     
     public String getQRCodeString() {
         return QRCodeString;
