@@ -29,14 +29,13 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         this.subject = properties.getProperty("mail.message.topic");
         this.text = properties.getProperty("mail.message.body");
         this.attachmentName = properties.getProperty("mail.message.attachmentname");
+        if (!attachmentName.endsWith(".pdf")) {
+            attachmentName += ".pdf";
+        }
     }    
     
     @Override
     public void send(ExamPaper examPaper) throws MessagingException {
-        
-        if (!attachmentName.endsWith(".pdf")) {
-            attachmentName += ".pdf";
-        }
         OKKoPaMessage msg = new OKKoPaMessage(examPaper.getStudent().getEmail(), sender, properties);
         msg.setSubject(subject);
         msg.setText(text);
