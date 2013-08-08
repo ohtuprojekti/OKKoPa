@@ -30,19 +30,19 @@ public class FileSaver implements Saver {
     public ArrayList<File> list(String folderPath) {
         File f = new File(folderPath);
         File[] files = f.listFiles();
-        Arrays.sort(files, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-
-                if (((File) o2).lastModified() > ((File) o1).lastModified()) {
-                    return -1;
-                } else if (((File) o2).lastModified() < ((File) o1).lastModified()) {
-                    return +1;
-                } else {
-                    return 0;
-                }
-            }
-        });
+//        Arrays.sort(files, new Comparator<File>() {
+//            @Override
+//            public int compare(File o1, File o2) {
+//
+//                if (((File) o2).lastModified() > ((File) o1).lastModified()) {
+//                    return -1;
+//                } else if (((File) o2).lastModified() < ((File) o1).lastModified()) {
+//                    return +1;
+//                } else {
+//                    return 0;
+//                }
+//            }
+//        });
         ArrayList<File> list = new ArrayList();
         for (int i = 0; i < files.length; i++) {
 
