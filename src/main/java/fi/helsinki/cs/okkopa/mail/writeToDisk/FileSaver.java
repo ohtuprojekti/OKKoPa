@@ -32,6 +32,7 @@ public class FileSaver implements Saver {
     public ArrayList<File> list(String folderPath) {
         File f = new File(folderPath);
         File[] files = f.listFiles();
+        if (files == null) return null;
         Arrays.sort(files, new Comparator<File>() {
             @Override
             public int compare(File o1, File o2) {

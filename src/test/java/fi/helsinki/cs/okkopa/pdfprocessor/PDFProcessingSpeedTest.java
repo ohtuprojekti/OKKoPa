@@ -52,7 +52,7 @@ public class PDFProcessingSpeedTest {
             // SLOW BUT LOW MEMORY
 //            runtime.gc();
             long memory = runtime.totalMemory() - runtime.freeMemory();
-            System.out.println("total memory:"+ bytesToMegabytes(runtime.totalMemory()));
+            //System.out.println("total memory:"+ bytesToMegabytes(runtime.totalMemory()));
             memorySum += bytesToMegabytes(memory);
         }
         readingTime = System.currentTimeMillis() - readingTime;

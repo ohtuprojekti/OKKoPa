@@ -72,6 +72,7 @@ public class FileSaverTest {
     
     private void clearDirectory(String directoryPath) {
         List<File> files = saver.list(directoryPath);
+        if (files == null) return;
         for (File file : files) {
             file.delete();
         }
