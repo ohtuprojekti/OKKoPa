@@ -32,6 +32,8 @@
      
      <!-- Database settings -->
      <entry key="database.url">jdbc:h2:mem:okkopa</entry>
+     <entry key="database.user">okkopa</entry>
+    <entry key="database.password">Okkopa2013</entry>
 
     <!-- Other settings -->     
      <entry key="tikli.enable">true</entry>

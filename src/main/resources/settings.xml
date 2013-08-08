@@ -34,9 +34,10 @@ Näemmä hyvin.
     <entry key="mail.message.attachmentname">liite.pdf</entry>
      
     <!-- Database settings -->
-    <entry key="database.url">jdbc:h2:mem:okkopa</entry>
-    <entry key="database.user">tunnus tähän</entry>
-    <entry key="database.password">salasana tähän</entry>
+    <!-- Url without .h2.db in the end. -->
+    <entry key="database.url">jdbc:h2:okkopa</entry>
+    <entry key="database.user">okkopa</entry>
+    <entry key="database.password">Okkopa2013</entry>
 
     <!-- Ldap settings -->
     <entry key="ldap.user">tunnus tähän</entry>
