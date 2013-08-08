@@ -14,16 +14,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OkkopaDatabase {
-
     private Dao<QRCode, String> qrcodeDao;
     private ConnectionSource connectionSource;
     
     @Autowired
     public OkkopaDatabase(Settings settings) throws SQLException {
         String databaseUrl = settings.getSettings().getProperty("database.url");
+        String username = settings.getSettings().getProperty("database.user");
+        String password = settings.getSettings().getProperty("database.password");
         // create a connection source to our database
         connectionSource =
-                new JdbcConnectionSource(databaseUrl);
+                new JdbcConnectionSource(databaseUrl, username, password);
 
         // instantiate the dao
         qrcodeDao =
