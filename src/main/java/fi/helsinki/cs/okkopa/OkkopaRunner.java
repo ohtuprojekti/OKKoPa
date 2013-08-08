@@ -55,6 +55,7 @@ public class OkkopaRunner implements Runnable {
 
     @Override
     public void run() {
+        retryFailedEmails();
         try {
             server.connect();
             LOGGER.debug("Kirjauduttu sisään.");
@@ -183,5 +184,9 @@ public class OkkopaRunner implements Runnable {
             return okkopaDatabase.getUserID(qrcode);
         }
         return qrcode;
+    }
+
+    private void retryFailedEmails() {
+        
     }
 }
