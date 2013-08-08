@@ -35,10 +35,11 @@ Näemmä hyvin.
      
     <!-- Database settings -->
     <entry key="database.url">jdbc:h2:mem:okkopa</entry>
+    <entry key="database.user">tunnus tähän</entry>
+    <entry key="database.password">salasana tähän</entry>
 
-
-    <!-- Database settings -->
-    <entry key="ldap.useraccount">tunnus tähän</entry>
+    <!-- Ldap settings -->
+    <entry key="ldap.user">tunnus tähän</entry>
     <entry key="ldap.password">salasana tähän</entry>
     <entry key="ldap.keystore.file">src/main/resources/keystore</entry>
     <entry key="ldap.keystore.secret">okkopa2013</entry>
@@ -52,8 +53,10 @@ Näemmä hyvin.
 
     <!-- Exception handling -->
     <entry key="mail.deletemailswithoutattachment">false</entry>
-    <entry key="pdfprocessor.saveunreadableattachments">true</entry>
-    <entry key="pdfprocessor.saveunreadableqrcodes">true</entry>
+    
+    <!-- Save exam papers with unreadable qr-codes. -->
+    <entry key="exampaper.saveunreadable">true</entry>
+    <entry key="exampaper.savefolder">errorpdfs</entry>
 
     <entry key="mail.send.retryattemps">1</entry>
     <entry key="mail.send.retrydelayinminutes">1</entry>
@@ -61,6 +64,6 @@ Näemmä hyvin.
     <entry key="tikli.retryattempts">1</entry>
     <entry key="tikli.retrydealyinminutes">1</entry>
      
-    <entry key="logger.showcompletestack">false</entry>
+    <entry key="logger.logcompletestack">false</entry>
      
 </properties>

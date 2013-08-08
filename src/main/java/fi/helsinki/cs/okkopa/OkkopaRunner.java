@@ -35,6 +35,8 @@ public class OkkopaRunner implements Runnable {
     private OkkopaDatabase okkopaDatabase;
     private LdapConnector ldapConnector;
     private boolean saveToTikli;
+    private boolean saveOnExamPaperPDFError;
+    private boolean logCompleteExceptionStack;
 
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
@@ -46,7 +48,9 @@ public class OkkopaRunner implements Runnable {
         this.settings = settings;
         this.okkopaDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
-        saveToTikli = settings.getSettings().getProperty("tikli.enable").equals("true");
+        saveToTikli = Boolean.parseBoolean(settings.getSettings().getProperty("tikli.enable"));
+        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
+        logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
     }
 
     @Override
@@ -110,10 +114,12 @@ public class OkkopaRunner implements Runnable {
             examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
         } catch (PdfException | NotFoundException ex) {
             logException(ex);
-            // TODO PDF:n tallennus
-            Save save = null;
-            save = new Save();
-            save.saveExamPaper(examPaper);
+            if (saveOnExamPaperPDFError) {
+                // TODO PDF:n tallennus
+                Save save = null;
+                save = new Save();
+                save.saveExamPaper(examPaper);
+            }
             return;
         }
 
@@ -127,14 +133,14 @@ public class OkkopaRunner implements Runnable {
         }
 
         // Get email and student number from LDAP:
-        try {    
+        try {
             examPaper.setStudent(ldapConnector.fetchStudent(currentUserId));
         } catch (NotFoundException | LDAPException | GeneralSecurityException ex) {
             logException(ex);
         }
 
         // TODO remove when ldap has been implemented.
-        examPaper.setStudent(new Student(currentUserId, "dummyemail@helsinki.fi", "dummystudentnumber"));
+        examPaper.setStudent(new Student(currentUserId, "okkopa.2013@gmail.com", "dummystudentnumber"));
 
         sendEmail(examPaper);
         LOGGER.debug("Koepaperi lähetetty sähköpostilla.");
@@ -142,7 +148,7 @@ public class OkkopaRunner implements Runnable {
             saveToTikli(examPaper);
             LOGGER.debug("Koepaperi tallennettu Tikliin.");
         }
-        
+
     }
 
     public String getCourseInfo(ExamPaper examPaper) throws NotFoundException {
@@ -165,7 +171,7 @@ public class OkkopaRunner implements Runnable {
 
     private void logException(Exception ex) {
         //Currently just logging exceptions. Should exception handling be in its own class?
-        if (settings.getSettings().getProperty("logger.showcompletestack").equals("true")) {
+        if (logCompleteExceptionStack) {
             LOGGER.error(ex.toString(), ex);
         } else {
             LOGGER.error(ex.toString());
