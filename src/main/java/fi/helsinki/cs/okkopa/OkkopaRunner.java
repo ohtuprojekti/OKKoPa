@@ -5,16 +5,18 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.Save;
+import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.ldap.LdapConnector;
 import fi.helsinki.cs.okkopa.model.Student;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
@@ -107,9 +109,12 @@ public class OkkopaRunner implements Runnable {
         try {
             examPaper.setQRCodeString(pDFProcessor.readQRCode(examPaper));
         } catch (NotFoundException ex) {
-            Save save = null;
-            save = new Save();
-            save.saveExamPaper(examPaper);
+            FileSaver saver = new FileSaver();
+            try {
+                saver.saveInputStream(examPaper.getPdf(), "fails", ""+System.currentTimeMillis()+".pdf");
+            } catch (FileAlreadyExistsException ex1) {
+                java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
+            }
             //Todo: pdf:n tallennus
             logException(ex);
             return;
