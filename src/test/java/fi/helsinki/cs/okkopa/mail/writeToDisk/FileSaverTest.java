@@ -65,7 +65,7 @@ public class FileSaverTest {
         correctNames.add("testipdfvanhempi.pdf");
         correctNames.add("testipdfuudempi.pdf");
         for (int i = 0; i < correctNames.size(); i++) {
-            assertEquals(correctNames.get(i), files.get(i).getName());
+            assertTrue(correctNames.contains(files.get(i).getName()));
         }
     }
     
