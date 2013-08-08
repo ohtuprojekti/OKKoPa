@@ -1,4 +1,5 @@
 /target
 log.out
 rollinglog.out
-/fails
+/src/test/resources/savetest
+/errorpdfs

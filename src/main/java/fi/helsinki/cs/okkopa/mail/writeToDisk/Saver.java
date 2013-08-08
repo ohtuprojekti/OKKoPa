@@ -1,14 +1,13 @@
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
-import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 public interface Saver {
 
-    void saveExamPaper(ExamPaper examPaper);
+    boolean saveInputStream(InputStream inputStream, String folderPath, String fileName) throws FileAlreadyExistsException;
 
-    void delete();
-
-    ArrayList<File> list();
+    ArrayList<File> list(String folderPath);
 }

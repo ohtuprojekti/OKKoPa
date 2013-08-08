@@ -1,64 +1,36 @@
 
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
-import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.nio.file.FileAlreadyExistsException;
 import org.apache.commons.io.IOUtils;
+import org.springframework.stereotype.Component;
 
 /**
  *Create a folder per day(if we run it everyday) and save files to folder. lists  all files by date
  *and delete file.
  */
-public class Save implements Saver {
+@Component
+public class FileSaver implements Saver {
 
-    File saveFile;
-    //File openFile;
-    String folderName;
-    private String fileName;
-    private Calendar mydate;
-
-    public Save() {
-        folderName();
-        File folder = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName);
-        this.fileName = "" + mydate.get(Calendar.HOUR_OF_DAY) + ":" + mydate.get(Calendar.MINUTE) + ":" + mydate.get(Calendar.SECOND) + ":" + mydate.get(Calendar.MILLISECOND);
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-        //saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
-        //openFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/src/test/resources/pdf/all.pdf");
-
+    public FileSaver() {
     }
-
-    /**
-     *delete the youngest file.
-     */
-    @Override
-    public void delete() {
-        saveFile = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/" + fileName + ".pdf");
-        if (saveFile.delete()) {
-            System.out.println(saveFile.getName() + " is deleted!");
-        } else {
-            System.out.println("Delete operation is failed.");
-        }
-
-
-    }
-
+    
     /**
      * Sort all of files in folder by lastModified date..
      *
      * @return sorted list of files in folder
      */
     @Override
-    public ArrayList<File> list() {
-        File f = new File("/cs/fs/home/anttkaik/NetBeansProjects/OKKoPa/" + folderName + "/");
+    public ArrayList<File> list(String folderPath) {
+        File f = new File(folderPath);
         File[] files = f.listFiles();
         Arrays.sort(files, new Comparator<File>() {
             @Override
@@ -86,33 +58,61 @@ public class Save implements Saver {
         return list;
       
     }
-
+      
+    
     /**
      *Save ExamPapers to local disk. 
      *
      * @param examPaper,
      */
     @Override
-    public void saveExamPaper(ExamPaper examPaper) {
-
+    public boolean saveInputStream(InputStream inputStream, String folderPath, String fileName) throws FileAlreadyExistsException {
+        File folder = new File(folderPath);
+                //new File(folderName());
+        if (!folder.exists() && !folder.mkdirs()) {
+            Logger.getLogger(FileSaver.class.getName()).log(Level.WARNING, "Failed to create folder "+folderPath+".");
+            return false;
+        }
+        File file = new File(folderPath+"/"+fileName);
+        if (file.exists()) {
+            throw new FileAlreadyExistsException("File "+folderPath+"/"+fileName+" already exists.");
+        }
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(saveFile);
-            IOUtils.copy(examPaper.getPdf(), outputStream);       
+            outputStream = new FileOutputStream(file);
+            if (inputStream == null) {
+                System.out.println("NULL IN!");
+            }
+            if (outputStream == null) {
+                System.out.println("NULL OUT!");
+            }
+            IOUtils.copy(inputStream, outputStream);       
             outputStream.close();
-            examPaper.getPdf().close();
+            inputStream.close();
         } catch (IOException ex) {
-            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileSaver.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
+        return true;
     }
 
-    private String folderName() {
-        mydate = Calendar.getInstance();
-        mydate.setTimeInMillis(System.currentTimeMillis());
-        folderName = "fails/"+mydate.get(Calendar.DAY_OF_MONTH) + "." + mydate.get(Calendar.MONTH) + "." + mydate.get(Calendar.YEAR);
-        return folderName;
-    }
-
+    
+    
+    
+    
+//    public static void main(String[] args) {
+//        File f = new File("fails/testi.txt");
+//        System.out.println(f.mkdirs());
+//    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //testiä
 //    public static void main(String[] args) throws FileNotFoundException, IOException {
 //        Save save = new Save();
