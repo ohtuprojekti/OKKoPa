@@ -6,17 +6,20 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.Save;
+import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.ldap.LdapConnector;
+import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
 import fi.helsinki.cs.okkopa.model.Student;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
@@ -37,17 +40,21 @@ public class OkkopaRunner implements Runnable {
     private boolean saveToTikli;
     private boolean saveOnExamPaperPDFError;
     private boolean logCompleteExceptionStack;
+    private final String saveFolder;
+    private Saver saver;
 
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
             PDFProcessor pDFProcessor, Settings settings,
-            OkkopaDatabase okkopaDatabase, LdapConnector ldapConnector) {
+            OkkopaDatabase okkopaDatabase, LdapConnector ldapConnector, Saver saver) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
         this.settings = settings;
         this.okkopaDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
+        this.saver = saver;
+        saveFolder = settings.getSettings().getProperty("exampaper.savefolder");
         saveToTikli = Boolean.parseBoolean(settings.getSettings().getProperty("tikli.enable"));
         saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
         logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
@@ -116,10 +123,11 @@ public class OkkopaRunner implements Runnable {
         } catch (PdfException | NotFoundException ex) {
             logException(ex);
             if (saveOnExamPaperPDFError) {
-                // TODO PDF:n tallennus
-                Save save = null;
-                save = new Save();
-                save.saveExamPaper(examPaper);
+                try {
+                    saver.saveInputStream(examPaper.getPdf(), saveFolder, ""+System.currentTimeMillis()+".pdf");
+                } catch (FileAlreadyExistsException ex1) {
+                    java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
+                }
             }
             return;
         }

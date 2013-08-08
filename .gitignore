@@ -1,5 +1,6 @@
 /target
 log.out
 rollinglog.out
-/fails
+/src/test/resources/savetest
+/errorpdfs
 okkopa.h2.db
