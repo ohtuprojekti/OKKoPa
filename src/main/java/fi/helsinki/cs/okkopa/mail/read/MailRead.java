@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Component
@@ -23,6 +24,7 @@ public class MailRead implements EmailRead {
     private ArrayList<InputStream> attachments;
     private IMAPdelete delete;
     private String processedFolderToEmpty;
+    private static Logger LOGGER = Logger.getLogger(MailRead.class.getName());
 
     @Autowired
     public MailRead(Settings settings) {
@@ -47,7 +49,7 @@ public class MailRead implements EmailRead {
         try {
             server.close();
         } catch (MessagingException ex) {
-            System.out.println("!?!?!?!?!? Something unexpected happened ?!?!?!");
+            LOGGER.error("Error closing mail server connection.");
         }
     }
 

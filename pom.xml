@@ -98,6 +98,7 @@
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>settings.xml</exclude>
+                                        <exclude>keystore</exclude>
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
@@ -120,6 +121,7 @@
                         <configuration>
                             <tasks>
                                 <copy file="${basedir}/src/main/resources/settings.xml" toFile="${basedir}/target/settings.xml" />
+                                <copy file="${basedir}/src/main/resources/keystore" toFile="${basedir}/target/keystore" />
                             </tasks>
                         </configuration>
                     </execution>

@@ -9,19 +9,14 @@ import com.icegreen.greenmail.user.UserException;
 import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.sun.mail.imap.IMAPFolder;
 import java.security.Security;
 import java.util.Properties;
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.Test;
 
 public class IMAPmessageTest {
     private GreenMail greenMail;

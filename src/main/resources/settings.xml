@@ -21,6 +21,9 @@
     <entry key="mail.imap.processed.name">processed</entry>
     
     <!-- Message settings -->
+    
+    <!-- Don't use tabs in "mail.message.body" unless
+         you want them to appear in e-mails. -->
     <entry key="mail.message.body">
 Sähköpostin sisältö tähän.
 Mitenhän toimii monen rivin postit?
@@ -37,7 +40,7 @@ Näemmä hyvin.
     <!-- Database settings -->
     <entry key="ldap.useraccount">tunnus tähän</entry>
     <entry key="ldap.password">salasana tähän</entry>
-    <entry key="ldap.keystore.file">/keystore</entry>
+    <entry key="ldap.keystore.file">src/main/resources/keystore</entry>
     <entry key="ldap.keystore.secret">okkopa2013</entry>
     <entry key="ldap.server.address">ldap-internal.it.helsinki.fi</entry>
     <entry key="ldap.server.port">636</entry>

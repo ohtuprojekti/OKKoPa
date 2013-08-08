@@ -86,7 +86,6 @@ public class OKKoPaMessageTest {
         msg.send();
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();
-        System.out.println(messages.length + " messages");
     }
     
     

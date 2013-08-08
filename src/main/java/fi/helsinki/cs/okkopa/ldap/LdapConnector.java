@@ -16,8 +16,6 @@ import fi.helsinki.cs.okkopa.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;
-import java.security.KeyStoreException;
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,7 +38,7 @@ public class LdapConnector {
     public Student fetchStudent(String username) throws LDAPException, GeneralSecurityException, NotFoundException {
         SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getSettings().getProperty("ldap.keystore.file"), settings.getSettings().getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
         LDAPConnection ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getSettings().getProperty("ldap.server.address"), Integer.parseInt(settings.getSettings().getProperty("ldap.server.port")));
-        SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, username), null);
+        SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, username), "mail", "schacPersonalUniqueCode");
 
         if (result.getEntryCount() > 1) {
             throw new NotFoundException("Too many results from LDAP-query with username " + username + ".");

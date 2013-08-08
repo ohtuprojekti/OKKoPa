@@ -30,7 +30,6 @@ public class Settings {
            return currentProps;
        }
        catch (Exception e) {
-           System.out.println(e.getMessage());
            FileInputStream fis = new FileInputStream(fileName);
            currentProps.loadFromXML(fis);
            fis.close();

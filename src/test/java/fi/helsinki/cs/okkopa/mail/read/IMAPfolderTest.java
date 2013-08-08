@@ -104,14 +104,10 @@ public class IMAPfolderTest {
         Message[] messages = inboxFolder.getMessages();
         
         for (Message message : messages) {
-            System.out.println("poisto ");
             IMAPdelete.deleteMessage(message);
         }
         
-        messages = inboxFolder.getMessages();
-        
-        System.out.println("viestien määrä on " + messages.length);
-        
+//        messages = inboxFolder.getMessages();
 //        assertEquals(0, inboxFolder.getMessageCount());
     }
 }
