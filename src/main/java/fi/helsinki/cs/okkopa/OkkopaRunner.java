@@ -41,8 +41,13 @@ public class OkkopaRunner implements Runnable {
     private boolean saveToTikli;
     private boolean saveOnExamPaperPDFError;
     private boolean logCompleteExceptionStack;
-    private final String saveFolder;
+    private final String saveErrorFolder;
     private Saver saver;
+    private final String saveRetryFolder;
+    // Used with email retry
+    private boolean retrying;
+    private boolean sent;
+    private int retryExpirationMinutes;
 
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
@@ -54,15 +59,21 @@ public class OkkopaRunner implements Runnable {
         this.okkopaDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
         this.saver = saver;
-        saveFolder = settings.getSettings().getProperty("exampaper.savefolder");
+        saveErrorFolder = settings.getSettings().getProperty("exampaper.savefolder");
+        saveRetryFolder = settings.getSettings().getProperty("mail.send.retrysavefolder");
         saveToTikli = Boolean.parseBoolean(settings.getSettings().getProperty("tikli.enable"));
-        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
+        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadablefolder"));
         logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
+        retryExpirationMinutes = Integer.parseInt(settings.getSettings().getProperty("mail.send.retryexpirationminutes"));
+        retrying = false;
+        sent = true;
     }
 
     @Override
     public void run() {
+        retrying = true;
         retryFailedEmails();
+        retrying = false;
         try {
             server.connect();
             LOGGER.debug("Kirjauduttu sisään.");
@@ -124,7 +135,7 @@ public class OkkopaRunner implements Runnable {
             logException(ex);
             if (saveOnExamPaperPDFError) {
                 try {
-                    saver.saveInputStream(examPaper.getPdf(), saveFolder, "" + System.currentTimeMillis() + ".pdf");
+                    saver.saveInputStream(examPaper.getPdf(), saveErrorFolder, "" + System.currentTimeMillis() + ".pdf");
                 } catch (FileAlreadyExistsException ex1) {
                     java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
                 }
@@ -172,9 +183,17 @@ public class OkkopaRunner implements Runnable {
     private void sendEmail(ExamPaper examPaper) {
         try {
             sender.send(examPaper);
+            sent = true;
         } catch (MessagingException ex) {
-            // TODO save for retries.
+            if (!retrying) {
+                try {
+                    saver.saveInputStream(examPaper.getPdf(), saveRetryFolder, "" + System.currentTimeMillis() + ".pdf");
+                } catch (FileAlreadyExistsException ex1) {
+                    logException(ex1);
+                }
+            }
             logException(ex);
+            sent = false;
         }
     }
 
@@ -196,7 +215,7 @@ public class OkkopaRunner implements Runnable {
 
     private void retryFailedEmails() {
         // Get failed email send attachments (PDF-files)
-        ArrayList<File> fileList = saver.list("failemailpath");
+        ArrayList<File> fileList = saver.list(saveRetryFolder);
         for (File pdf : fileList) {
             FileInputStream fis;
             try {
@@ -208,6 +227,11 @@ public class OkkopaRunner implements Runnable {
             // Send each single PDF through the whole process.
             processAttachment(fis);
             IOUtils.closeQuietly(fis);
+
+            long fileAge = (System.currentTimeMillis() - pdf.lastModified()) / 60000;
+            if (sent || fileAge > retryExpirationMinutes) {
+                pdf.delete();
+            }
         }
     }
 }

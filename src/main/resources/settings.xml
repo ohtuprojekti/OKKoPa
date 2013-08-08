@@ -57,10 +57,11 @@ Näemmä hyvin.
     
     <!-- Save exam papers with unreadable qr-codes. -->
     <entry key="exampaper.saveunreadable">true</entry>
-    <entry key="exampaper.savefolder">errorpdfs</entry>
+    <entry key="exampaper.saveunreadablefolder">errorpdfs</entry>
 
-    <entry key="mail.send.retryattemps">1</entry>
-    <entry key="mail.send.retrydelayinminutes">1</entry>
+    <!-- Time after which email send is not retried and file will be deleted. -->
+    <entry key="mail.send.retryexpirationminutes">1</entry>
+    <entry key="mail.send.retrysavefolder">retrypdfs</entry>
      
     <entry key="tikli.retryattempts">1</entry>
     <entry key="tikli.retrydealyinminutes">1</entry>
