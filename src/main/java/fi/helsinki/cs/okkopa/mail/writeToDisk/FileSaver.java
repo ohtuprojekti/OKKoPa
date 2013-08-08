@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.FileAlreadyExistsException;
@@ -68,8 +66,12 @@ public class FileSaver implements Saver {
      */
     @Override
     public boolean saveInputStream(InputStream inputStream, String folderPath, String fileName) throws FileAlreadyExistsException {
+        if (inputStream == null || folderPath == null || fileName == null) {
+            Logger.getLogger(FileSaver.class.getName()).log(Level.WARNING, "saveInputStream got null parameter. Returning false!");
+            return false;
+        }
+        
         File folder = new File(folderPath);
-                //new File(folderName());
         if (!folder.exists() && !folder.mkdirs()) {
             Logger.getLogger(FileSaver.class.getName()).log(Level.WARNING, "Failed to create folder "+folderPath+".");
             return false;
@@ -81,12 +83,6 @@ public class FileSaver implements Saver {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
-            if (inputStream == null) {
-                System.out.println("NULL IN!");
-            }
-            if (outputStream == null) {
-                System.out.println("NULL OUT!");
-            }
             IOUtils.copy(inputStream, outputStream);       
             outputStream.close();
             inputStream.close();
