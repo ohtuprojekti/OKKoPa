@@ -6,12 +6,14 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.ldap.LdapConnector;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
 import fi.helsinki.cs.okkopa.model.Student;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -33,7 +35,6 @@ public class OkkopaRunner implements Runnable {
     private PDFProcessor pDFProcessor;
     private EmailRead server;
     private ExamPaperSender sender;
-    private Settings settings;
     private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
     private OkkopaDatabase okkopaDatabase;
     private LdapConnector ldapConnector;
@@ -50,7 +51,6 @@ public class OkkopaRunner implements Runnable {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
-        this.settings = settings;
         this.okkopaDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
         this.saver = saver;
@@ -124,7 +124,7 @@ public class OkkopaRunner implements Runnable {
             logException(ex);
             if (saveOnExamPaperPDFError) {
                 try {
-                    saver.saveInputStream(examPaper.getPdf(), saveFolder, ""+System.currentTimeMillis()+".pdf");
+                    saver.saveInputStream(examPaper.getPdf(), saveFolder, "" + System.currentTimeMillis() + ".pdf");
                 } catch (FileAlreadyExistsException ex1) {
                     java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
                 }
@@ -195,6 +195,19 @@ public class OkkopaRunner implements Runnable {
     }
 
     private void retryFailedEmails() {
-        
+        // Get failed email send attachments (PDF-files)
+        ArrayList<File> fileList = saver.list("failemailpath");
+        for (File pdf : fileList) {
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(pdf);
+            } catch (FileNotFoundException ex) {
+                logException(ex);
+                continue;
+            }
+            // Send each single PDF through the whole process.
+            processAttachment(fis);
+            IOUtils.closeQuietly(fis);
+        }
     }
 }
