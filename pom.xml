@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>OKKoPa</name>
-    <url>http://maven.apache.org</url>
+    <url>http://www.cs.helsinki.fi/okkopa</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -291,4 +291,25 @@
             <url>http://clojars.org/repo</url>
         </repository>
     </repositories>
+    
+    <description>
+        OKKoPa-järjestelmä mahdollistaa kokeiden arvostelun palauttamisen sähköisesti.
+        Opiskelija saa takaisin arvostellut koepaperinsa niihin liitettyjen QR-koodien avulla.
+    </description>
+    
+    <ciManagement>
+        <system>drone.io</system>
+        <url>https://drone.io/github.com/ohtuprojekti/OKKoPa</url>
+    </ciManagement>
+    
+    <scm>
+        <url>https://github.com/ohtuprojekti/OKKoPa</url>
+    </scm>
+    
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 </project>
