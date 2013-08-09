@@ -186,6 +186,7 @@ public class OkkopaRunner implements Runnable {
             sent = true;
         } catch (MessagingException ex) {
             if (!retrying) {
+                LOGGER.debug("Sähköpostin lähetys epäonnistui. Tallennetaan PDF-liite levylle.");
                 try {
                     saver.saveInputStream(examPaper.getPdf(), saveRetryFolder, "" + System.currentTimeMillis() + ".pdf");
                 } catch (FileAlreadyExistsException ex1) {
@@ -215,7 +216,13 @@ public class OkkopaRunner implements Runnable {
 
     private void retryFailedEmails() {
         // Get failed email send attachments (PDF-files)
+        LOGGER.debug("Yritetään lähettää sähköposteja uudelleen.");
         ArrayList<File> fileList = saver.list(saveRetryFolder);
+        if (fileList == null) {
+            LOGGER.debug("Ei uudelleenlähetettävää.");
+            return;
+        };
+        LOGGER.debug(fileList.size() + " uudelleenlähetettävää säilössä.");
         for (File pdf : fileList) {
             FileInputStream fis;
             try {
