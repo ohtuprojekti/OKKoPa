@@ -59,10 +59,10 @@ public class OkkopaRunner implements Runnable {
         this.okkopaDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
         this.saver = saver;
-        saveErrorFolder = settings.getSettings().getProperty("exampaper.savefolder");
+        saveErrorFolder = settings.getSettings().getProperty("exampaper.saveunreadablefolder");
         saveRetryFolder = settings.getSettings().getProperty("mail.send.retrysavefolder");
         saveToTikli = Boolean.parseBoolean(settings.getSettings().getProperty("tikli.enable"));
-        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadablefolder"));
+        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
         logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
         retryExpirationMinutes = Integer.parseInt(settings.getSettings().getProperty("mail.send.retryexpirationminutes"));
         retrying = false;
@@ -135,6 +135,7 @@ public class OkkopaRunner implements Runnable {
             logException(ex);
             if (saveOnExamPaperPDFError) {
                 try {
+                    LOGGER.debug("Tallennetaan virheellistä pdf tiedostoa kansioon "+saveErrorFolder);
                     saver.saveInputStream(examPaper.getPdf(), saveErrorFolder, "" + System.currentTimeMillis() + ".pdf");
                 } catch (FileAlreadyExistsException ex1) {
                     java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
