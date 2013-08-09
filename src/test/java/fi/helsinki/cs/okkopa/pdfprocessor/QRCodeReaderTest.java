@@ -7,6 +7,9 @@ import com.google.zxing.NotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,5 +79,28 @@ public class QRCodeReaderTest {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/two_different.png");
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);
+    }
+    
+    
+    @Test
+    public void testFailedOne() throws IOException {
+        InputStream barCodeInputStream = getClass().getResourceAsStream("/images/fail60dpi.png");
+        ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+        images.add(ImageIO.read(barCodeInputStream));
+        barCodeInputStream = getClass().getResourceAsStream("/images/fail65dpi.png");
+        images.add(ImageIO.read(barCodeInputStream));
+        barCodeInputStream = getClass().getResourceAsStream("/images/fail70dpi.png");
+        images.add(ImageIO.read(barCodeInputStream));
+        barCodeInputStream = getClass().getResourceAsStream("/images/fail75dpi.png");
+        images.add(ImageIO.read(barCodeInputStream));
+        boolean found = false;
+        for (BufferedImage img : images) {
+            try {
+                 found = reader.readQRCode(img).getText().equals("teeyoshi");
+                 if (found) break;
+            } catch (Exception ex) {
+            }
+        }
+        assertTrue(found);
     }
 }
