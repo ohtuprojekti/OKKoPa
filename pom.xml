@@ -177,6 +177,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>0.30</version>
+                <configuration>
+                    <targetClasses>
+                        <param>fi.helsinki.cs.okkopa.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>fi.helsinki.cs.okkopa.*</param>
+                    </targetTests>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     
