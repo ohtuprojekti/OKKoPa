@@ -3,4 +3,5 @@ log.out
 rollinglog.out
 /src/test/resources/savetest
 /errorpdfs
+/retrypdfs
 okkopa.h2.db
