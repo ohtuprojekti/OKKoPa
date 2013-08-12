@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.database;
 
 import fi.helsinki.cs.okkopa.Settings;
@@ -10,29 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author phemmila
- */
 public class ReadFromDatabaseTest {
 
     OkkopaDatabase database;
 
     public ReadFromDatabaseTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
     }
 
     @Before
@@ -46,7 +28,8 @@ public class ReadFromDatabaseTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
+        database.closeConnectionSource();
     }
 
     @Test(expected = NotFoundException.class)
