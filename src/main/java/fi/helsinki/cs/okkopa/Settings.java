@@ -13,7 +13,11 @@ public class Settings {
 
     public Settings(String fileName) throws FileNotFoundException, IOException {
         this.settings = readSettingXML(fileName);
-        this.settings.putAll(readSettingXML("passwords.xml"));
+        try {
+            this.settings.putAll(readSettingXML("passwords.xml"));
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+        }
     }
     
     private Properties settings;
