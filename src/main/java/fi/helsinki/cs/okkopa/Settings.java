@@ -13,6 +13,7 @@ public class Settings {
 
     public Settings(String fileName) throws FileNotFoundException, IOException {
         this.settings = readSettingXML(fileName);
+        this.settings.putAll(readSettingXML("passwords.xml"));
     }
     
     private Properties settings;
@@ -23,6 +24,7 @@ public class Settings {
     
     private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
       Properties currentProps = new Properties();
+      
         try {
            InputStream currentStream = getClass().getResourceAsStream("/"+fileName);
            currentProps.loadFromXML(currentStream);
@@ -37,5 +39,6 @@ public class Settings {
        }
        
     }
+    
     
 }
