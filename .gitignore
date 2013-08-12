@@ -2,6 +2,7 @@
 log.out
 rollinglog.out
 /src/test/resources/savetest
+/src/test/resources/passwords.xml
 /errorpdfs
 /retrypdfs
 okkopa.h2.db
