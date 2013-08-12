@@ -25,9 +25,18 @@ public interface PDFProcessor {
      * @param pdfStream PDF file as an InputStream
      * @return A list of ExamPapers, one per two pages of the input PDF.
      * @throws DocumentException If document is not in the right format or has
-     *                            an odd number of pages.
+     * an odd number of pages.
      */
     List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException;
     
+    /**
+     * Converts PDF-document pages (single exam paper) from input stream 
+     * to a list of images.
+     * 
+     * @param examPaper Input ExamPaper.
+     * @return A list of one PDF's pages converted to images.
+     * @throws PdfException if error occurs when creating a PDF or converting
+     * to images.
+     */
     List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException;
 }

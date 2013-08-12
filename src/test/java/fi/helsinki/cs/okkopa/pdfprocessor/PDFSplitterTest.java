@@ -2,10 +2,10 @@ package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.jpedal.exception.PdfException;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,19 +23,19 @@ public class PDFSplitterTest {
     /**
      * Test loading a wrong type of file.
      */
-    @Test(expected = PdfException.class)
-    public void wrongFileType() throws IOException, DocumentException, PdfException {
+    @Test(expected = IOException.class)
+    public void wrongFileType() throws IOException, DocumentException, PdfException, COSVisitorException {
         InputStream file = getClass().getResourceAsStream("/text/testEmpty");
-        splitter.splitPdfToExamPapersWithImages(file);
+        splitter.splitToExamPapersWithPDFStreams(file);
     }
 
     /**
      * Test loading a PDF with odd number of pages.
      */
     @Test(expected = DocumentException.class)
-    public void oddPages() throws IOException, DocumentException, PdfException {
+    public void oddPages() throws IOException, DocumentException, PdfException, COSVisitorException {
         InputStream file = getClass().getResourceAsStream("/pdf/three_page.pdf");
-        splitter.splitPdfToExamPapersWithImages(file);
+        splitter.splitToExamPapersWithPDFStreams(file);
     }
 
     /**
@@ -44,42 +44,46 @@ public class PDFSplitterTest {
     @Test
     public void eligibleDocument() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
+        List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
         assertEquals(20, examPapers.size());
     }
     
     /**
-     * Test checking single paper containing two pages per exam paper.
+     * Test checking input stream in each exam paper not null.
      */
-    @Test
-    public void twoPapersPerPDF() throws IOException, Exception {
-        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
-        for (ExamPaper examPaper : examPapers) {
-            assertEquals(2, examPaper.getPageImages().size());
-        }
-    }
-    
     @Test
     public void imagesNotNull() throws IOException, Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
+        List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
         for (ExamPaper examPaper : examPapers) {
-            for (BufferedImage image : examPaper.getPageImages()) {
-                assertNotNull(image);
-            }
+            assertTrue(examPaper.getSplitPdfStream().available() > 0);
         }
     }
+         
+    /**
+     * Test checking single paper containing two pages per exam paper.
+     */
+//    @Test
+//    public void twoPapersPerPDF() throws IOException, Exception {
+//        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
+//        List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
+//        for (ExamPaper examPaper : examPapers) {
+//            assertEquals(2, examPaper.getPageImages().size());
+//        }
+//    }
     
-    @Test
-    public void imagesHaveSize() throws IOException, Exception {
-        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
-        List<ExamPaper> examPapers = splitter.splitPdfToExamPapersWithImages(file);
-        for (ExamPaper examPaper : examPapers) {
-            for (BufferedImage image : examPaper.getPageImages()) {
-                assertFalse(image.getHeight() == 0);
-                assertFalse(image.getWidth() == 0);
-            }
-        }
-    } 
+    /**
+     * Test images having size and height.
+     */
+//    @Test
+//    public void imagesHaveSize() throws IOException, Exception {
+//        InputStream file = getClass().getResourceAsStream("/pdf/all.pdf");
+//        List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
+//        for (ExamPaper examPaper : examPapers) {
+//            for (BufferedImage image : examPaper.getPageImages()) {
+//                assertFalse(image.getHeight() == 0);
+//                assertFalse(image.getWidth() == 0);
+//            }
+//        }
+//    } 
 }

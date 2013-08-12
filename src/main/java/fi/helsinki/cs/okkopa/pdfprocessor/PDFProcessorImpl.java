@@ -27,19 +27,18 @@ public class PDFProcessorImpl implements PDFProcessor {
     private QRCodeReader reader;
     private final double[] SCALERS = {1.0 / 3.0, 1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0};
 
+
+    /**
+     *
+     * @param splitter
+     * @param reader
+     */
     @Autowired
     public PDFProcessorImpl(PDFSplitter splitter, QRCodeReader reader) {
         this.splitter = splitter;
         this.reader = reader;
     }
 
-    /**
-     *
-     * @param pdfStream
-     * @return
-     * @throws DocumentException If there were problems reading or splitting the
-     * document.
-     */
     @Override
     public List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException {
         try {

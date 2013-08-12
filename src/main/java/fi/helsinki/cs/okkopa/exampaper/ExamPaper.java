@@ -2,9 +2,7 @@ package fi.helsinki.cs.okkopa.exampaper;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Single exam paper a list of page images and QR code information.
@@ -44,13 +42,17 @@ public class ExamPaper {
     public List<BufferedImage> getPageImages() {
         return pageImages;
     }
-
-    public void addPageImage(BufferedImage pageAsImage) {
-        if (pageImages == null) {
-            this.pageImages = new ArrayList<>();
-        }
-        this.pageImages.add(pageAsImage);
+    
+    public void setPageImages(List<BufferedImage> pageImages) {
+        this.pageImages = pageImages;
     }
+
+//    public void addPageImage(BufferedImage pageAsImage) {
+//        if (pageImages == null) {
+//            this.pageImages = new ArrayList<>();
+//        }
+//        this.pageImages.add(pageAsImage);
+//    }
     
     public InputStream getPdfStream() {
         return pdfStream;
@@ -66,9 +68,5 @@ public class ExamPaper {
 
     public void setSplitPdfStream(InputStream splitPdf) {
         this.splitPdfStream = splitPdf;
-    }
-
-    public void setPageImages(List<BufferedImage> pageImages) {
-        this.pageImages = pageImages;
     }
 }
