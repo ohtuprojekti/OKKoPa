@@ -11,15 +11,24 @@ import java.util.List;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.Splitter;
-import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.springframework.stereotype.Component;
 
-/**
- * Converts a PDF-document to a list of images, one per page.
- */
 @Component
 public class PDFSplitter {
+
+    /**
+     * Splits a PDF-document into exam papers.
+     *
+     * @param pdfStream PDF-file as InputStream
+     * @return A List of ExamPapers.
+     * @throws IOException If InputStream can not be read or stream doesn't
+     * contain a PDF-format file.
+     * @throws DocumentException If document contains odd number of pages.
+     * @throws PdfException If a document is not in the right format or error 
+     * occurs while loading or splitting or document has an odd number of pages.
+     * @throws COSVisitorException if something goes wrong when visiting a PDF object.  
+     */
 
     public List<ExamPaper> splitToExamPapersWithPDFStreams(InputStream pdfStream) throws IOException, DocumentException, PdfException, COSVisitorException {
         PDDocument allPdfDocument = PDDocument.load(pdfStream);

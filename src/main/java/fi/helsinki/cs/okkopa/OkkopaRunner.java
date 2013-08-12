@@ -167,7 +167,7 @@ public class OkkopaRunner implements Runnable {
         }
 
         // TODO remove when ldap has been implemented.
-        examPaper.setStudent(new Student(currentUserId, "okkopa.2013@gmail.com", "dummystudentnumber"));
+        //examPaper.setStudent(new Student(currentUserId, "okkopa.2013@gmail.com", "dummystudentnumber"));
 
         sendEmail(examPaper);
         LOGGER.debug("Koepaperi lähetetty sähköpostilla.");

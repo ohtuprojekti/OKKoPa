@@ -1,19 +1,18 @@
 package stories
 
-import fi.helsinki.cs.okkopa.qr.QRCodeReader
 import com.icegreen.greenmail.util.ServerSetup
 import com.icegreen.greenmail.util.GreenMail
 import fi.helsinki.cs.okkopa.Settings
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSenderImpl
-import fi.helsinki.cs.okkopa.qr.ExamPaper
 import org.apache.pdfbox.pdmodel.PDDocument
-import fi.helsinki.cs.okkopa.qr.PDFSplitter
 import java.security.Security
 import com.icegreen.greenmail.util.DummySSLSocketFactory
 import javax.mail.internet.MimeMessage
 import javax.mail.Multipart
 import javax.mail.BodyPart
+import fi.helsinki.cs.okkopa.exampaper.ExamPaper
+import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter
 
 description "Email sending"
  

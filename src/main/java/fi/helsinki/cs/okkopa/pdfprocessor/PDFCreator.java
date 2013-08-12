@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.qr;
+package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -12,8 +12,21 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
 
+/**
+ *
+ * @author hannahir
+ */
 public class PDFCreator {
     
+    
+    
+    /**
+     *
+     * @param pageImages
+     * @return
+     * @throws IOException
+     * @throws COSVisitorException
+     */
     public InputStream createPDF(List<BufferedImage> pageImages) throws IOException, COSVisitorException {
         PDDocument document = new PDDocument();
         

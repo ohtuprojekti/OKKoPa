@@ -3,8 +3,8 @@
 <properties>
 
     <!-- passwords -->
-    <entry key="mail.smtp.password">qwerty12qwert</entry>
-    <entry key="mail.imap.password">qwerty12qwerty</entry>
+    <entry key="mail.smtp.password"></entry>
+    <entry key="mail.imap.password"></entry>
      
     <!-- smtp-settings -->
     <entry key="mail.smtp.auth">true</entry>
@@ -40,8 +40,8 @@ Näemmä hyvin.
     <entry key="database.password">Okkopa2013</entry>
 
     <!-- Ldap settings -->
-    <entry key="ldap.user">tunnus tähän</entry>
-    <entry key="ldap.password">salasana tähän</entry>
+    <entry key="ldap.user">ou=tikli,ou=login,o=hy</entry>
+    <entry key="ldap.password"></entry>
     <entry key="ldap.keystore.file">src/main/resources/keystore</entry>
     <entry key="ldap.keystore.secret">okkopa2013</entry>
     <entry key="ldap.server.address">ldap-internal.it.helsinki.fi</entry>
