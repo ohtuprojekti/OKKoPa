@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- passwords -->
+     <entry key="mail.smtp.password">qwerty12qwerty</entry>
+     <entry key="mail.imap.password">qwerty12qwerty</entry>
+     
+    <!-- smtp-settings -->
+     <entry key="mail.smtp.auth">true</entry>
+     <entry key="mail.smtp.starttls.enable">true</entry>
+     <entry key="mail.smtp.host">smtp.gmail.com</entry>
+     <entry key="mail.smtp.port">587</entry>
+     <entry key="mail.smtp.user">okkopa2.2013@gmail.com</entry> 
+    
+    <!-- imap-settings -->
+     <entry key="mail.imap.host">imap.googlemail.com</entry>  
+     <entry key="mail.imap.port">993</entry>
+     <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
+     <entry key="mail.imap.processed.keepdays">30</entry>
+     <entry key="mail.imap.processed.name">processed</entry>
+    
+    <!-- Message settings -->
+     <entry key="mail.message.body">
+         Sähköpostin sisältö tähän.
+         Mitenhän toimii monen rivin postit?
+         Näemmä hyvin.
+     </entry>
+     <entry key="mail.message.topic">Sähköpostin otsikko tähän</entry>
+     <entry key="mail.message.replyto">okkopa2.2013@gmail.com</entry>
+     <entry key="mail.message.attachmentname">liite.pdf</entry>
+     
+     <!-- Database settings -->
+     <entry key="database.url">jdbc:h2:mem:okkopa</entry>
+     <entry key="database.user">okkopa</entry>
+    <entry key="database.password">Okkopa2013</entry>
+
+    <!-- Other settings -->     
+     <entry key="tikli.enable">true</entry>
+     <entry key="main.minutesbetweenruns">1</entry>
+
+     <!-- Exception handling -->
+     <entry key="mail.deletemailswithoutattachment">false</entry>
+     <entry key="pdfprocessor.saveunreadableattachments">true</entry>
+     <entry key="pdfprocessor.saveunreadableqrcodes">true</entry>
+
+     <entry key="mail.send.retryattemps">1</entry>
+     <entry key="mail.send.retrydelayinminutes">1</entry>
+     
+     <entry key="tikli.retryattempts">1</entry>
+     <entry key="tikli.retrydealyinminutes">1</entry>
+     
+     <entry key="logger.showcompletestack">false</entry>
+     
+</properties>

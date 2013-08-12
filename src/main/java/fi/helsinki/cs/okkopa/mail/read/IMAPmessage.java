@@ -50,7 +50,7 @@ public class IMAPmessage {
     public ArrayList<InputStream> getAttachments() throws IOException, MessagingException {
         contentType = this.message.getContentType();
 
-        attachments = new ArrayList<InputStream>();
+        attachments = new ArrayList<>();
 
         if (contentType.contains("multipart")) {
             // content may contain attachments

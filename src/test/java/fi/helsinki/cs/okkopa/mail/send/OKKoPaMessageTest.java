@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.mail.send;
 
 import com.icegreen.greenmail.util.DummySSLSocketFactory;
@@ -23,10 +19,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author anttkaik
- */
 public class OKKoPaMessageTest {
     
     GreenMail greenMail;
@@ -86,7 +78,6 @@ public class OKKoPaMessageTest {
         msg.send();
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
         Message[] messages = greenMail.getReceivedMessages();
-        System.out.println(messages.length + " messages");
     }
     
     

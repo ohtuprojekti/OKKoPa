@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import java.io.InputStream;
@@ -37,6 +37,7 @@ public class PDFProcessingSpeedTest {
 
     @Test
     public void testAllSpeeds() throws DocumentException, PdfException, NotFoundException {
+        Runtime runtime = Runtime.getRuntime();
         double splittingTime = System.currentTimeMillis();
         InputStream file = getClass().getResourceAsStream("/pdf/massive.pdf");
         List<ExamPaper> examPapers = pdfProcessor.splitPDF(file);
@@ -48,14 +49,13 @@ public class PDFProcessingSpeedTest {
             ExamPaper examPaper = examPapers.remove(0);
             examPaper.setPageImages(pdfProcessor.getPageImages(examPaper));
             examPaper.setQRCodeString(pdfProcessor.readQRCode(examPaper));
-            Runtime runtime = Runtime.getRuntime();
             // SLOW BUT LOW MEMORY
 //            runtime.gc();
             long memory = runtime.totalMemory() - runtime.freeMemory();
+            //System.out.println("total memory:"+ bytesToMegabytes(runtime.totalMemory()));
             memorySum += bytesToMegabytes(memory);
         }
         readingTime = System.currentTimeMillis() - readingTime;
-
         System.out.println("It took " + splittingTime + "ms to split " + paperAmount + " ExamPapers.");
         System.out.println("It took " + readingTime + "ms to read " + paperAmount + " ExamPapers.");
         System.out.println("It took a total of " + (splittingTime + readingTime) + " milliseconds.");

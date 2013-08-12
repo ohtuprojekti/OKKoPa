@@ -3,11 +3,10 @@ package fi.helsinki.cs.okkopa.mail.read;
 import com.sun.mail.imap.IMAPFolder;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
+import org.apache.log4j.Logger;
 
 /**
  * Opens folder and gets its messages one by one.
@@ -22,6 +21,7 @@ public class IMAPfolder {
     private int index = 0;
     private IMAPcopy copy;
     private final String folderName;
+    private static Logger LOGGER = Logger.getLogger(IMAPfolder.class.getName());
 
     /**
      * Opens and formats folder to use.
@@ -92,7 +92,7 @@ public class IMAPfolder {
                 try {
                     return o1.getReceivedDate().compareTo(o2.getReceivedDate());
                 } catch (MessagingException ex) {
-                    System.out.println("some error with comparing dates");
+                    LOGGER.error("Error comparing dates in IMAPFolder.", ex);
                 }
                 return 0;
             }

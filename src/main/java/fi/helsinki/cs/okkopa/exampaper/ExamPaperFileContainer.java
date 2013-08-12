@@ -4,6 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.exampaper;
 
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -50,9 +51,9 @@ public class ExamPaperFileContainer implements ExamPaperContainer {
             return;
         }
         FileOutputStream outputStream = new FileOutputStream(savefile);
-        IOUtils.copy(examPaper.getPdfStream(), outputStream);
+        IOUtils.copy(examPaper.getPdf(), outputStream);
         outputStream.close();
-        examPaper.getPdfStream().close();
+        examPaper.getPdf().close();
     }
       
     /**
