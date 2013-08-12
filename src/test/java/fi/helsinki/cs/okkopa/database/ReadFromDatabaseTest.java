@@ -38,7 +38,11 @@ public class ReadFromDatabaseTest {
     @Before
     public void setUp() throws FileNotFoundException, SQLException, IOException {
         database = new OkkopaDatabase(new Settings("databasetestsettings.xml"));
-        database.addQRCode("0kkopa142921400", "ktunnus");
+        
+        database.addQRCode("0kkopa142921400");
+        database.addUSer("0kkopa142921400","ktunnus");
+        
+        database.addQRCode("0kkopa143562150");
     }
 
     @After
@@ -47,7 +51,7 @@ public class ReadFromDatabaseTest {
 
     @Test(expected = NotFoundException.class)
     public void getNonExistingUserIdFromDatabase() throws NotFoundException, SQLException {
-        database.getUserID("");
+        database.getUserID("eripogjh");
     }
     
     @Test
@@ -57,7 +61,13 @@ public class ReadFromDatabaseTest {
     }
     
     @Test
-    public void addQRCodeToDatabase() {
+    public void addQRCodeToDatabase() throws SQLException, NotFoundException {
+        database.addQRCode("0kkopa142245400");
+        assertEquals("", database.getUserID("0kkopa142245400"));
         
+        assertEquals(false, database.addQRCode("0kkopa142245400"));
+        
+        database.addUSer("0kkopa142245400", "testi2u");
+        assertEquals("testi2u", database.getUserID("0kkopa142245400"));
     }
 }
