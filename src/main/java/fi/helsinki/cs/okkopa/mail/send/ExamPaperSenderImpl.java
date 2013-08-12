@@ -12,9 +12,14 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Send an exampaper.
+ */
+
 @Component
 public class ExamPaperSenderImpl implements ExamPaperSender {
 
+    
     private Properties properties;
     private String sender;
     private String subject;
@@ -22,6 +27,14 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
     private String attachmentName;
     
     
+    private ExamPaperSenderImpl() {
+        
+    }
+    
+    /**
+     * Initializes the object. 
+     * @param settings Settings to use for sending email.
+     */
     @Autowired
     public ExamPaperSenderImpl(Settings settings) {
         this.properties = settings.getSettings();
@@ -34,6 +47,10 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         }
     }    
     
+    /**
+     * @param examPaper
+     * @throws MessagingException 
+     */
     @Override
     public void send(ExamPaper examPaper) throws MessagingException {
         OKKoPaMessage msg = new OKKoPaMessage(examPaper.getStudent().getEmail(), sender, properties);
