@@ -8,14 +8,12 @@ import fi.helsinki.cs.okkopa.Settings;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import org.apache.commons.io.IOUtils;
 
 /**
+ * Removes old unreadble attachments from the disk.
+ * File age must be determined in a settings file.
  *
- * @author anttkaik
  */
 public class ErrorPDFRemover implements Remover {
 
@@ -24,6 +22,10 @@ public class ErrorPDFRemover implements Remover {
     private Saver saver;
     
     
+    /**
+     * Initializes the object.
+     * @param settings Settings that are loaded from a settings file. Settings must contain file age and folder path.
+     */
     public ErrorPDFRemover(Settings settings) {
         this.saveFolder = settings.getSettings().getProperty("exampaper.saveunreadablefolder");
         this.saveDays = Integer.parseInt(settings.getSettings().getProperty("exampaper.deleteunreadableafterdays"));
@@ -32,7 +34,9 @@ public class ErrorPDFRemover implements Remover {
     }
     
     
-    
+    /**
+     * Deletes all messages in the specified folder that are older than the specified age in settings.
+     */
     @Override
     public void deleteOldMessages() {
         ArrayList<File> fileList = saver.list(saveFolder);

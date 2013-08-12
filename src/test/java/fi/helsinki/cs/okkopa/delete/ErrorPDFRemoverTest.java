@@ -43,7 +43,7 @@ public class ErrorPDFRemoverTest {
     
     @Before
     public void setUp() throws FileNotFoundException, IOException {
-        Settings settings = new Settings("test.xml");
+        Settings settings = new Settings("deletesettings.xml");
         remover = new ErrorPDFRemover(settings);
         saver = new FileSaver();
         

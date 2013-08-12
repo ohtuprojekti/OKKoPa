@@ -19,9 +19,5 @@
      <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
      <entry key="mail.imap.processed.keepdays">30</entry>
      <entry key="mail.imap.processed.name">processed</entry>
-     
-     
-    <entry key="exampaper.saveunreadablefolder">src/test/resources/errorpdfs</entry>
-    <entry key="exampaper.deleteunreadableafterdays">-1</entry>
     
 </properties>
