@@ -123,7 +123,7 @@ public class OKKoPaMessage {
     
     
     /**
-     * Helper method to avoid copy-paste
+     * Helper method to avoid copy-paste.
      * @param source File/InputStream/URL
      * @param name Name of the file
      * @throws MessagingException 
@@ -146,7 +146,7 @@ public class OKKoPaMessage {
     }
     
     /**
-     * Adds an attachment from specified inputstream
+     * Adds an attachment from specified inputstream.
      * @param is Inputstream
      * @param mimeType @see https://en.wikipedia.org/wiki/Internet_media_type
      * @param name Name of the attachment
@@ -159,7 +159,7 @@ public class OKKoPaMessage {
     }
     
     /**
-     * Adds a pdf attachment
+     * Adds a pdf attachment.
      * @param is Inputstream of the pdf
      * @param name Name of the pdf. Must end with .pdf
      * @throws IOException

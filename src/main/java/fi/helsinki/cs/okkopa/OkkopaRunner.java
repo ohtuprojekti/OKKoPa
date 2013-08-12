@@ -2,6 +2,8 @@ package fi.helsinki.cs.okkopa;
 
 import com.unboundid.ldap.sdk.LDAPException;
 import fi.helsinki.cs.okkopa.database.OkkopaDatabase;
+import fi.helsinki.cs.okkopa.delete.ErrorPDFRemover;
+import fi.helsinki.cs.okkopa.delete.Remover;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
@@ -48,6 +50,7 @@ public class OkkopaRunner implements Runnable {
     private boolean retrying;
     private boolean sent;
     private int retryExpirationMinutes;
+    private Remover errorPDFRemover;
 
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
@@ -67,10 +70,13 @@ public class OkkopaRunner implements Runnable {
         retryExpirationMinutes = Integer.parseInt(settings.getSettings().getProperty("mail.send.retryexpirationminutes"));
         retrying = false;
         sent = true;
+        this.errorPDFRemover = new ErrorPDFRemover(settings);
     }
 
     @Override
     public void run() {
+        LOGGER.debug("Poistetaan vanhoja epäonnistuneita viestejä");
+        errorPDFRemover.deleteOldMessages();
         retrying = true;
         retryFailedEmails();
         retrying = false;
