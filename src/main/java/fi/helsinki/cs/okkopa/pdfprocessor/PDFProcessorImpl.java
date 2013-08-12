@@ -1,14 +1,12 @@
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,8 +72,8 @@ public class PDFProcessorImpl implements PDFProcessor {
     @Override
     public List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException {
         PdfDecoder pdf = new PdfDecoder(true);
-        pdf.openPdfFileFromInputStream(examPaper.getSplitPdfStream(), true);
         pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
+        pdf.openPdfFileFromInputStream(examPaper.getPdf(), true);
 
         ArrayList<BufferedImage> pageImages = new ArrayList<>();
         for (int i = 1; i <= pdf.getPageCount(); i++) {

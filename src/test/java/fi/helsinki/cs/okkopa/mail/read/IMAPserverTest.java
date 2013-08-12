@@ -51,7 +51,6 @@ public class IMAPserverTest {
     @Test
     public void testGreenMailWorksSomehow() throws InterruptedException, MessagingException, UserException {
         Message[] messages = greenMail.getReceivedMessages();
-        System.out.println("subject of first email " + messages[0].getSubject());
     }
 
     @Test

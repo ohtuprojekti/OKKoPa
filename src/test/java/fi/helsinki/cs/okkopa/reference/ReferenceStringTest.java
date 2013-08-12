@@ -20,7 +20,6 @@ public class ReferenceStringTest {
         for (int i = 0; i < 1000; i++) {
             tempReference = reference.getReference();
             assertEquals(true, reference.checkReference(tempReference));
-            System.out.println(tempReference);
         }
 
         assertEquals(false, reference.checkReference("6xy0td"));

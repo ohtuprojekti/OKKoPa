@@ -16,7 +16,6 @@ public class ReferenceNumberTest {
     public void testGenerateReferenceNumber() {
         for (int i = 0; i < 1000; i++) {
             int luku = random.getReferenceNumber();
-            System.out.println(luku);
             assertEquals(true, random.checkReferenceNumber(luku));
         }
         assertEquals(false, random.checkReferenceNumber(134576547));

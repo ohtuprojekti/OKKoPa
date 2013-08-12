@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper;
+import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,10 +44,7 @@ public class PDFSplitter {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             pdfDocument.save(out);
             byte[] data = out.toByteArray();
-            ByteArrayInputStream in = new ByteArrayInputStream(data);
-            ByteArrayInputStream in2 = new ByteArrayInputStream(data);
-            paper.setSplitPdfStream(in);
-            paper.setPdfStream(in2);
+            paper.setPdf(data);
             examPapers.add(paper);
             pdfDocument.close();
         }
