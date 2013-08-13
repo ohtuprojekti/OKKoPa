@@ -309,6 +309,10 @@
             <id>clojars.org</id>
             <url>http://clojars.org/repo</url>
         </repository>
+        <repository>
+            <id>localmavenrepofororacle</id>
+            <url>file://${basedir}/misc/mvnrepo</url>
+        </repository>
     </repositories>
     
     <description>
