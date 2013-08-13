@@ -43,7 +43,7 @@ Näemmä hyvin.
     <entry key="database.oracle.user">tk_testi</entry>
     <entry key="database.oracle.port">1521</entry>
     <entry key="database.oracle.instance">test</entry>
-
+    
     <!-- Ldap settings -->
     <entry key="ldap.user">ou=tikli,ou=login,o=hy</entry>
     <entry key="ldap.password"></entry>
