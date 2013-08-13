@@ -7,6 +7,10 @@ public class Reference {
     private final Integer size;
     private final ReferenceString letters;
     
+    /**
+     *
+     * @param settings Settings that are loaded from a settings file.
+     */
     public Reference(Settings settings) {
         this.size = Integer.valueOf(settings.getSettings().getProperty("reference.anonymous.size"));
         
