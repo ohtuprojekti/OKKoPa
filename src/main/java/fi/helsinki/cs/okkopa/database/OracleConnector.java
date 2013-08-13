@@ -4,15 +4,15 @@
  */
 package fi.helsinki.cs.okkopa.database;
 
-import com.j256.ormlite.db.DatabaseType;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import fi.helsinki.cs.okkopa.Settings;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import fi.helsinki.cs.okkopa.model.Course;
+import fi.helsinki.cs.okkopa.model.Feedback;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -28,33 +28,48 @@ public class OracleConnector {
     private String host;
     private String port;
     private String instance;
-        
+    Dao<Course, Object> courseDao;
+    Dao<Feedback, String> feedBack;
+
     @Autowired
     public OracleConnector(Settings settings) {
-        this.pwd = settings.getSettings().getProperty("database.oracle.pwd");
+        this.pwd = settings.getSettings().getProperty("database.oracle.password");
         this.user = settings.getSettings().getProperty("database.oracle.user");
         this.host = settings.getSettings().getProperty("database.oracle.host");
         this.port = settings.getSettings().getProperty("database.oracle.port");
         this.instance = settings.getSettings().getProperty("database.oracle.instance");
-        this.url = "jdbc:oracle:thin:@"+this.host+":"+this.port+":"+this.instance;        
+        this.url = "jdbc:oracle:thin:@" + this.host + ":" + this.port + ":" + this.instance;
     }
-    
+
     private void connect() throws SQLException {
         this.connectionSource = new JdbcConnectionSource(url, user, pwd);
-        System.out.println(connectionSource.isOpen());
-        
-        
+    }
+
+    public boolean courseExists(Course course) throws SQLException {
+        try {
+            this.connect();
+            this.courseDao = DaoManager.createDao(connectionSource, Course.class);
+            List<Course> result;
+            result = this.courseDao.queryForMatching(course);
+            if (result.size() == 1) {
+                System.out.println(result.get(0).getName());
+                return true;
+            }
+            else return false;
+     
+            
+        } catch (SQLException ex) {
+            this.connectionSource.close();
+            throw ex;
+        }
     }
     
-    public static void main(String[] args) {
+ /*   public static void main(String[] args) {
         try {
             OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-            oc.connect();
-        } catch (Exception ex) {
+            System.out.println(oc.courseExists(new Course("581386","S",2000,"L",2)));
+        } catch (SQLException | IOException ex) {
             System.out.println(ex.getMessage());
-        } 
-
-        
-    }
-    
+        }
+    }*/
 }
