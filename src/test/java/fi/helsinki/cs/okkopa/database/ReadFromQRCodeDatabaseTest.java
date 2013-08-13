@@ -10,11 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class ReadFromDatabaseTest {
+public class ReadFromQRCodeDatabaseTest {
 
     QRCodeDatabase database;
 
-    public ReadFromDatabaseTest() {
+    public ReadFromQRCodeDatabaseTest() {
     }
 
     @Before
