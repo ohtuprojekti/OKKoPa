@@ -34,28 +34,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class LdapConnector {
 
-    public static void main(String[] args) {
-        test();
-    }
-
-    public static void test() {
-        Debug.debugEnabled();
-        try {
-            LDAPConnectionOptions options = new LDAPConnectionOptions();
-            //      options.setAutoReconnect(true);
-            options.setConnectTimeoutMillis(30000);
-            LDAPConnection ldc = new LDAPConnection(options);
-            ldc.connect("ldap-internal.it.helsinki.fi", 636);
-//
-//
-            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager("src/main/resources/hyad_root", "okkopa2013".toCharArray()), new TrustAllTrustManager(true));
-            SearchResult result = ldc.search("ou=org,o=hy", SearchScope.SUBORDINATE_SUBTREE, "(ou=A02700)", "postalAddress");
-            System.out.println("Found: " + result.getEntryCount() + " results.");
-            ldc.close();
-        } catch (Exception ex) {
-            Logger.getLogger(LdapConnector.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     private Settings settings;
     private static Logger LOGGER = Logger.getLogger(LdapConnector.class.getName());
     private String searchFilter;
