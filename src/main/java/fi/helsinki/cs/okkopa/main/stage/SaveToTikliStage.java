@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static Logger LOGGER = Logger.getLogger(SaveToTikliStage.class.getName());
 
     @Override
-    public void process(ExamPaper in) {
+    public void process(ExamPaper examPaper) {
 //// Get email and student number from LDAP:
 //        try {
 //            examPaper.setStudent(ldapConnector.fetchStudent(currentUserId));
@@ -27,7 +27,7 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
 //        sendEmail(examPaper, true);
 //        LOGGER.debug("Koepaperi lähetetty sähköpostilla.");
 //        if (courseInfo != null && saveToTikli) {
-//            saveToTikli(examPaper);
+            saveToTikli(examPaper);
 //            LOGGER.debug("Koepaperi tallennettu Tikliin.");
 //        }
     }

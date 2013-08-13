@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static Logger LOGGER = Logger.getLogger(SendEmailStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private ExamPaperSender examPaperSender;
 
@@ -34,15 +34,19 @@ public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
 
     @Override
     public void process(ExamPaper in) {
+        sendEmail(in, true);
+        processNextStages(in);
     }
 
     private void sendEmail(ExamPaper examPaper, boolean saveOnError) {
         try {
+            LOGGER.debug("Lähetetään sähköposti.");
             examPaperSender.send(examPaper);
         } catch (MessagingException ex) {
-            LOGGER.debug("Sähköpostin lähetys epäonnistui. Tallennetaan PDF-liite levylle.");
+            LOGGER.debug("Sähköpostin lähetys epäonnistui.");
             if (saveOnError) {
                 saveFailedEmail(examPaper);
+                LOGGER.debug("Tallennetaan PDF-liite levylle.");
             }
             exceptionLogger.logException(ex);
         }

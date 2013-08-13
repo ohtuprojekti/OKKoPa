@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SplitPDFStage extends Stage<InputStream, List<ExamPaper>> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static Logger LOGGER = Logger.getLogger(SplitPDFStage.class.getName());
     PDFProcessor pdfProcessor;
     ExceptionLogger exceptionLogger;
 
@@ -29,6 +29,7 @@ public class SplitPDFStage extends Stage<InputStream, List<ExamPaper>> {
         // Split PDF to ExamPapers (2 pages per each).
         try {
             examPapers = pdfProcessor.splitPDF(in);
+            LOGGER.debug("PDF jaettu osiin.");
         } catch (DocumentException ex) {
             // Errors: bad PDF-file, odd number of pages.
             exceptionLogger.logException(ex);

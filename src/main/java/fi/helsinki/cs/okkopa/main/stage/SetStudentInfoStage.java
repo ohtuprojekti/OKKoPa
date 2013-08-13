@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static Logger LOGGER = Logger.getLogger(SetStudentInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private QRCodeDatabase qRCodeDatabase;
 
@@ -30,8 +30,11 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
         try {
             String userId = fetchUserId(examPaper.getQRCodeString());
             student.setUsername(userId);
+            // TODO katenointi
+            student.setEmail("okkopa.2013@gmail.com");
         } catch (SQLException | NotFoundException ex) {
             exceptionLogger.logException(ex);
+            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä sitä vastannut yksikään geneerinen tunnus.");
             // QR code isn't an user id and doesn't match any database entries.
             return;
         }

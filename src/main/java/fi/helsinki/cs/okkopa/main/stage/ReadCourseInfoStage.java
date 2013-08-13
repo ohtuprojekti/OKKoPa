@@ -36,7 +36,7 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
         // Process all examPapers
         while (!examPapers.isEmpty()) {
             ExamPaper examPaper = examPapers.remove(0);
-            // Add course info
+            // Add course info (doesn't matter if null)
             examPaper.setCourseInfo(courseInfo);
             processNextStages(examPaper);
         }

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static Logger LOGGER = Logger.getLogger(ReadQRCodeStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private Saver fileSaver;
     private String saveErrorFolder;
@@ -45,12 +45,13 @@ public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
             examPaper.setQRCodeString(pdfProcessor.readQRCode(examPaper));
         } catch (PdfException | NotFoundException ex) {
             exceptionLogger.logException(ex);
+            LOGGER.debug("QR-koodia ei pystytty lukemaan.");
             if (saveOnExamPaperPDFError) {
                 try {
-                    LOGGER.debug("Tallennetaan virheellistä pdf tiedostoa kansioon " + saveErrorFolder);
                     InputStream stream = new ByteArrayInputStream(examPaper.getPdf());
                     fileSaver.saveInputStream(stream, saveErrorFolder, "" + System.currentTimeMillis() + ".pdf");
                     IOUtils.closeQuietly(stream);
+                    LOGGER.debug("Tallennettin virheellinen PDF.");
                 } catch (FileAlreadyExistsException ex1) {
                     java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
                 }

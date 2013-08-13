@@ -5,22 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.springframework.stereotype.Component;
 
 /**
  * Manages and reads XML files.
  */
-
 public class Settings {
 
     public Settings(String fileName) throws FileNotFoundException, IOException {
         this.settings = readSettingXML(fileName);
         
-//        try {
-//            this.settings.putAll(readSettingXML("passwords.xml"));
-//        } catch (FileNotFoundException ex) {
-//        } catch (IOException ex) {
-//        }
+        try {
+            this.settings.putAll(readSettingXML("passwords.xml"));
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+        }
     }
     private Properties settings;
 
