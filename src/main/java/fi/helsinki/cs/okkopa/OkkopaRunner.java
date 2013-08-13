@@ -1,7 +1,7 @@
 package fi.helsinki.cs.okkopa;
 
 import com.unboundid.ldap.sdk.LDAPException;
-import fi.helsinki.cs.okkopa.database.OkkopaDatabase;
+import fi.helsinki.cs.okkopa.database.QRCodeDatabase;
 import fi.helsinki.cs.okkopa.delete.ErrorPDFRemover;
 import fi.helsinki.cs.okkopa.delete.Remover;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
@@ -38,7 +38,7 @@ public class OkkopaRunner implements Runnable {
     private EmailRead server;
     private ExamPaperSender sender;
     private static Logger LOGGER = Logger.getLogger(OkkopaRunner.class.getName());
-    private OkkopaDatabase okkopaDatabase;
+    private QRCodeDatabase qrCodeDatabase;
     private LdapConnector ldapConnector;
     private boolean saveToTikli;
     private boolean saveOnExamPaperPDFError;
@@ -55,11 +55,11 @@ public class OkkopaRunner implements Runnable {
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
             PDFProcessor pDFProcessor, Settings settings,
-            OkkopaDatabase okkopaDatabase, LdapConnector ldapConnector, Saver saver) {
+            QRCodeDatabase okkopaDatabase, LdapConnector ldapConnector, Saver saver) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
-        this.okkopaDatabase = okkopaDatabase;
+        this.qrCodeDatabase = okkopaDatabase;
         this.ldapConnector = ldapConnector;
         this.saver = saver;
         saveErrorFolder = settings.getSettings().getProperty("exampaper.saveunreadablefolder");
@@ -216,7 +216,7 @@ public class OkkopaRunner implements Runnable {
 
     private String fetchUserId(String qrcode) throws SQLException, NotFoundException {
         if (Character.isDigit(qrcode.charAt(0))) {
-            return okkopaDatabase.getUserID(qrcode);
+            return qrCodeDatabase.getUserID(qrcode);
         }
         return qrcode;
     }

@@ -12,14 +12,14 @@ import static org.junit.Assert.*;
 
 public class ReadFromDatabaseTest {
 
-    OkkopaDatabase database;
+    QRCodeDatabase database;
 
     public ReadFromDatabaseTest() {
     }
 
     @Before
     public void setUp() throws FileNotFoundException, SQLException, IOException {
-        database = new OkkopaDatabase(new Settings("databasetestsettings.xml"));
+        database = new QRCodeDatabase(new Settings("databasetestsettings.xml"));
         
         database.addQRCode("0kkopa142921400");
         database.addUSer("0kkopa142921400","ktunnus");
