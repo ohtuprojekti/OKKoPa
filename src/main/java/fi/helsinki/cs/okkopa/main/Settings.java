@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa;
+package fi.helsinki.cs.okkopa.main;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

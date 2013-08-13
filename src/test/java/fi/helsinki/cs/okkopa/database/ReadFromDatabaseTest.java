@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.database;
 
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;

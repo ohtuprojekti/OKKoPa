@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.delete;
 
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
 import java.io.File;

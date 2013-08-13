@@ -8,6 +8,7 @@ import com.google.zxing.FormatException;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -73,7 +74,8 @@ public class PDFProcessorImpl implements PDFProcessor {
     public List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException {
         PdfDecoder pdf = new PdfDecoder(true);
         pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
-        pdf.openPdfFileFromInputStream(examPaper.getPdf(), true);
+        InputStream is = new ByteArrayInputStream(examPaper.getPdf());
+        pdf.openPdfFileFromInputStream(is, true);
 
         ArrayList<BufferedImage> pageImages = new ArrayList<>();
         for (int i = 1; i <= pdf.getPageCount(); i++) {

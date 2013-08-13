@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
