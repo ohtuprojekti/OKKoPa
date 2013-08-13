@@ -58,7 +58,7 @@ Näemmä hyvin.
     <!-- Save exam papers with unreadable qr-codes. -->
     <entry key="exampaper.saveunreadable">true</entry>
     <entry key="exampaper.saveunreadablefolder">errorpdfs</entry>
-    <entry key="exampaper.deleteunreadableafterdays">14<entry>
+    <entry key="exampaper.deleteunreadableafterdays">14</entry>
 
     <!-- Time after which email send is not retried and file will be deleted. -->
     <entry key="mail.send.retryexpirationminutes">1</entry>
