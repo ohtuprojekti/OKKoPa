@@ -1,6 +1,7 @@
 package fi.helsinki.cs.okkopa;
 
 import com.unboundid.ldap.sdk.LDAPException;
+import fi.helsinki.cs.okkopa.database.FailedEmailDatabase;
 import fi.helsinki.cs.okkopa.database.QRCodeDatabase;
 import fi.helsinki.cs.okkopa.delete.ErrorPDFRemover;
 import fi.helsinki.cs.okkopa.delete.Remover;
@@ -11,11 +12,12 @@ import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.ldap.LdapConnector;
 import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
+import fi.helsinki.cs.okkopa.model.FailedEmail;
 import fi.helsinki.cs.okkopa.model.Student;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -47,15 +49,15 @@ public class OkkopaRunner implements Runnable {
     private Saver saver;
     private final String saveRetryFolder;
     // Used with email retry
-    private boolean retrying;
-    private boolean sent;
     private int retryExpirationMinutes;
     private Remover errorPDFRemover;
+    private FailedEmailDatabase failedEmailDatabase;
 
     @Autowired
     public OkkopaRunner(EmailRead server, ExamPaperSender sender,
             PDFProcessor pDFProcessor, Settings settings,
-            QRCodeDatabase okkopaDatabase, LdapConnector ldapConnector, Saver saver) {
+            QRCodeDatabase okkopaDatabase, LdapConnector ldapConnector, Saver saver,
+            FailedEmailDatabase failedEmailDatabase) {
         this.server = server;
         this.sender = sender;
         this.pDFProcessor = pDFProcessor;
@@ -68,18 +70,15 @@ public class OkkopaRunner implements Runnable {
         saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
         logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
         retryExpirationMinutes = Integer.parseInt(settings.getSettings().getProperty("mail.send.retryexpirationminutes"));
-        retrying = false;
-        sent = true;
         this.errorPDFRemover = new ErrorPDFRemover(settings);
+        this.failedEmailDatabase = failedEmailDatabase;
     }
 
     @Override
     public void run() {
         LOGGER.debug("Poistetaan vanhoja epäonnistuneita viestejä");
         errorPDFRemover.deleteOldMessages();
-        retrying = true;
         retryFailedEmails();
-        retrying = false;
         try {
             server.connect();
             LOGGER.debug("Kirjauduttu sisään.");
@@ -141,7 +140,7 @@ public class OkkopaRunner implements Runnable {
             logException(ex);
             if (saveOnExamPaperPDFError) {
                 try {
-                    LOGGER.debug("Tallennetaan virheellistä pdf tiedostoa kansioon "+saveErrorFolder);
+                    LOGGER.debug("Tallennetaan virheellistä pdf tiedostoa kansioon " + saveErrorFolder);
                     saver.saveInputStream(examPaper.getPdf(), saveErrorFolder, "" + System.currentTimeMillis() + ".pdf");
                 } catch (FileAlreadyExistsException ex1) {
                     java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
@@ -169,7 +168,7 @@ public class OkkopaRunner implements Runnable {
         // TODO remove when ldap has been implemented.
         //examPaper.setStudent(new Student(currentUserId, "okkopa.2013@gmail.com", "dummystudentnumber"));
 
-        sendEmail(examPaper);
+        sendEmail(examPaper, true);
         LOGGER.debug("Koepaperi lähetetty sähköpostilla.");
         if (courseInfo != null && saveToTikli) {
             saveToTikli(examPaper);
@@ -187,21 +186,15 @@ public class OkkopaRunner implements Runnable {
         LOGGER.info("Tässä vaiheessa tallennettaisiin paperit Tikliin");
     }
 
-    private void sendEmail(ExamPaper examPaper) {
+    private void sendEmail(ExamPaper examPaper, boolean saveOnError) {
         try {
             sender.send(examPaper);
-            sent = true;
         } catch (MessagingException ex) {
-            if (!retrying) {
-                LOGGER.debug("Sähköpostin lähetys epäonnistui. Tallennetaan PDF-liite levylle.");
-                try {
-                    saver.saveInputStream(examPaper.getPdf(), saveRetryFolder, "" + System.currentTimeMillis() + ".pdf");
-                } catch (FileAlreadyExistsException ex1) {
-                    logException(ex1);
-                }
+            LOGGER.debug("Sähköpostin lähetys epäonnistui. Tallennetaan PDF-liite levylle.");
+            if (saveOnError) {
+                saveFailedEmail(examPaper);
             }
             logException(ex);
-            sent = false;
         }
     }
 
@@ -221,6 +214,17 @@ public class OkkopaRunner implements Runnable {
         return qrcode;
     }
 
+    private void saveFailedEmail(ExamPaper examPaper) {
+        try {
+            String filename = "" + System.currentTimeMillis() + ".pdf";
+            saver.saveInputStream(examPaper.getPdf(), saveRetryFolder, filename);
+            failedEmailDatabase.addFailedEmail(examPaper.getStudent().getEmail(), filename);
+        } catch (FileAlreadyExistsException | SQLException ex1) {
+            logException(ex1);
+            // TODO if one fails what then?
+        }
+    }
+
     private void retryFailedEmails() {
         // Get failed email send attachments (PDF-files)
         LOGGER.debug("Yritetään lähettää sähköposteja uudelleen.");
@@ -229,22 +233,32 @@ public class OkkopaRunner implements Runnable {
             LOGGER.debug("Ei uudelleenlähetettävää.");
             return;
         };
-        LOGGER.debug(fileList.size() + " uudelleenlähetettävää säilössä.");
-        for (File pdf : fileList) {
-            FileInputStream fis;
-            try {
-                fis = new FileInputStream(pdf);
-            } catch (FileNotFoundException ex) {
-                logException(ex);
-                continue;
-            }
-            // Send each single PDF through the whole process.
-            processAttachment(fis);
-            IOUtils.closeQuietly(fis);
-
-            long fileAge = (System.currentTimeMillis() - pdf.lastModified()) / 60000;
-            if (sent || fileAge > retryExpirationMinutes) {
-                pdf.delete();
+        List<FailedEmail> failedEmails;
+        try {
+            failedEmails = failedEmailDatabase.listAll();
+        } catch (SQLException ex) {
+            logException(ex);
+            return;
+        }
+        for (FailedEmail failedEmail : failedEmails) {
+            for (File pdf : fileList) {
+                if (failedEmail.getFilename().equals(pdf.getName())) {
+                    try {
+                        FileInputStream fis = new FileInputStream(pdf);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        IOUtils.copy(fis, bos);
+                        ExamPaper examPaper = new ExamPaper();
+                        examPaper.setPdf(bos.toByteArray());
+                        examPaper.setStudent(new Student());
+                        examPaper.getStudent().setEmail(failedEmail.getReceiverEmail());
+                        sendEmail(examPaper, false);
+                        IOUtils.closeQuietly(fis);
+                        // TODO expiration time and so on
+                    } catch (Exception ex) {
+                        logException(ex);
+                        continue;
+                    }
+                }
             }
         }
     }
