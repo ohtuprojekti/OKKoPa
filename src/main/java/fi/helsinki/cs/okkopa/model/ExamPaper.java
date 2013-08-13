@@ -1,8 +1,6 @@
 package fi.helsinki.cs.okkopa.model;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -13,8 +11,8 @@ public class ExamPaper {
     private byte[] pdf;
     private String QRCodeString;
     private List<BufferedImage> pageImages;
-    private InputStream pdfStream;
     private Student student;
+    private CourseInfo courseInfo;
     
     public void setStudent(Student student) {
         this.student = student;
@@ -40,18 +38,19 @@ public class ExamPaper {
         this.pageImages = pageImages;
     }
 
-//    public void addPageImage(BufferedImage pageAsImage) {
-//        if (pageImages == null) {
-//            this.pageImages = new ArrayList<>();
-//        }
-//        this.pageImages.add(pageAsImage);
-//    }
-    
-    public InputStream getPdf() {
-        return new ByteArrayInputStream(pdf);
+    public byte[] getPdf() {
+        return pdf;
     }
 
     public void setPdf(byte[] pdf) {
         this.pdf = pdf;
+    }
+
+    public CourseInfo getCourseInfo() {
+        return courseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
     }
 }

@@ -1,16 +1,14 @@
-package fi.helsinki.cs.okkopa;
+package fi.helsinki.cs.okkopa.main;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.springframework.stereotype.Component;
 
 /**
  * Manages and reads XML files.
  */
-
 public class Settings {
 
     public Settings(String fileName) throws FileNotFoundException, IOException {

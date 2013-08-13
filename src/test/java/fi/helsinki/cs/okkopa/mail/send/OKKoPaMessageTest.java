@@ -3,7 +3,7 @@ package fi.helsinki.cs.okkopa.mail.send;
 import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;

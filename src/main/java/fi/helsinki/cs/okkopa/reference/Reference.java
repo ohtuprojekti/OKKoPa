@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.reference;
 
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 
 public class Reference {
     private final ReferenceNumber number;

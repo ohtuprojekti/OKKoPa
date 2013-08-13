@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa;
+package fi.helsinki.cs.okkopa.main;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,6 +11,7 @@ public class OkkopaMain {
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-context.xml");
         OkkopaRunner runner = (OkkopaRunner) ctx.getBean("okkopaRunner");
+        runner.run();
         Settings settings = (Settings) ctx.getBean("productionSettings");
         int minutesBetweenRuns = Integer.parseInt(settings.getSettings().getProperty("main.minutesbetweenruns"));
         ScheduledExecutorService scheduler =

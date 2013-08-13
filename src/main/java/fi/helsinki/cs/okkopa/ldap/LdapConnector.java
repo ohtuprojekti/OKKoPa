@@ -24,7 +24,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.net.SocketFactory;
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;

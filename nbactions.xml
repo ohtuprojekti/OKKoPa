@@ -7,7 +7,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xmx256m -classpath %classpath ${packageClassName}</exec.args>
+                <exec.args>-Xmx256m -classpath %classpath fi.helsinki.cs.okkopa.main.OkkopaMain</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

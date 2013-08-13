@@ -4,6 +4,7 @@
  */
 package fi.helsinki.cs.okkopa;
 
+import fi.helsinki.cs.okkopa.main.Settings;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.junit.After;
