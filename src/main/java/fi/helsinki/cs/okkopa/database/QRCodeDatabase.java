@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OkkopaDatabase {
+public class QRCodeDatabase {
 
     private Dao<QRCode, String> qrcodeDao;
     private ConnectionSource connectionSource;
 
     @Autowired
-    public OkkopaDatabase(Settings settings) throws SQLException {
+    public QRCodeDatabase(Settings settings) throws SQLException {
         String databaseUrl = settings.getSettings().getProperty("database.url");
         String username = settings.getSettings().getProperty("database.user");
         String password = settings.getSettings().getProperty("database.password");
