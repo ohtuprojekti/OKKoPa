@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
+import org.easymock.EasyMock;
 import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,6 +73,7 @@ public class OkkopaRunner implements Runnable {
         sent = true;
         this.errorPDFRemover = new ErrorPDFRemover(settings);
     }
+
 
     @Override
     public void run() {
