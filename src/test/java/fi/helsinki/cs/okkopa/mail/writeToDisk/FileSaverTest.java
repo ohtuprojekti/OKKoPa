@@ -4,6 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.mail.writeToDisk;
 
+import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;

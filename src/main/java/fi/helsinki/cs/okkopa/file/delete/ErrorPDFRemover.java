@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fi.helsinki.cs.okkopa.delete;
+package fi.helsinki.cs.okkopa.file.delete;
 
 import fi.helsinki.cs.okkopa.main.Settings;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
+import fi.helsinki.cs.okkopa.file.save.FileSaver;
+import fi.helsinki.cs.okkopa.file.save.Saver;
 import java.io.File;
 import java.util.ArrayList;
 

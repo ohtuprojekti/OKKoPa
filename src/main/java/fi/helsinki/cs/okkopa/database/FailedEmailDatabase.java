@@ -38,10 +38,7 @@ public class FailedEmailDatabase {
         connectionSource.close();
     }
 
-    public void addFailedEmail(String email, String filename) throws SQLException {
-        FailedEmail failedEmail = new FailedEmail();
-        failedEmail.setFilename(filename);
-        failedEmail.setReceiverEmail(email);
+    public void addFailedEmail(FailedEmail failedEmail) throws SQLException {
         emailDao.create(failedEmail);
     }
     
