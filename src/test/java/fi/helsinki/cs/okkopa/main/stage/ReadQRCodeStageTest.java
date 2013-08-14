@@ -9,7 +9,11 @@ import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
+import fi.helsinki.cs.okkopa.model.FailedEmail;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
+import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
+import javax.mail.MessagingException;
 import org.jpedal.exception.PdfException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -29,6 +33,7 @@ public class ReadQRCodeStageTest {
     private Saver saverMock;
     private ExamPaper examPaperMock;
     private Stage nextSatageMock;
+    private String saveRetryFolder;
     
     public ReadQRCodeStageTest() {
     }
@@ -49,6 +54,8 @@ public class ReadQRCodeStageTest {
         exceptionLoggerMock = mock(ExceptionLogger.class);
         examPaperMock = mock(ExamPaper.class);
         nextSatageMock = mock(Stage.class);
+        saveRetryFolder = "testi";
+        when(settingsMock.getProperty("mail.send.retrysavefolder")).thenReturn(saveRetryFolder);
         readqrCodeStage = new ReadQRCodeStage(saverMock, pdfProcessorMock, exceptionLoggerMock, settingsMock);
         readqrCodeStage.setNext(nextSatageMock);
     }
@@ -68,4 +75,16 @@ public class ReadQRCodeStageTest {
         verify(nextSatageMock, times(1)).process(examPaperMock);
         
     }
+    @Test
+    public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException{
+        doThrow(new MessagingException()).when(examPaperMock).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
+        doThrow(new MessagingException()).when(examPaperMock).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
+        readqrCodeStage.process(examPaperMock);
+         verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
+        verify(examPaperMock, times(1)).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
+        verify(exceptionLoggerMock, times(1)).logException(any(Exception.class));
+        verify(saverMock, times(1)).saveInputStream(any(InputStream.class), eq(saveRetryFolder), anyString());
+        verify(nextSatageMock, times(1)).process(examPaperMock);
+    }
+            
 }
