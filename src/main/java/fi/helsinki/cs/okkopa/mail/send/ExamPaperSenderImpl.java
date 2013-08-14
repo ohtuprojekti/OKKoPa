@@ -18,24 +18,21 @@ import org.springframework.stereotype.Component;
 /**
  * Send an exampaper.
  */
-
 @Component
-public class ExamPaperSenderImpl implements ExamPaperSender {
+public class ExamPaperSenderImpl implements EmailSender {
 
-    
     private Properties properties;
     private String sender;
     private String subject;
     private String text;
     private String attachmentName;
-    
-    
+
     private ExamPaperSenderImpl() {
-        
     }
-    
+
     /**
-     * Initializes the object. 
+     * Initializes the object.
+     *
      * @param settings Settings to use for sending email.
      */
     @Autowired
@@ -48,25 +45,18 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         if (!attachmentName.endsWith(".pdf")) {
             attachmentName += ".pdf";
         }
-    }    
-    
-    /**
-     * @param examPaper
-     * @throws MessagingException 
-     */
+    }
+
     @Override
-    public void send(ExamPaper examPaper) throws MessagingException {
-        OKKoPaMessage msg = new OKKoPaMessage(examPaper.getStudent().getEmail(), sender, properties);
+    public void send(String receiverEmailAddress, InputStream attachment) throws MessagingException {
+        OKKoPaMessage msg = new OKKoPaMessage(receiverEmailAddress, sender, properties);
         msg.setSubject(subject);
         msg.setText(text);
         try {
-            InputStream is = new ByteArrayInputStream(examPaper.getPdf());
-            msg.addPDFAttachment(is, attachmentName);
-            IOUtils.closeQuietly(is);
+            msg.addPDFAttachment(attachment, attachmentName);
         } catch (IOException ex) {
             throw new MessagingException("Error while reading pdf stream");
         }
         msg.send();
     }
-    
 }

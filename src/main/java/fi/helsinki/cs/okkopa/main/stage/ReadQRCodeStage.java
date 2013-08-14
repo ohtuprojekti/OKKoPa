@@ -2,7 +2,7 @@ package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.mail.read.EmailRead;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
+import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.OkkopaRunner;
 import fi.helsinki.cs.okkopa.main.Settings;

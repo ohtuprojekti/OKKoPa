@@ -2,6 +2,7 @@ package fi.helsinki.cs.okkopa.model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import java.util.Date;
 
 @DatabaseTable(tableName = "failedEmail")
 public class FailedEmail {
@@ -10,6 +11,8 @@ public class FailedEmail {
     private String filename;
     @DatabaseField(columnName = "receiverEmail")
     private String receiverEmail;
+    @DatabaseField(columnName = "failTime")
+    private Date failTime;
 
     public FailedEmail() {
     }
@@ -28,5 +31,13 @@ public class FailedEmail {
 
     public void setReceiverEmail(String receiverEmail) {
         this.receiverEmail = receiverEmail;
+    }
+
+    public Date getFailTime() {
+        return failTime;
+    }
+
+    public void setFailTime(Date failTime) {
+        this.failTime = failTime;
     }
 }
