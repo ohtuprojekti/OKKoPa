@@ -1,4 +1,4 @@
-package fi.helsinki.cs.okkopa.mail.writeToDisk;
+package fi.helsinki.cs.okkopa.file.save;
 
 import java.io.File;
 import java.io.InputStream;

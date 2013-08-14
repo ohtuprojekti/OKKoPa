@@ -4,9 +4,11 @@
  */
 package fi.helsinki.cs.okkopa.delete;
 
+import fi.helsinki.cs.okkopa.file.delete.ErrorPDFRemover;
+import fi.helsinki.cs.okkopa.file.delete.Remover;
 import fi.helsinki.cs.okkopa.main.Settings;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.FileSaver;
-import fi.helsinki.cs.okkopa.mail.writeToDisk.Saver;
+import fi.helsinki.cs.okkopa.file.save.FileSaver;
+import fi.helsinki.cs.okkopa.file.save.Saver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

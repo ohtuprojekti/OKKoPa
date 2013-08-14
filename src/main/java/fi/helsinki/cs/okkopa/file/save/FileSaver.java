@@ -1,5 +1,5 @@
 
-package fi.helsinki.cs.okkopa.mail.writeToDisk;
+package fi.helsinki.cs.okkopa.file.save;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,8 +22,7 @@ public class FileSaver implements Saver {
     }
     
     /**
-     * Sort all of files in folder by lastModified date..
-     *
+     * Lists files in a specific folder
      * @return sorted list of files in folder
      */
     @Override

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.main.Settings;
@@ -18,28 +14,25 @@ import org.springframework.stereotype.Component;
 /**
  * Send an exampaper.
  */
-
 @Component
-public class ExamPaperSenderImpl implements ExamPaperSender {
+public class EmailSenderImpl implements EmailSender {
 
-    
     private Properties properties;
     private String sender;
     private String subject;
     private String text;
     private String attachmentName;
-    
-    
-    private ExamPaperSenderImpl() {
-        
+
+    private EmailSenderImpl() {
     }
-    
+
     /**
-     * Initializes the object. 
+     * Initializes the object.
+     *
      * @param settings Settings to use for sending email.
      */
     @Autowired
-    public ExamPaperSenderImpl(Settings settings) {
+    public EmailSenderImpl(Settings settings) {
         this.properties = settings.getSettings();
         this.sender = properties.getProperty("mail.message.replyto");
         this.subject = properties.getProperty("mail.message.topic");
@@ -48,25 +41,18 @@ public class ExamPaperSenderImpl implements ExamPaperSender {
         if (!attachmentName.endsWith(".pdf")) {
             attachmentName += ".pdf";
         }
-    }    
-    
-    /**
-     * @param examPaper
-     * @throws MessagingException 
-     */
+    }
+
     @Override
-    public void send(ExamPaper examPaper) throws MessagingException {
-        OKKoPaMessage msg = new OKKoPaMessage(examPaper.getStudent().getEmail(), sender, properties);
+    public void send(String receiverEmailAddress, InputStream attachment) throws MessagingException {
+        OKKoPaMessage msg = new OKKoPaMessage(receiverEmailAddress, sender, properties);
         msg.setSubject(subject);
         msg.setText(text);
         try {
-            InputStream is = new ByteArrayInputStream(examPaper.getPdf());
-            msg.addPDFAttachment(is, attachmentName);
-            IOUtils.closeQuietly(is);
+            msg.addPDFAttachment(attachment, attachmentName);
         } catch (IOException ex) {
             throw new MessagingException("Error while reading pdf stream");
         }
         msg.send();
     }
-    
 }
