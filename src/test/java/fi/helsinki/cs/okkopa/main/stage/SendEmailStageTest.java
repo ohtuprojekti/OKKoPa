@@ -5,7 +5,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.database.FailedEmailDatabase;
-import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -13,18 +12,15 @@ import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.model.FailedEmail;
 import fi.helsinki.cs.okkopa.model.Student;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.mail.MessagingException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SendEmailStageTest {
