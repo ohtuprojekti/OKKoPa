@@ -12,7 +12,7 @@ public class ExceptionLogger {
 
     @Autowired
     public ExceptionLogger(Settings settings) {
-        logCompleteExceptionStack = Boolean.parseBoolean(settings.getSettings().getProperty("logger.logcompletestack"));
+        logCompleteExceptionStack = Boolean.parseBoolean(settings.getProperty("logger.logcompletestack"));
     }
 
     public void logException(Exception ex) {

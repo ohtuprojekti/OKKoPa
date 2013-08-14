@@ -8,7 +8,7 @@ public class Reference {
     private final ReferenceString letters;
     
     public Reference(Settings settings) {
-        this.size = Integer.valueOf(settings.getSettings().getProperty("reference.anonymous.size"));
+        this.size = Integer.valueOf(settings.getProperty("reference.anonymous.size"));
         
         this.number = new ReferenceNumber(size);
         this.letters = new ReferenceString(size);
