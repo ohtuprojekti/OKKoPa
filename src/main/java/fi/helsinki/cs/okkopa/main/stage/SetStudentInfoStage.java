@@ -25,10 +25,10 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
 
     @Override
     public void process(ExamPaper examPaper) {
-        Student student = new Student();
-        examPaper.setStudent(student);
         try {
             String userId = fetchUserId(examPaper.getQRCodeString());
+            Student student = new Student();
+            examPaper.setStudent(student);
             student.setUsername(userId);
             // TODO katenointi
             student.setEmail("okkopa.2013@gmail.com");
