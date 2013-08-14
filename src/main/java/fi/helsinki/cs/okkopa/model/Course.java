@@ -7,23 +7,58 @@ package fi.helsinki.cs.okkopa.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "")
+@DatabaseTable(tableName = "KURSSI")
 public class Course {
-    
+
     @DatabaseField(columnName = "KURSSIKOODI")
     private String courseCode;
     @DatabaseField(columnName = "LUKUKAUSI")
     private String period;
     @DatabaseField(columnName = "LUKUVUOSI")
-    private String year;
+    private int year;
     @DatabaseField(columnName = "TYYPPI")
     private String type;
     @DatabaseField(columnName = "KURSSI_NRO")
-    private String courseNumber;
+    private int courseNumber;
+    @DatabaseField(columnName = "NIMI")
+    private String name;
 
-    
-    
     public Course() {
     }
 
+    public Course(String courseCode, String period, int year, String type, int courseNumber) {
+        this.courseCode = courseCode;
+        this.period = period;
+        this.year = year;
+        this.type = type;
+        this.courseNumber = courseNumber;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getCourseNumber() {
+        return courseNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
