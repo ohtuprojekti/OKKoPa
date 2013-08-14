@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
 
     private static Logger LOGGER = Logger.getLogger(SaveToTikliStage.class.getName());
-    private boolean saveToTikli;
+    private boolean tikliEnabled;
     private LdapConnector ldapConnector;
     private ExceptionLogger exceptionLogger;
 
@@ -23,13 +23,13 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
     public SaveToTikliStage(LdapConnector ldapConnector, Settings settings,
             ExceptionLogger exceptionLogger) {
         this.ldapConnector = ldapConnector;
-        saveToTikli = Boolean.parseBoolean(settings.getProperty("tikli.enable"));
+        tikliEnabled = Boolean.parseBoolean(settings.getProperty("tikli.enable"));
         this.exceptionLogger = exceptionLogger;
     }
 
     @Override
     public void process(ExamPaper examPaper) {
-        if (examPaper.getCourseInfo() != null && saveToTikli) {
+        if (examPaper.getCourseInfo() != null && tikliEnabled) {
             // Get student number from LDAP:
             try {
                 ldapConnector.setStudentInfo(examPaper.getStudent());
