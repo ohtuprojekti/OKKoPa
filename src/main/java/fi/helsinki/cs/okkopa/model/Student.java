@@ -7,8 +7,9 @@ package fi.helsinki.cs.okkopa.model;
 /**
  *
  * @author phemmila
- */
+ **/
 public class Student {
+    
     private String email;
     private String studentNumber;
     private String username;

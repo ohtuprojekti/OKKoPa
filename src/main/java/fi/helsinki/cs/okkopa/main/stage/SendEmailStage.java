@@ -40,7 +40,7 @@ public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
             Settings settings, Saver fileSaver, FailedEmailDatabase failedEmailDatabase) {
         this.emailSender = emailSender;
         this.exceptionLogger = exceptionLogger;
-        saveRetryFolder = settings.getSettings().getProperty("mail.send.retrysavefolder");
+        saveRetryFolder = settings.getProperty("mail.send.retrysavefolder");
         this.fileSaver = fileSaver;
         this.failedEmailDatabase = failedEmailDatabase;
         //        retryExpirationMinutes = Integer.parseInt(settings.getSettings().getProperty("mail.send.retryexpirationminutes"));

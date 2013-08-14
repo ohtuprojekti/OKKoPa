@@ -27,8 +27,8 @@ public class ErrorPDFRemover implements Remover {
      * @param settings Settings that are loaded from a settings file. Settings must contain file age and folder path.
      */
     public ErrorPDFRemover(Settings settings) {
-        this.saveFolder = settings.getSettings().getProperty("exampaper.saveunreadablefolder");
-        this.saveDays = Integer.parseInt(settings.getSettings().getProperty("exampaper.deleteunreadableafterdays"));
+        this.saveFolder = settings.getProperty("exampaper.saveunreadablefolder");
+        this.saveDays = Integer.parseInt(settings.getProperty("exampaper.deleteunreadableafterdays"));
         this.saver = new FileSaver();
         
     }

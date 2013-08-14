@@ -33,7 +33,7 @@ public class EmailSenderImpl implements EmailSender {
      */
     @Autowired
     public EmailSenderImpl(Settings settings) {
-        this.properties = settings.getSettings();
+        this.properties = settings;
         this.sender = properties.getProperty("mail.message.replyto");
         this.subject = properties.getProperty("mail.message.topic");
         this.text = properties.getProperty("mail.message.body");
