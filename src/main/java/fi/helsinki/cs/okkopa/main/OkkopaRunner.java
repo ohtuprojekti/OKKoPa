@@ -43,5 +43,4 @@ public class OkkopaRunner implements Runnable {
 //        LOGGER.debug("Poistetaan vanhoja epäonnistuneita viestejä");
 //        errorPDFRemover.deleteOldMessages();
     }
-
 }
