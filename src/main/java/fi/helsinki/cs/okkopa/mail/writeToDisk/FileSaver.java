@@ -22,8 +22,7 @@ public class FileSaver implements Saver {
     }
     
     /**
-     * Sort all of files in folder by lastModified date..
-     *
+     * Lists files in a specific folder
      * @return sorted list of files in folder
      */
     @Override
