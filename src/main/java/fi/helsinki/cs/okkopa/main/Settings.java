@@ -9,21 +9,17 @@ import java.util.Properties;
 /**
  * Manages and reads XML files.
  */
-public class Settings {
-
+public class Settings extends Properties{
+  
     public Settings(String fileName) throws FileNotFoundException, IOException {
-        this.settings = readSettingXML(fileName);
+        Properties props = readSettingXML(fileName);
         
         try {
-            this.settings.putAll(readSettingXML("passwords.xml"));
+            props.putAll(readSettingXML("passwords.xml"));
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
         }
-    }
-    private Properties settings;
-
-    public Properties getSettings() {
-        return this.settings;
+        this.putAll(props);
     }
 
     private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {

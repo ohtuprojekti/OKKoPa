@@ -34,8 +34,8 @@ public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
         this.exceptionLogger = exceptionLogger;
         this.fileSaver = fileSaver;
         this.pdfProcessor = pdfProcessor;
-        saveErrorFolder = settings.getSettings().getProperty("exampaper.saveunreadablefolder");
-        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getSettings().getProperty("exampaper.saveunreadable"));
+        saveErrorFolder = settings.getProperty("exampaper.saveunreadablefolder");
+        saveOnExamPaperPDFError = Boolean.parseBoolean(settings.getProperty("exampaper.saveunreadable"));
     }
 
     @Override

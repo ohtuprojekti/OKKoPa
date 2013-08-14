@@ -14,7 +14,6 @@ import fi.helsinki.cs.okkopa.model.CourseDbModel;
 import fi.helsinki.cs.okkopa.model.FeedbackDbModel;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.StudentDbModel;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -40,12 +39,13 @@ public class OracleConnector {
 
     @Autowired
     public OracleConnector(Settings settings) {
-        this.pwd = settings.getSettings().getProperty("database.oracle.password");
-        this.user = settings.getSettings().getProperty("database.oracle.user");
-        this.host = settings.getSettings().getProperty("database.oracle.host");
-        this.port = settings.getSettings().getProperty("database.oracle.port");
-        this.instance = settings.getSettings().getProperty("database.oracle.instance");
-        this.yearOffset = Integer.parseInt(settings.getSettings().getProperty("database.oracle.showcoursesforyears"));
+        this.pwd = settings.getProperty("database.oracle.password");
+        this.user = settings.getProperty("database.oracle.user");
+        this.host = settings.getProperty("database.oracle.host");
+        this.port = settings.getProperty("database.oracle.port");
+        this.instance = settings.getProperty("database.oracle.instance");
+        this.yearOffset = Integer.parseInt(settings.getProperty("database.oracle.showcoursesforyears"));
+
         this.url = "jdbc:oracle:thin:@" + this.host + ":" + this.port + ":" + this.instance;
     }
 
@@ -54,15 +54,21 @@ public class OracleConnector {
     }
 
     public List<CourseDbModel> getCourseList() throws SQLException {
-        this.courseDbModel = DaoManager.createDao(connectionSource, CourseDbModel.class);
-        int startYear, endYear;
-        endYear = Calendar.getInstance().get(Calendar.YEAR);
-        startYear = endYear-this.yearOffset;
-        QueryBuilder<CourseDbModel, Object> queryBuilder = this.courseDbModel.queryBuilder();
-        PreparedQuery prepQuery = queryBuilder.where().between("LUKUVUOSI", (Integer) startYear, (Integer) endYear).prepare();
-        return this.courseDbModel.query(prepQuery);
+        try {
+            this.courseDbModel = DaoManager.createDao(connectionSource, CourseDbModel.class);
+            int startYear, endYear;
+            endYear = Calendar.getInstance().get(Calendar.YEAR);
+            startYear = endYear - this.yearOffset;
+            QueryBuilder<CourseDbModel, Object> queryBuilder = this.courseDbModel.queryBuilder();
+            PreparedQuery prepQuery = queryBuilder.where().between("LUKUVUOSI", (Integer) startYear, (Integer) endYear).prepare();
+            this.connectionSource.close();
+            return this.courseDbModel.query(prepQuery);
+        } catch (SQLException ex) {
+            this.connectionSource.close();
+            throw ex;
+        }
     }
-    
+
     public boolean courseExists(CourseDbModel course) throws SQLException {
         try {
             this.connect();
@@ -102,15 +108,20 @@ public class OracleConnector {
             throw ex;
         }
     }
-       public static void main(String[] args) {
+    
+    public void insertFeedBackRow() {
+        
+    }
+    
+    /*public static void main(String[] args) {
      try {
      OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-//    System.out.println(oc.courseExists(new CourseDbModel("581386","S",2000,"L",2)));
+     //    System.out.println(oc.courseExists(new CourseDbModel("581386","S",2000,"L",2)));
      System.out.println("Should be true:"+oc.studentExists(new StudentDbModel("011442521")));
      System.out.println("Should be false:"+oc.studentExists(new StudentDbModel("-")));
      System.out.println(oc.getCourseList().size());
      } catch (SQLException | IOException ex) {
      System.out.println(ex.getMessage());
      }
-     }
+     }*/
 }

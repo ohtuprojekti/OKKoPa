@@ -23,7 +23,7 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
     public SaveToTikliStage(LdapConnector ldapConnector, Settings settings,
             ExceptionLogger exceptionLogger) {
         this.ldapConnector = ldapConnector;
-        saveToTikli = Boolean.parseBoolean(settings.getSettings().getProperty("tikli.enable"));
+        saveToTikli = Boolean.parseBoolean(settings.getProperty("tikli.enable"));
         this.exceptionLogger = exceptionLogger;
     }
 
