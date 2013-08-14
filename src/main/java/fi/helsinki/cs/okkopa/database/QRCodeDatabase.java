@@ -20,9 +20,9 @@ public class QRCodeDatabase {
 
     @Autowired
     public QRCodeDatabase(Settings settings) throws SQLException {
-        String databaseUrl = settings.getSettings().getProperty("database.h2.url");
-        String username = settings.getSettings().getProperty("database.h2.user");
-        String password = settings.getSettings().getProperty("database.h2.password");
+        String databaseUrl = settings.getProperty("database.h2.url");
+        String username = settings.getProperty("database.h2.user");
+        String password = settings.getProperty("database.h2.password");
 
         // create a connection source to our database
         connectionSource = new JdbcConnectionSource(databaseUrl, username, password);

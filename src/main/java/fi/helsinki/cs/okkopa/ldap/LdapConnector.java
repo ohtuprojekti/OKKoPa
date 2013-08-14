@@ -32,16 +32,16 @@ public class LdapConnector {
         this.settings = settings;
         this.searchFilter = "(uid=%s)";
         this.baseOU = "dc=helsinki,dc=fi";
-        this.bindDN = settings.getSettings().getProperty("ldap.user");
-        this.bindPWD = settings.getSettings().getProperty("ldap.password");
+        this.bindDN = settings.getProperty("ldap.user");
+        this.bindPWD = settings.getProperty("ldap.password");
     }
 
     public Student setStudentInfo(Student student) throws NotFoundException, GeneralSecurityException, LDAPException {
         LDAPConnection ldc = null;
 
         try {
-            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getSettings().getProperty("ldap.keystore.file"), settings.getSettings().getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
-            ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getSettings().getProperty("ldap.server.address"), Integer.parseInt(settings.getSettings().getProperty("ldap.server.port")));
+            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getProperty("ldap.keystore.file"), settings.getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
+            ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getProperty("ldap.server.address"), Integer.parseInt(settings.getProperty("ldap.server.port")));
 
             SimpleBindRequest bindReq = new SimpleBindRequest(bindDN, bindPWD);
             bindReq.setResponseTimeoutMillis(1000);

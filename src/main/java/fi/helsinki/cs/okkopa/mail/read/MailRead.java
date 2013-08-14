@@ -28,12 +28,12 @@ public class MailRead implements EmailRead {
 
     @Autowired
     public MailRead(Settings settings) {
-        IMAPaddress = settings.getSettings().getProperty("mail.imap.host");
-        username = settings.getSettings().getProperty("mail.imap.user");
-        password = settings.getSettings().getProperty("mail.imap.password");
-        port = Integer.parseInt(settings.getSettings().getProperty("mail.imap.port"));
-        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getSettings().getProperty("mail.imap.processed.keepdays"));
-        processedFolderToEmpty = settings.getSettings().getProperty("mail.imap.processed.name");
+        IMAPaddress = settings.getProperty("mail.imap.host");
+        username = settings.getProperty("mail.imap.user");
+        password = settings.getProperty("mail.imap.password");
+        port = Integer.parseInt(settings.getProperty("mail.imap.port"));
+        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getProperty("mail.imap.processed.keepdays"));
+        processedFolderToEmpty = settings.getProperty("mail.imap.processed.name");
     }
 
     @Override

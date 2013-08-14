@@ -13,7 +13,7 @@ public class OkkopaMain {
         OkkopaRunner runner = (OkkopaRunner) ctx.getBean("okkopaRunner");
         runner.run();
         Settings settings = (Settings) ctx.getBean("productionSettings");
-        int minutesBetweenRuns = Integer.parseInt(settings.getSettings().getProperty("main.minutesbetweenruns"));
+        int minutesBetweenRuns = Integer.parseInt(settings.getProperty("main.minutesbetweenruns"));
         ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
         scheduler.scheduleWithFixedDelay(runner, 0, minutesBetweenRuns, TimeUnit.MINUTES);

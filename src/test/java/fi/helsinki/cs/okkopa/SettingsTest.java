@@ -46,13 +46,13 @@ public class SettingsTest {
 
     @Test
     public void testSettingNotNull() {
-        assertNotNull("Loading \"test.xml\" caused an exception. Check for correct path or whether the file exists.",testSettings.getSettings());
+        assertNotNull("Loading \"test.xml\" caused an exception. Check for correct path or whether the file exists.",testSettings);
     }
   
     
     @Test 
     public void testSettingContainsValues() {
-       assertTrue("test.xml should contain at least 12 key value pairs.",testSettings.getSettings().size() >= 12);
+       assertTrue("test.xml has no content, should contain 11 key value pairs.",testSettings.size() >= 12);
     }
 
 
