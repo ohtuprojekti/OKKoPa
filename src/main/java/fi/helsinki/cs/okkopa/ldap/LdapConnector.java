@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.ldap;
 
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -13,12 +9,11 @@ import com.unboundid.ldap.sdk.SimpleBindRequest;
 import com.unboundid.util.ssl.KeyStoreKeyManager;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -67,7 +62,7 @@ public class LdapConnector {
             String[] strArr = entry.getAttributeValue("schacPersonalUniqueCode").split(":");
             String studentNumber = strArr[strArr.length - 1];
             student.setStudentNumber(studentNumber);
-            LOGGER.log(Level.INFO, "Found student with student number: {0}", studentNumber);
+            LOGGER.info("Found student with student number: " + studentNumber);
 
             return student;
 

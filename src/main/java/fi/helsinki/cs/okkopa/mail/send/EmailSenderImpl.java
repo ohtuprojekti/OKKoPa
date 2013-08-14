@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.mail.send;
 
 import fi.helsinki.cs.okkopa.main.Settings;
@@ -19,7 +15,7 @@ import org.springframework.stereotype.Component;
  * Send an exampaper.
  */
 @Component
-public class ExamPaperSenderImpl implements EmailSender {
+public class EmailSenderImpl implements EmailSender {
 
     private Properties properties;
     private String sender;
@@ -27,7 +23,7 @@ public class ExamPaperSenderImpl implements EmailSender {
     private String text;
     private String attachmentName;
 
-    private ExamPaperSenderImpl() {
+    private EmailSenderImpl() {
     }
 
     /**
@@ -36,7 +32,7 @@ public class ExamPaperSenderImpl implements EmailSender {
      * @param settings Settings to use for sending email.
      */
     @Autowired
-    public ExamPaperSenderImpl(Settings settings) {
+    public EmailSenderImpl(Settings settings) {
         this.properties = settings.getSettings();
         this.sender = properties.getProperty("mail.message.replyto");
         this.subject = properties.getProperty("mail.message.topic");
