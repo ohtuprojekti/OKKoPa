@@ -8,10 +8,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "SUORITUSPALAUTE")
-public class Feedback {
+public class FeedbackDbModel {
 //TODO: Everything
    
-    public Feedback() {
+    public FeedbackDbModel() {
         
     }
 

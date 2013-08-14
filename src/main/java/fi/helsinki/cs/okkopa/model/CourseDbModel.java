@@ -8,7 +8,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "KURSSI")
-public class Course {
+public class CourseDbModel {
 
     @DatabaseField(columnName = "KURSSIKOODI")
     private String courseCode;
@@ -23,10 +23,10 @@ public class Course {
     @DatabaseField(columnName = "NIMI")
     private String name;
 
-    public Course() {
+    public CourseDbModel() {
     }
 
-    public Course(String courseCode, String period, int year, String type, int courseNumber) {
+    public CourseDbModel(String courseCode, String period, int year, String type, int courseNumber) {
         this.courseCode = courseCode;
         this.period = period;
         this.year = year;
@@ -34,6 +34,10 @@ public class Course {
         this.courseNumber = courseNumber;
     }
 
+    public CourseDbModel(int year) {
+        this.year = year;   
+    }
+    
     public String getCourseCode() {
         return courseCode;
     }
