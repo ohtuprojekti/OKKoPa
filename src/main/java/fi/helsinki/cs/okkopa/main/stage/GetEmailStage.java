@@ -4,7 +4,7 @@ import fi.helsinki.cs.okkopa.mail.read.EmailRead;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -30,7 +30,7 @@ public class GetEmailStage extends Stage<Object, InputStream> {
             imapServer.connect();
             LOGGER.debug("Kirjauduttu sisään.");
             while (true) {
-                ArrayList<InputStream> attachments = imapServer.getNextMessagesAttachments();
+                List<InputStream> attachments = imapServer.getNextMessagesAttachments();
                 LOGGER.debug("Vanhimman viestin liitteet haettu");
                 if (attachments == null) {
                     LOGGER.debug("Ei uusia viestejä.");

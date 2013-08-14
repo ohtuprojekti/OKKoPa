@@ -2,7 +2,7 @@ package fi.helsinki.cs.okkopa.mail.read;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 
@@ -28,7 +28,7 @@ public interface EmailRead {
      * @throws MessagingException
      * @throws IOException
      */
-    ArrayList<InputStream> getNextMessagesAttachments() throws MessagingException, IOException;
+    List<InputStream> getNextMessagesAttachments() throws MessagingException, IOException;
     
     /**
      * Deletes old messages from processed folder.
