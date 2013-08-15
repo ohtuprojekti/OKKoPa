@@ -33,10 +33,6 @@ public class CourseDbModel {
         this.type = type;
         this.courseNumber = courseNumber;
     }
-
-    public CourseDbModel(int year) {
-        this.year = year;   
-    }
     
     public String getCourseCode() {
         return courseCode;
