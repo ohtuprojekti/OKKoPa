@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fi.helsinki.cs.okkopa.mail.writeToDisk;
+package fi.helsinki.cs.okkopa.file.save;
 
 import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import java.io.File;

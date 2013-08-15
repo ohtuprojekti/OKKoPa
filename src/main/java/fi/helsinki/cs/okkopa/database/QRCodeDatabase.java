@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QRCodeDatabase {
 
-    private Dao<QRCode, String> qrcodeDao;
+    private Dao<QRCode, String> qrCodeDao;
     private ConnectionSource connectionSource;
 
     @Autowired
@@ -28,36 +28,36 @@ public class QRCodeDatabase {
         connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
 
         // instantiate the dao
-        qrcodeDao = DaoManager.createDao(connectionSource, QRCode.class);
+        qrCodeDao = DaoManager.createDao(connectionSource, QRCode.class);
 
         // if you need to create the 'accounts' table make this call
         TableUtils.createTableIfNotExists(connectionSource, QRCode.class);
     }
 
     public String getUserID(String qrcodeString) throws SQLException, NotFoundException {
-        QRCode qrCode = qrcodeDao.queryForId(qrcodeString);
+        QRCode qrCode = qrCodeDao.queryForId(qrcodeString);
         if (qrCode == null) {
             throw new NotFoundException();
         }
         return qrCode.getUserId();
     }
 
-    boolean addQRCode(String QRCode) throws SQLException {
-        QRCode qrCode = new QRCode(QRCode, "");
+    boolean addQRCode(String qrCodeString) throws SQLException {
+        QRCode qrCode = new QRCode(qrCodeString, "");
 
-        if (qrcodeDao.idExists(QRCode) == false) {
-            qrcodeDao.createIfNotExists(qrCode);
+        if (!qrCodeDao.idExists(qrCodeString)) {
+            qrCodeDao.createIfNotExists(qrCode);
             return true;
         }
         return false;
     }
 
-    boolean addUSer(String QRCode, String UserId) throws SQLException {
-        QRCode qrCode = qrcodeDao.queryForId(QRCode);
+    boolean addUSer(String qrCodeString, String UserId) throws SQLException {
+        QRCode qrCode = qrCodeDao.queryForId(qrCodeString);
 
         if (qrCode.getUserId().equals("")) {
-            qrCode = new QRCode(QRCode, UserId);
-            qrcodeDao.update(qrCode);
+            qrCode = new QRCode(qrCodeString, UserId);
+            qrCodeDao.update(qrCode);
             return true;
         }
         return false;
