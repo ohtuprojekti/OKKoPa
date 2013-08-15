@@ -75,7 +75,7 @@ public class ReadQRCodeStageTest {
         verify(nextSatageMock, times(1)).process(examPaperMock);
         
     }
-    @Test
+    
     public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException{
         doThrow(new MessagingException()).when(examPaperMock).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
         doThrow(new MessagingException()).when(examPaperMock).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
