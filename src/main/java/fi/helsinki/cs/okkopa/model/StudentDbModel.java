@@ -21,9 +21,14 @@ public class StudentDbModel {
     public StudentDbModel() {
         
     }
+   
     
     public StudentDbModel(String studentNumber) {
         this.studentNumber = studentNumber;
+    }
+    
+    public StudentDbModel(Student student) {
+        this(student.getStudentNumber());
     }
 
     public String getStudentNumber() {

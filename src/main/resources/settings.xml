@@ -31,7 +31,6 @@ Näemmä hyvin.
     </entry>
     <entry key="mail.message.topic">Sähköpostin otsikko tähän</entry>
     <entry key="mail.message.replyto">okkopa2.2013@gmail.com</entry>
-    <entry key="mail.message.attachmentname">liite.pdf</entry>
      
     <!-- Database settings -->
     <!-- Url without .h2.db in the end. -->
@@ -65,6 +64,7 @@ Näemmä hyvin.
     <entry key="exampaper.saveunreadable">true</entry>
     <entry key="exampaper.saveunreadablefolder">errorpdfs</entry>
     <entry key="exampaper.deleteunreadableafterdays">14</entry>
+    <entry key="exampaper.attachmentname">exam.pdf</entry>
 
     <!-- Time after which email send is not retried and file will be deleted. -->
     <entry key="mail.send.retryexpirationminutes">1</entry>
@@ -72,6 +72,8 @@ Näemmä hyvin.
      
     <entry key="tikli.retryattempts">1</entry>
     <entry key="tikli.retrydealyinminutes">1</entry>
+    <entry key="tikli.description">Koepaperi / Exam paper</entry>
+    <entry key="tikli.authorid">H_testi</entry>
      
     <entry key="logger.logcompletestack">false</entry>
      

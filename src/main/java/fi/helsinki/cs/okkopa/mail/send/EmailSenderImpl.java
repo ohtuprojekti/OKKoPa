@@ -37,7 +37,7 @@ public class EmailSenderImpl implements EmailSender {
         this.sender = properties.getProperty("mail.message.replyto");
         this.subject = properties.getProperty("mail.message.topic");
         this.text = properties.getProperty("mail.message.body");
-        this.attachmentName = properties.getProperty("mail.message.attachmentname");
+        this.attachmentName = properties.getProperty("exampaper.attachmentname");
         if (!attachmentName.endsWith(".pdf")) {
             attachmentName += ".pdf";
         }

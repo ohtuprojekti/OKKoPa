@@ -26,6 +26,7 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
     @Override
     public void process(ExamPaper examPaper) {
         try {
+            LOGGER.debug("ID: " + examPaper.getQRCodeString());
             String userId = fetchUserId(examPaper.getQRCodeString());
             Student student = new Student();
             examPaper.setStudent(student);

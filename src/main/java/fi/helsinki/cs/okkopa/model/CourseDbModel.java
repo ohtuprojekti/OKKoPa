@@ -34,6 +34,10 @@ public class CourseDbModel {
         this.courseNumber = courseNumber;
     }
     
+    public CourseDbModel(CourseInfo course) {
+        this(course.getCourseCode(), course.getPeriod(), course.getYear(), course.getType(), course.getCourseNumber());
+    }
+    
     public String getCourseCode() {
         return courseCode;
     }

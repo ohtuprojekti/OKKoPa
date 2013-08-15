@@ -71,15 +71,16 @@ public class OracleConnectorTest {
     /**
      * Test of insertFeedBackRow method, of class OracleConnector.
      */
-//    @Test
-//    public void testInsertFeedBackRow() throws Exception {
-//        PDFSplitter splitter = new PDFSplitter();
-//        InputStream file = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
-//        List<ExamPaper> exampapers = splitter.splitToExamPapersWithPDFStreams(file);
-//        CourseDbModel course = new CourseDbModel("581287", "K", 2008, "K",1);
-//        FeedbackDbModel feedback = new FeedbackDbModel(course,exampapers.get(0).getPdf(), "012617177");
-//        OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-//        oc.insertFeedBackRow(feedback);
-//        
-//    }
+    @Test
+    public void testInsertFeedBackRow() throws Exception {
+        PDFSplitter splitter = new PDFSplitter();
+        InputStream file = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
+        List<ExamPaper> exampapers = splitter.splitToExamPapersWithPDFStreams(file);
+        CourseDbModel course = new CourseDbModel("581287", "K", 2008, "K",1);
+        FeedbackDbModel feedback = new FeedbackDbModel(new Settings("settings.xml"),course,exampapers.get(0).getPdf(), "012617177");
+        OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
+        oc.connect();
+        oc.insertFeedBackRow(feedback);
+        
+    }
 }
