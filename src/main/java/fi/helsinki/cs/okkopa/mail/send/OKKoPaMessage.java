@@ -176,14 +176,4 @@ public class OKKoPaMessage {
     public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
         addAttachment(is, PDF_MIME_NAME, name);
     }
-//    //testiä
-//    public static void main(String[] args) throws MessagingException {
-//        Properties props = Settings.SMTPPROPS;
-//        OKKoPaMessage msg = new OKKoPaMessage("okkopa.2013@gmail.com", "testi123@abc.com");
-//        msg.setText("abc");
-//        msg.setText("yksi viesti");
-//        msg.setSubject("testi123");
-//        //msg.addAttachment("liite.txt");
-//        msg.send();
-//    }
 }

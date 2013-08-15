@@ -1,7 +1,6 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
 import com.sun.mail.imap.IMAPFolder;
-import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 

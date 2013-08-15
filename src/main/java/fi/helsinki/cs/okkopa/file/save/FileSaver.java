@@ -33,19 +33,7 @@ public class FileSaver implements Saver {
         if (files == null) {
             return null;
         }
-//        Arrays.sort(files, new Comparator<File>() {
-//            @Override
-//            public int compare(File o1, File o2) {
-//
-//                if (((File) o2).lastModified() > ((File) o1).lastModified()) {
-//                    return -1;
-//                } else if (((File) o2).lastModified() < ((File) o1).lastModified()) {
-//                    return +1;
-//                } else {
-//                    return 0;
-//                }
-//            }
-//        });
+
         ArrayList<File> list = new ArrayList();
         for (int i = 0; i < files.length; i++) {
 
@@ -93,32 +81,4 @@ public class FileSaver implements Saver {
         }
         return true;
     }
-//    public static void main(String[] args) {
-//        File f = new File("fails/testi.txt");
-//        System.out.println(f.mkdirs());
-//    }
-    //testiä
-//    public static void main(String[] args) throws FileNotFoundException, IOException {
-//        Save save = new Save();
-//        PDFSplitter splitter = new PDFSplitter();
-//        List<ExamPaper> papers = null;
-//        try {
-//            papers = splitter.splitToExamPapersWithPDFStreams(new FileInputStream(save.openFile));
-//        } catch (DocumentException ex) {
-//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (PdfException ex) {
-//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (COSVisitorException ex) {
-//            Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        save.saveExamPaper(papers.get(0));
-//        Save save2 = new Save();
-//        save2.saveExamPaper(papers.get(1));
-//        Save save3 = new Save();
-//        save3.saveExamPaper(papers.get(5));
-//
-//        save.list();
-//        save.delete();
-//
-//    }
 }
