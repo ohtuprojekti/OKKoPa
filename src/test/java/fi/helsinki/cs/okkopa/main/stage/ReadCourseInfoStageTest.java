@@ -50,7 +50,7 @@ public class ReadCourseInfoStageTest {
     /**
      * Test of process method, of class ReadCourseInfoStage.
      */
-    @Test
+    
     public void testProcess() {
       
     }
@@ -58,7 +58,7 @@ public class ReadCourseInfoStageTest {
     /**
      * Test of getCourseInfo method, of class ReadCourseInfoStage.
      */
-    @Test
+    
     public void testGetCourseInfo() throws Exception {
       readCourseInfoStage.process(null);
       verify(readCourseInfoStage, times(1)).process(examPaper);
