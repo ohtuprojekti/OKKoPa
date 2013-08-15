@@ -23,29 +23,28 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-
 public class ReadQRCodeStageTest {
-   private ReadQRCodeStage readqrCodeStage; 
+
+    private ReadQRCodeStage readqrCodeStage;
     private Settings settingsMock;
-   
     private ExceptionLogger exceptionLoggerMock;
-   private PDFProcessor pdfProcessorMock;
+    private PDFProcessor pdfProcessorMock;
     private Saver saverMock;
     private ExamPaper examPaperMock;
     private Stage nextSatageMock;
     private String saveRetryFolder;
-    
+
     public ReadQRCodeStageTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         saverMock = mock(Saver.class);
@@ -59,7 +58,7 @@ public class ReadQRCodeStageTest {
         readqrCodeStage = new ReadQRCodeStage(saverMock, pdfProcessorMock, exceptionLoggerMock, settingsMock);
         readqrCodeStage.setNext(nextSatageMock);
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -73,18 +72,17 @@ public class ReadQRCodeStageTest {
         verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
         verify(examPaperMock, times(1)).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
         verify(nextSatageMock, times(1)).process(examPaperMock);
-        
+
     }
-    
-    public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException{
+
+    public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException {
         doThrow(new MessagingException()).when(examPaperMock).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
         doThrow(new MessagingException()).when(examPaperMock).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
         readqrCodeStage.process(examPaperMock);
-         verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
+        verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
         verify(examPaperMock, times(1)).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
         verify(exceptionLoggerMock, times(1)).logException(any(Exception.class));
         verify(saverMock, times(1)).saveInputStream(any(InputStream.class), eq(saveRetryFolder), anyString());
         verify(nextSatageMock, times(1)).process(examPaperMock);
     }
-            
 }

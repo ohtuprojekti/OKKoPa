@@ -24,22 +24,22 @@ import static org.junit.Assert.*;
  * @author phemmila
  */
 public class OracleConnectorTest {
-    
+
     public OracleConnectorTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,7 +49,6 @@ public class OracleConnectorTest {
      */
     @Test
     public void testGetCourseList() throws Exception {
- 
     }
 
     /**
@@ -57,7 +56,6 @@ public class OracleConnectorTest {
      */
     @Test
     public void testCourseExists() throws Exception {
-
     }
 
     /**
@@ -65,9 +63,7 @@ public class OracleConnectorTest {
      */
     @Test
     public void testStudentExists() throws Exception {
-
     }
-
     /**
      * Test of insertFeedBackRow method, of class OracleConnector.
      */

@@ -9,5 +9,4 @@ package fi.helsinki.cs.okkopa.model;
  * @author phemmila
  */
 public class CourseInfo {
-    
 }

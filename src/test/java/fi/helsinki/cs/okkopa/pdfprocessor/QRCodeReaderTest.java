@@ -80,8 +80,7 @@ public class QRCodeReaderTest {
         BufferedImage image = ImageIO.read(barCodeInputStream);
         reader.readQRCode(image);
     }
-    
-    
+
     @Test
     public void testFailedOne() throws IOException {
         InputStream barCodeInputStream = getClass().getResourceAsStream("/images/fail60dpi.png");
@@ -96,8 +95,10 @@ public class QRCodeReaderTest {
         boolean found = false;
         for (BufferedImage img : images) {
             try {
-                 found = reader.readQRCode(img).getText().equals("teeyoshi");
-                 if (found) break;
+                found = reader.readQRCode(img).getText().equals("teeyoshi");
+                if (found) {
+                    break;
+                }
             } catch (Exception ex) {
             }
         }

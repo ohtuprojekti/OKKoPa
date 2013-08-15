@@ -25,11 +25,11 @@ public class PDFSplitter {
      * @throws IOException If InputStream can not be read or stream doesn't
      * contain a PDF-format file.
      * @throws DocumentException If document contains odd number of pages.
-     * @throws PdfException If a document is not in the right format or error 
+     * @throws PdfException If a document is not in the right format or error
      * occurs while loading or splitting or document has an odd number of pages.
-     * @throws COSVisitorException if something goes wrong when visiting a PDF object.  
+     * @throws COSVisitorException if something goes wrong when visiting a PDF
+     * object.
      */
-
     public List<ExamPaper> splitToExamPapersWithPDFStreams(InputStream pdfStream) throws IOException, DocumentException, PdfException, COSVisitorException {
         PDDocument allPdfDocument = PDDocument.load(pdfStream);
         if (allPdfDocument.getNumberOfPages() % 2 != 0) {

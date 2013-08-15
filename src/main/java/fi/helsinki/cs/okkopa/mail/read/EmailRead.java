@@ -15,24 +15,25 @@ public interface EmailRead {
 
     /**
      * Connects into the email server.
-     * 
+     *
      * @throws NoSuchProviderException
      * @throws MessagingException
      */
     void connect() throws NoSuchProviderException, MessagingException;
 
     /**
-     * Returns list of next email's attachments as list. 
-     * 
+     * Returns list of next email's attachments as list.
+     *
      * @return null, if no new messages with attachments.
      * @throws MessagingException
      * @throws IOException
      */
     List<InputStream> getNextMessagesAttachments() throws MessagingException, IOException;
-    
+
     /**
-     * Deletes old messages from processed folder.
-     * How old messages are specified in settings file.
+     * Deletes old messages from processed folder. How old messages are
+     * specified in settings file.
+     *
      * @throws MessagingException
      */
     void deleteOldMessages() throws MessagingException;

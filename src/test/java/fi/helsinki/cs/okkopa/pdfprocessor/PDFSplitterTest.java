@@ -50,7 +50,7 @@ public class PDFSplitterTest {
         List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
         assertEquals(20, examPapers.size());
     }
-    
+
     @Test
     public void pdfStreamWorks() throws Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
@@ -60,8 +60,8 @@ public class PDFSplitterTest {
         IOUtils.copy(pdf, os);
         assertEquals(75077, os.toByteArray().length);
     }
-    
-     @Test
+
+    @Test
     public void pdfStreamWorksMultipleTimes() throws Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
         List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
@@ -69,7 +69,7 @@ public class PDFSplitterTest {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         IOUtils.copy(pdf, os);
         assertEquals(75077, os.toByteArray().length);
-        
+
         InputStream pdf2 = new ByteArrayInputStream(examPapers.get(0).getPdf());
         ByteArrayOutputStream os2 = new ByteArrayOutputStream();
         IOUtils.copy(pdf2, os2);

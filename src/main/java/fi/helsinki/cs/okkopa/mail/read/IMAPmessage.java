@@ -21,7 +21,7 @@ public class IMAPmessage {
 
     /**
      * Formats this object to use.
-     * 
+     *
      * @param message What message we want to examine.
      */
     public IMAPmessage(Message message) {
@@ -30,6 +30,7 @@ public class IMAPmessage {
 
     /**
      * Return messages subject.
+     *
      * @return Messages subject.
      */
     public String getSubject() {
@@ -41,8 +42,9 @@ public class IMAPmessage {
     }
 
     /**
-     * Returns all messages attachments as HashMap, where key is filename and value is InputStream.
-     * 
+     * Returns all messages attachments as HashMap, where key is filename and
+     * value is InputStream.
+     *
      * @return HashMam of attachments.
      * @throws IOException
      * @throws MessagingException
@@ -58,7 +60,7 @@ public class IMAPmessage {
             int numberOfParts = multiPart.getCount();
             for (int partCount = 0; partCount < numberOfParts; partCount++) {
                 MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
-                
+
                 if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
                     attachments.add(part.getInputStream());
                 }
@@ -75,14 +77,14 @@ public class IMAPmessage {
 
     /**
      * Returns messages received time.
-     * 
+     *
      * @return message received time.
      * @throws MessagingException
      */
     public Date getTime() throws MessagingException {
         return this.message.getReceivedDate();
     }
-    
+
     public Message getIMAPMessage() {
         return message;
     }

@@ -72,7 +72,7 @@ public class SetStudentInfoStageTest {
         setStudentInfoStage.process(examPaper);
         assertEquals("tunnus", examPaper.getStudent().getUsername());
     }
-    
+
     @Test
     public void testWithUserIdError() throws SQLException, NotFoundException {
         when(mockPaper.getQRCodeString()).thenReturn("0tunnus");

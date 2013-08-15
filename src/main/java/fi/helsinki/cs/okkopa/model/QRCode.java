@@ -1,4 +1,3 @@
-
 package fi.helsinki.cs.okkopa.model;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -6,12 +5,12 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "qrCodes")
 public class QRCode {
-    
+
     @DatabaseField(id = true, columnName = "qrCode")
     private String qrCodeString;
     @DatabaseField(columnName = "userId")
     private String userId;
-    
+
     public QRCode() {
     }
 

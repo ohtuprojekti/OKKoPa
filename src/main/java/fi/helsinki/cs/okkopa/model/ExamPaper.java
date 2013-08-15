@@ -13,19 +13,19 @@ public class ExamPaper {
     private List<BufferedImage> pageImages;
     private Student student;
     private CourseInfo courseInfo;
-    
+
     public void setStudent(Student student) {
         this.student = student;
     }
-    
+
     public Student getStudent() {
         return this.student;
     }
-    
+
     public String getQRCodeString() {
         return qrCodeString;
     }
-    
+
     public void setQRCodeString(String qrCodeString) {
         this.qrCodeString = qrCodeString;
     }
@@ -33,7 +33,7 @@ public class ExamPaper {
     public List<BufferedImage> getPageImages() {
         return pageImages;
     }
-    
+
     public void setPageImages(List<BufferedImage> pageImages) {
         this.pageImages = pageImages;
     }

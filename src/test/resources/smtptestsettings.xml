@@ -3,25 +3,25 @@
 <properties>
 
     <!-- password-settings -->
-     <entry key="mail.smtp.password"></entry>
-     <entry key="mail.imap.password">soooosecret</entry>
+    <entry key="mail.smtp.password"></entry>
+    <entry key="mail.imap.password">soooosecret</entry>
      
-     <!-- mail settings -->
-     <entry key="mail.transport.protocol">smtps</entry>
+    <!-- mail settings -->
+    <entry key="mail.transport.protocol">smtps</entry>
      
     <!-- smtp-settings -->
-     <entry key="mail.smtp.auth">false</entry>
-     <entry key="mail.smtp.starttls.enable">true</entry>
-     <entry key="mail.smtp.host">localhost</entry>
-     <entry key="mail.smtp.port">4012</entry>
-     <entry key="mail.smtp.user">OKKoPa</entry> 
-     <entry key="mail.smtp.ssl.enable">true</entry> 
+    <entry key="mail.smtp.auth">false</entry>
+    <entry key="mail.smtp.starttls.enable">true</entry>
+    <entry key="mail.smtp.host">localhost</entry>
+    <entry key="mail.smtp.port">4012</entry>
+    <entry key="mail.smtp.user">OKKoPa</entry> 
+    <entry key="mail.smtp.ssl.enable">true</entry> 
      
     
     <!-- imap-settings -->
-     <entry key="mail.imap.host">localhost</entry>  
-     <entry key="mail.imap.port">4011</entry>
-     <entry key="mail.imap.user">okkopa</entry>
-     <entry key="mail.imap.messages.keepdays">30</entry>
+    <entry key="mail.imap.host">localhost</entry>  
+    <entry key="mail.imap.port">4011</entry>
+    <entry key="mail.imap.user">okkopa</entry>
+    <entry key="mail.imap.messages.keepdays">30</entry>
     
 </properties>

@@ -5,15 +5,14 @@ import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
-import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.model.FailedEmail;
-import fi.helsinki.cs.okkopa.model.Student;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
@@ -45,21 +44,16 @@ public class RetryFailedEmailsStage extends Stage {
 
     @Override
     public void process(Object in) {
-        retryFailedEmails();
+        checkFailedEmails();
         processNextStages(null);
     }
 
-    private void sendEmail(FailedEmail failedEmail, InputStream attachment) {
-        try {
-            LOGGER.debug("Lähetetään sähköposti.");
-            emailSender.send(failedEmail.getReceiverEmail(), attachment);
-        } catch (MessagingException ex) {
-            LOGGER.debug("Sähköpostin lähetys epäonnistui.");
-            exceptionLogger.logException(ex);
-        }
+    private void sendEmail(FailedEmail failedEmail, InputStream attachment) throws MessagingException {
+        LOGGER.debug("Lähetetään sähköposti.");
+        emailSender.send(failedEmail.getReceiverEmail(), attachment);
     }
 
-    private void retryFailedEmails() {
+    private void checkFailedEmails() {
         // Get failed email send attachments (PDF-files)
         LOGGER.debug("Yritetään lähettää sähköposteja uudelleen.");
         ArrayList<File> fileList = fileSaver.list(saveRetryFolder);
@@ -67,6 +61,7 @@ public class RetryFailedEmailsStage extends Stage {
             LOGGER.debug("Ei uudelleenlähetettävää.");
             return;
         };
+        // Get list of failed emails from database
         List<FailedEmail> failedEmails;
         try {
             failedEmails = failedEmailDatabase.listAll();
@@ -74,21 +69,41 @@ public class RetryFailedEmailsStage extends Stage {
             exceptionLogger.logException(ex);
             return;
         }
+        // Match files and send
         for (FailedEmail failedEmail : failedEmails) {
             for (File pdf : fileList) {
                 if (failedEmail.getFilename().equals(pdf.getName())) {
-                    try {
-                        FileInputStream fis = new FileInputStream(pdf);
-                        sendEmail(failedEmail, fis);
-                        IOUtils.closeQuietly(fis);
-                        // TODO epäonnistuneet!
-                    } catch (Exception ex) {
-                        exceptionLogger.logException(ex);
+                    if (retryFailedEmail(pdf, failedEmail)) {
                         continue;
                     }
                 }
             }
         }
         // TODO clean nonmatching database <-> folder
+    }
+
+    private boolean retryFailedEmail(File pdf, FailedEmail failedEmail) {
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(pdf);
+        } catch (FileNotFoundException ex) {
+            exceptionLogger.logException(ex);
+            LOGGER.debug("Tiedostoa ei ollutkaan levyllä vaikka listaus sen palautti.");
+            return true;
+        }
+        try {
+            sendEmail(failedEmail, fis);
+            pdf.delete();
+        } catch (MessagingException ex) {
+            exceptionLogger.logException(ex);
+            // Delete if too old.
+            long ageInMinutes = (new Date().getTime() - failedEmail.getFailTime().getTime()) / 60000;
+            if (ageInMinutes > retryExpirationMinutes) {
+                pdf.delete();
+            }
+            return true;
+        }
+        IOUtils.closeQuietly(fis);
+        return false;
     }
 }

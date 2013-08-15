@@ -113,8 +113,8 @@ public class OracleConnector {
         try {
             this.connect();
             this.feedbackDbModel = DaoManager.createDao(connectionSource, FeedbackDbModel.class);
-            if (this.feedbackDbModel.create(newRow)!=1) {
-                this.connectionSource.close();           
+            if (this.feedbackDbModel.create(newRow) != 1) {
+                this.connectionSource.close();
                 throw new SQLException("Rows inserted <> 1");
             }
             this.connectionSource.close();
@@ -125,15 +125,15 @@ public class OracleConnector {
         }
     }
 
-        /*public static void main(String[] args) {
-         try {
-         OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-         //    System.out.println(oc.courseExists(new CourseDbModel("581386","S",2000,"L",2)));
-         System.out.println("Should be true:"+oc.studentExists(new StudentDbModel("011442521")));
-         System.out.println("Should be false:"+oc.studentExists(new StudentDbModel("-")));
-         System.out.println(oc.getCourseList().size());
-         } catch (SQLException | IOException ex) {
-         System.out.println(ex.getMessage());
-         }
-         }*/
-    }
+    /*public static void main(String[] args) {
+     try {
+     OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
+     //    System.out.println(oc.courseExists(new CourseDbModel("581386","S",2000,"L",2)));
+     System.out.println("Should be true:"+oc.studentExists(new StudentDbModel("011442521")));
+     System.out.println("Should be false:"+oc.studentExists(new StudentDbModel("-")));
+     System.out.println(oc.getCourseList().size());
+     } catch (SQLException | IOException ex) {
+     System.out.println(ex.getMessage());
+     }
+     }*/
+}

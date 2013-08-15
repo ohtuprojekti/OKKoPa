@@ -43,12 +43,12 @@ public class IMAPfolderTest {
         user.deliver(message);
 
         Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
-        
+
         server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
-        
+
         IMAPfolder = new IMAPfolder(server, "inbox");
-        
+
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
 
     }
@@ -58,55 +58,57 @@ public class IMAPfolderTest {
         server.close();
         greenMail.stop();
     }
-    
+
     @Test
     public void testIMAPfolderFormat() throws MessagingException {
         IMAPfolder = new IMAPfolder(server, "inbox");
     }
-    
+
     @Test
     public void testClose() throws MessagingException {
         IMAPfolder.close();
     }
-    
+
     /**
-     * Deleting of message from the old folder doesn't work with the test environment but works with the GMAIL.
-     * We think it has something to do with how we make the message through greenmail API, not by normal way.
-     * 
+     * Deleting of message from the old folder doesn't work with the test
+     * environment but works with the GMAIL. We think it has something to do
+     * with how we make the message through greenmail API, not by normal way.
+     *
      * @throws MessagingException
      */
     @Test
     public void testNextMessage() throws MessagingException {
         server.createFolder("processed");
-        
+
         IMAPFolder processedFolder = server.selectAndGetFolder("processed");
         IMAPFolder inboxFolder = server.selectAndGetFolder("inbox");
-        
+
         assertEquals("eka", 0, processedFolder.getMessageCount());
         assertEquals("toka", 1, inboxFolder.getMessageCount());
-        
+
         IMAPfolder.getNextmessage();
-        
+
 //        assertEquals("neljäs", 0, inboxFolder.getMessageCount());
 //        assertEquals("kolmas",1, processedFolder.getMessageCount());
-        
+
     }
-    
+
     /**
-     * Deleting of message from the old folder doesn't work with the test environment but works with the GMAIL.
-     * We think it has something to do with how we make the message through greenmail API, not by normal way.
-     * 
+     * Deleting of message from the old folder doesn't work with the test
+     * environment but works with the GMAIL. We think it has something to do
+     * with how we make the message through greenmail API, not by normal way.
+     *
      * @throws MessagingException
      */
     @Test
-    public void deleteMessage() throws MessagingException {       
+    public void deleteMessage() throws MessagingException {
         IMAPFolder inboxFolder = IMAPfolder.getIMAPFolder();
         Message[] messages = inboxFolder.getMessages();
-        
+
         for (Message message : messages) {
             IMAPdelete.deleteMessage(message);
         }
-        
+
 //        messages = inboxFolder.getMessages();
 //        assertEquals(0, inboxFolder.getMessageCount());
     }

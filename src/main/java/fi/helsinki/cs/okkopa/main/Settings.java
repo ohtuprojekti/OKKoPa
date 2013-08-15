@@ -9,11 +9,11 @@ import java.util.Properties;
 /**
  * Manages and reads XML files.
  */
-public class Settings extends Properties{
-  
+public class Settings extends Properties {
+
     public Settings(String fileName) throws FileNotFoundException, IOException {
         Properties props = readSettingXML(fileName);
-        
+
         try {
             props.putAll(readSettingXML("passwords.xml"));
         } catch (FileNotFoundException ex) {
