@@ -43,9 +43,7 @@ public class FileSaver implements Saver {
             }
         }
 
-        System.out.println(list);
         return list;
-
     }
 
     /**
