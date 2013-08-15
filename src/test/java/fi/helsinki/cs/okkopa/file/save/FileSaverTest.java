@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fi.helsinki.cs.okkopa.mail.writeToDisk;
+package fi.helsinki.cs.okkopa.file.save;
 
 import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import java.io.File;
@@ -22,24 +22,25 @@ import static org.junit.Assert.*;
  * @author anttkaik
  */
 public class FileSaverTest {
+
     private FileSaver saver;
-    
+
     public FileSaverTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         saver = new FileSaver();
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -50,16 +51,16 @@ public class FileSaverTest {
     @Test
     public void testList() {
         clearDirectory("src/test/resources/savetest");
-        
+
         try {
             InputStream is = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
             saver.saveInputStream(is, "src/test/resources/savetest", "testipdfvanhempi.pdf");
             is = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
             saver.saveInputStream(is, "src/test/resources/savetest", "testipdfuudempi.pdf");
-        } catch(FileAlreadyExistsException ex)  {
+        } catch (FileAlreadyExistsException ex) {
             fail();
         }
-        
+
         List<File> files = saver.list("src/test/resources/savetest");
         assertEquals(2, files.size());
         List<String> correctNames = new ArrayList<String>();
@@ -69,16 +70,16 @@ public class FileSaverTest {
             assertTrue(correctNames.contains(files.get(i).getName()));
         }
     }
-    
-    
+
     private void clearDirectory(String directoryPath) {
         List<File> files = saver.list(directoryPath);
-        if (files == null) return;
+        if (files == null) {
+            return;
+        }
         for (File file : files) {
             file.delete();
         }
     }
-    
 
     /**
      * Test of saveExamPaper method, of class FileSaver.
@@ -90,5 +91,4 @@ public class FileSaverTest {
         boolean result = saver.saveInputStream(is, "src/test/resources/savetest", "testipdf.pdf");
         assertTrue(result);
     }
-
 }

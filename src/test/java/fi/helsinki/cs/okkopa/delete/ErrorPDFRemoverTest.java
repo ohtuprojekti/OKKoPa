@@ -27,44 +27,42 @@ import static org.junit.Assert.*;
  * @author anttkaik
  */
 public class ErrorPDFRemoverTest {
-    
+
     private Remover remover;
     private Saver saver;
-    
-        
+
     public ErrorPDFRemoverTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() throws FileNotFoundException, IOException {
         Settings settings = new Settings("deletesettings.xml");
         remover = new ErrorPDFRemover(settings);
         saver = new FileSaver();
-        
+
     }
-    
+
     @After
     public void tearDown() {
     }
-    
-    
-    
+
     private void clearDirectory(String directoryPath) {
         List<File> files = saver.list(directoryPath);
-        if (files == null) return;
+        if (files == null) {
+            return;
+        }
         for (File file : files) {
             file.delete();
         }
     }
-    
 
     /**
      * Test of deleteOldMessages method, of class ErrorPDFRemover.
@@ -72,7 +70,7 @@ public class ErrorPDFRemoverTest {
     @Test
     public void testDeleteOldMessages() throws FileAlreadyExistsException {
         clearDirectory("src/test/resources/errorpdfs");
-        saver.saveInputStream(getClass().getResourceAsStream("/pdf/all.pdf"), "src/test/resources/errorpdfs", System.currentTimeMillis() +".pdf");
+        saver.saveInputStream(getClass().getResourceAsStream("/pdf/all.pdf"), "src/test/resources/errorpdfs", System.currentTimeMillis() + ".pdf");
         ArrayList<File> list = saver.list("src/test/resources/errorpdfs");
         assertEquals(1, list.size());
         remover.deleteOldMessages();

@@ -22,29 +22,29 @@ public class ReferenceNumber {
     public int getReferenceNumber() {
         return this.getReferenceNumber(this.randomNumber());
     }
-    
+
     private int getReferenceNumber(int random) {
         this.random = random;
         string = Integer.toString(this.random);
-        
+
         this.generateCheck();
         this.concatenate();
-        
+
         return Integer.valueOf(sb.toString());
     }
-    
+
     public boolean checkReferenceNumber(int number) {
         string = Integer.toString(number);
-        string = string.substring(0, string.length() -1);
-        
-        if(this.getReferenceNumber(Integer.valueOf(string)) == number) {
+        string = string.substring(0, string.length() - 1);
+
+        if (this.getReferenceNumber(Integer.valueOf(string)) == number) {
             return true;
         }
         return false;
     }
 
     private int randomNumber() {
-        return (int) (Math.pow(10,size - 1) + randomGenerator.nextInt((int) (Math.pow(10,size) - Math.pow(10,size - 1) - 1)));
+        return (int) (Math.pow(10, size - 1) + randomGenerator.nextInt((int) (Math.pow(10, size) - Math.pow(10, size - 1) - 1)));
     }
 
     private void resetX() {
@@ -70,7 +70,7 @@ public class ReferenceNumber {
     private void concatenate() {
         sb = new StringBuilder(9);
         sb.append(random);
-        
+
         tarkistus = Math.abs(number % 10 - 10);
         if (tarkistus != 10) {
             sb.append(tarkistus);

@@ -41,7 +41,7 @@ public class FailedEmailDatabase {
     public void addFailedEmail(FailedEmail failedEmail) throws SQLException {
         emailDao.create(failedEmail);
     }
-    
+
     public List<FailedEmail> listAll() throws SQLException {
         return emailDao.queryForAll();
     }

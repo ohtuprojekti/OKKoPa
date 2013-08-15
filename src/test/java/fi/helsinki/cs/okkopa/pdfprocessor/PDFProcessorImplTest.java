@@ -10,9 +10,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PDFProcessorImplTest {
-    
+
     PDFProcessorImpl processor;
-    
+
     @Before
     public void setUp() {
         processor = new PDFProcessorImpl(new PDFSplitter(), new QRCodeReader());

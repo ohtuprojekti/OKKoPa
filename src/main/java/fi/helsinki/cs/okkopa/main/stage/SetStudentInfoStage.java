@@ -43,8 +43,19 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
     }
 
     private String fetchUserId(String qrcode) throws SQLException, NotFoundException {
+        // Filter too short
+        if (qrcode.length() == 0) {
+            throw new NotFoundException();
+        }
+        // Check database
         if (Character.isDigit(qrcode.charAt(0))) {
             return qRCodeDatabase.getUserID(qrcode);
+        }
+        // Filter if has digits
+        for (char c : qrcode.toCharArray()) {
+            if (Character.isDigit(c)) {
+                throw new NotFoundException();
+            }
         }
         return qrcode;
     }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.database;
 
 import com.j256.ormlite.dao.Dao;
@@ -21,10 +17,6 @@ import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author phemmila
- */
 public class OracleConnector {
 
     private static Logger LOGGER = Logger.getLogger(OracleConnector.class.getName());
@@ -36,9 +28,9 @@ public class OracleConnector {
     private String port;
     private String instance;
     private int yearOffset;
-    Dao<CourseDbModel, Object> courseDbModel;
-    Dao<FeedbackDbModel, String> feedbackDbModel;
-    Dao<StudentDbModel, Object> studentDbModel;
+    private Dao<CourseDbModel, Object> courseDbModel;
+    private Dao<FeedbackDbModel, String> feedbackDbModel;
+    private Dao<StudentDbModel, Object> studentDbModel;
 
     @Autowired
     public OracleConnector(Settings settings) {
@@ -75,6 +67,7 @@ public class OracleConnector {
         return this.courseDbModel.query(prepQuery);
     }
 
+
     public boolean courseExists(CourseDbModel course) throws SQLException {
         this.courseDbModel = DaoManager.createDao(connectionSource, CourseDbModel.class);
         List<CourseDbModel> result;
@@ -108,15 +101,4 @@ public class OracleConnector {
         } LOGGER.debug("Palaute rivi lisätty tikliin");
     }
 
-    /*public static void main(String[] args) {
-     try {
-     OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-     //    System.out.println(oc.courseExists(new CourseDbModel("581386","S",2000,"L",2)));
-     System.out.println("Should be true:"+oc.studentExists(new StudentDbModel("011442521")));
-     System.out.println("Should be false:"+oc.studentExists(new StudentDbModel("-")));
-     System.out.println(oc.getCourseList().size());
-     } catch (SQLException | IOException ex) {
-     System.out.println(ex.getMessage());
-     }
-     }*/
 }

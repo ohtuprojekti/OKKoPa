@@ -24,22 +24,22 @@ import static org.junit.Assert.*;
  * @author phemmila
  */
 public class OracleConnectorTest {
-    
+
     public OracleConnectorTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,7 +49,6 @@ public class OracleConnectorTest {
      */
     @Test
     public void testGetCourseList() throws Exception {
- 
     }
 
     /**
@@ -57,7 +56,6 @@ public class OracleConnectorTest {
      */
     @Test
     public void testCourseExists() throws Exception {
-
     }
 
     /**
@@ -65,22 +63,20 @@ public class OracleConnectorTest {
      */
     @Test
     public void testStudentExists() throws Exception {
-
     }
-
     /**
      * Test of insertFeedBackRow method, of class OracleConnector.
      */
-    @Test
-    public void testInsertFeedBackRow() throws Exception {
-        PDFSplitter splitter = new PDFSplitter();
-        InputStream file = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
-        List<ExamPaper> exampapers = splitter.splitToExamPapersWithPDFStreams(file);
-        CourseDbModel course = new CourseDbModel("581287", "K", 2008, "K",1);
-        FeedbackDbModel feedback = new FeedbackDbModel(new Settings("settings.xml"),course,exampapers.get(0).getPdf(), "012617177");
-        OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
-        oc.connect();
-        oc.insertFeedBackRow(feedback);
-        
-    }
+//    @Test
+//    public void testInsertFeedBackRow() throws Exception {
+//        PDFSplitter splitter = new PDFSplitter();
+//        InputStream file = getClass().getResourceAsStream("/pdf/basic_qr.pdf");
+//        List<ExamPaper> exampapers = splitter.splitToExamPapersWithPDFStreams(file);
+//        CourseDbModel course = new CourseDbModel("581287", "K", 2008, "K",1);
+//        FeedbackDbModel feedback = new FeedbackDbModel(new Settings("settings.xml"),course,exampapers.get(0).getPdf(), "012617177");
+//        OracleConnector oc = new OracleConnector(new Settings("settings.xml"));
+//        oc.connect();
+//        oc.insertFeedBackRow(feedback);
+//        
+//    }
 }

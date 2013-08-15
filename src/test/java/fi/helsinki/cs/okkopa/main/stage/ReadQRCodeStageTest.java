@@ -13,6 +13,7 @@ import fi.helsinki.cs.okkopa.model.FailedEmail;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.List;
 import javax.mail.MessagingException;
 import org.jpedal.exception.PdfException;
 import org.junit.After;
@@ -23,29 +24,28 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-
 public class ReadQRCodeStageTest {
-   private ReadQRCodeStage readqrCodeStage; 
+
+    private ReadQRCodeStage readqrCodeStage;
     private Settings settingsMock;
-   
     private ExceptionLogger exceptionLoggerMock;
-   private PDFProcessor pdfProcessorMock;
+    private PDFProcessor pdfProcessorMock;
     private Saver saverMock;
     private ExamPaper examPaperMock;
     private Stage nextSatageMock;
     private String saveRetryFolder;
-    
+
     public ReadQRCodeStageTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         saverMock = mock(Saver.class);
@@ -55,11 +55,13 @@ public class ReadQRCodeStageTest {
         examPaperMock = mock(ExamPaper.class);
         nextSatageMock = mock(Stage.class);
         saveRetryFolder = "testi";
-        when(settingsMock.getProperty("mail.send.retrysavefolder")).thenReturn(saveRetryFolder);
+        when(settingsMock.getProperty("exampaper.saveunreadablefolder")).thenReturn(saveRetryFolder);
+        when(settingsMock.getProperty("exampaper.saveunreadable")).thenReturn("true");
         readqrCodeStage = new ReadQRCodeStage(saverMock, pdfProcessorMock, exceptionLoggerMock, settingsMock);
         readqrCodeStage.setNext(nextSatageMock);
+        when(examPaperMock.getPdf()).thenReturn(new byte[1]);
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -70,21 +72,20 @@ public class ReadQRCodeStageTest {
     @Test
     public void testProcess() throws PdfException, NotFoundException {
         readqrCodeStage.process(examPaperMock);
-        verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
-        verify(examPaperMock, times(1)).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
+        verify(examPaperMock, times(1)).setPageImages(any(List.class));
+        verify(examPaperMock, times(1)).setQRCodeString(anyString());
         verify(nextSatageMock, times(1)).process(examPaperMock);
-        
+
     }
-    
-    public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException{
-        doThrow(new MessagingException()).when(examPaperMock).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
-        doThrow(new MessagingException()).when(examPaperMock).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
+
+    @Test
+    public void testProcessExecption() throws PdfException, NotFoundException, FileAlreadyExistsException {
+        doThrow(new PdfException()).when(pdfProcessorMock).getPageImages(examPaperMock);
         readqrCodeStage.process(examPaperMock);
-         verify(examPaperMock, times(1)).setPageImages(pdfProcessorMock.getPageImages(examPaperMock));
-        verify(examPaperMock, times(1)).setQRCodeString(pdfProcessorMock.readQRCode(examPaperMock));
+        verify(examPaperMock, never()).setPageImages(any(List.class));
+        verify(examPaperMock, never()).setQRCodeString(anyString());
         verify(exceptionLoggerMock, times(1)).logException(any(Exception.class));
         verify(saverMock, times(1)).saveInputStream(any(InputStream.class), eq(saveRetryFolder), anyString());
-        verify(nextSatageMock, times(1)).process(examPaperMock);
+        verify(nextSatageMock, never()).process(examPaperMock);
     }
-            
 }

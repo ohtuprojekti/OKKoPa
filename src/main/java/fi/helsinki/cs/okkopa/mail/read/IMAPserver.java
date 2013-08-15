@@ -42,7 +42,7 @@ public class IMAPserver {
 
     /**
      * Formats offline settings ready for login.
-     * 
+     *
      * @param IMAPaddress
      * @param username
      * @param password
@@ -75,7 +75,7 @@ public class IMAPserver {
             folder.open(Folder.READ_WRITE);
         }
     }
-    
+
     /**
      * Logins into given IMAP-server with username and password.
      *

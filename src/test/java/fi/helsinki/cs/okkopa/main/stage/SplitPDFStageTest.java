@@ -15,22 +15,23 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SplitPDFStageTest {
+
     private ExceptionLogger exceptionLoggerMock;
     private PDFProcessor pdfProcessorMock;
     private SplitPDFStage splitPDFStage;
     private Stage nextStage;
-    
+
     public SplitPDFStageTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         exceptionLoggerMock = mock(ExceptionLogger.class);
@@ -39,7 +40,7 @@ public class SplitPDFStageTest {
         nextStage = mock(Stage.class);
         splitPDFStage.setNext(nextStage);
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -51,7 +52,7 @@ public class SplitPDFStageTest {
         verify(pdfProcessorMock, times(1)).splitPDF(isMock);
         verify(nextStage, times(1)).process(any());
     }
-    
+
     @Test
     public void testSplitResult() throws DocumentException {
         InputStream isMock = mock(InputStream.class);
@@ -62,7 +63,7 @@ public class SplitPDFStageTest {
         verify(nextStage, times(1)).process(list);
         verify(exceptionLoggerMock, never()).logException(any(DocumentException.class));
     }
-    
+
     @Test
     public void testSplitError() throws DocumentException {
         InputStream isMock = mock(InputStream.class);

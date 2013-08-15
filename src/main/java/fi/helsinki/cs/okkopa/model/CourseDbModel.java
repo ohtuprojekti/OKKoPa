@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.model;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -37,7 +33,7 @@ public class CourseDbModel {
     public CourseDbModel(CourseInfo course) {
         this(course.getCourseCode(), course.getPeriod(), course.getYear(), course.getType(), course.getCourseNumber());
     }
-    
+
     public String getCourseCode() {
         return courseCode;
     }

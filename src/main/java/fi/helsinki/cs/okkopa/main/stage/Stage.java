@@ -6,7 +6,7 @@ public abstract class Stage<I, O> {
 
     /**
      * Sets the Stage after this Stage.
-     * 
+     *
      * @param next Stage after this Stage.
      */
     public void setNext(Stage<O, ?> next) {

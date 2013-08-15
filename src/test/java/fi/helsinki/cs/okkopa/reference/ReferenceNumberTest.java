@@ -5,13 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ReferenceNumberTest {
+
     private ReferenceNumber random;
-    
+
     @Before
     public void setUp() {
         random = new ReferenceNumber(9);
     }
-    
+
     @Test
     public void testGenerateReferenceNumber() {
         for (int i = 0; i < 1000; i++) {
