@@ -94,6 +94,7 @@ public class RetryFailedEmailsStage extends Stage {
         try {
             sendEmail(failedEmail, fis);
             pdf.delete();
+            LOGGER.debug("Lähetettiin sähköposti onnistuneesti (uusintayritys).");
         } catch (MessagingException ex) {
             exceptionLogger.logException(ex);
             // Delete if too old.

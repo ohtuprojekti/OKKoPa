@@ -49,6 +49,7 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
                 exceptionLogger.logException(ex);
             }
         }
+        processNextStages(examPaper);
     }
 
     private void saveToTikli(ExamPaper examPaper) {
