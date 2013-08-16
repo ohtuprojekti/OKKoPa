@@ -73,8 +73,7 @@
     <entry key="tikli.retryattempts">1</entry>
     <entry key="tikli.retrydealyinminutes">1</entry>
     <entry key="tikli.description">Koepaperi / Exam paper</entry>
-    <entry key="tikli.authorid">H_testi</entry>
-     
+    <entry key="tikli.authorid">KARKULAHTI_O</entry>
     <entry key="logger.logcompletestack">false</entry>
      
 </properties>
