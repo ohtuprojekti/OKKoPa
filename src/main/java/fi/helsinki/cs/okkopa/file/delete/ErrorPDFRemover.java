@@ -5,12 +5,15 @@ import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import java.io.File;
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Removes old unreadble attachments from the disk. File age must be determined
  * in a settings file.
  *
  */
+@Component
 public class ErrorPDFRemover implements Remover {
 
     private String saveFolder;
@@ -23,6 +26,7 @@ public class ErrorPDFRemover implements Remover {
      * @param settings Settings that are loaded from a settings file. Settings
      * must contain file age and folder path.
      */
+    @Autowired
     public ErrorPDFRemover(Settings settings) {
         this.saveFolder = settings.getProperty("exampaper.saveunreadablefolder");
         this.saveDays = Integer.parseInt(settings.getProperty("exampaper.deleteunreadableafterdays"));
