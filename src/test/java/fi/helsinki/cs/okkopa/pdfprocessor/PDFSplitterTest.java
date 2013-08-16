@@ -2,6 +2,7 @@ package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,27 +50,27 @@ public class PDFSplitterTest {
         List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
         assertEquals(20, examPapers.size());
     }
-    
+
     @Test
     public void pdfStreamWorks() throws Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
         List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
-        InputStream pdf = examPapers.get(0).getPdf();
+        InputStream pdf = new ByteArrayInputStream(examPapers.get(0).getPdf());
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         IOUtils.copy(pdf, os);
         assertEquals(75077, os.toByteArray().length);
     }
-    
-     @Test
+
+    @Test
     public void pdfStreamWorksMultipleTimes() throws Exception {
         InputStream file = getClass().getResourceAsStream("/pdf/packed4.pdf");
         List<ExamPaper> examPapers = splitter.splitToExamPapersWithPDFStreams(file);
-        InputStream pdf = examPapers.get(0).getPdf();
+        InputStream pdf = new ByteArrayInputStream(examPapers.get(0).getPdf());
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         IOUtils.copy(pdf, os);
         assertEquals(75077, os.toByteArray().length);
-        
-        InputStream pdf2 = examPapers.get(0).getPdf();
+
+        InputStream pdf2 = new ByteArrayInputStream(examPapers.get(0).getPdf());
         ByteArrayOutputStream os2 = new ByteArrayOutputStream();
         IOUtils.copy(pdf2, os2);
         assertEquals(75077, os.toByteArray().length);

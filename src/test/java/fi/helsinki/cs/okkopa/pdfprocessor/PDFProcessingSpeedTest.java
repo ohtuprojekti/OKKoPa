@@ -59,7 +59,7 @@ public class PDFProcessingSpeedTest {
         System.out.println("It took " + splittingTime + "ms to split " + paperAmount + " ExamPapers.");
         System.out.println("It took " + readingTime + "ms to read " + paperAmount + " ExamPapers.");
         System.out.println("It took a total of " + (splittingTime + readingTime) + " milliseconds.");
-        System.out.println("It took an average of " + (splittingTime + readingTime)/paperAmount + " milliseconds per examPaper");
+        System.out.println("It took an average of " + (splittingTime + readingTime) / paperAmount + " milliseconds per examPaper");
         System.out.println("Used average " + memorySum / paperAmount + "MB of memory per examPaper.");
     }
 }

@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.mail.read;
 
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import javax.mail.NoSuchProviderException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 @Component
 public class MailRead implements EmailRead {
 
@@ -28,12 +29,12 @@ public class MailRead implements EmailRead {
 
     @Autowired
     public MailRead(Settings settings) {
-        IMAPaddress = settings.getSettings().getProperty("mail.imap.host");
-        username = settings.getSettings().getProperty("mail.imap.user");
-        password = settings.getSettings().getProperty("mail.imap.password");
-        port = Integer.parseInt(settings.getSettings().getProperty("mail.imap.port"));
-        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getSettings().getProperty("mail.imap.processed.keepdays"));
-        processedFolderToEmpty = settings.getSettings().getProperty("mail.imap.processed.name");
+        IMAPaddress = settings.getProperty("mail.imap.host");
+        username = settings.getProperty("mail.imap.user");
+        password = settings.getProperty("mail.imap.password");
+        port = Integer.parseInt(settings.getProperty("mail.imap.port"));
+        ProcessedHowManyDaysOldAreToBeDeleted = Integer.parseInt(settings.getProperty("mail.imap.processed.keepdays"));
+        processedFolderToEmpty = settings.getProperty("mail.imap.processed.name");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class MailRead implements EmailRead {
             } else {
                 attachments = null;
             }
-            
+
             if (attachments != null) {
                 return attachments;
             }
@@ -72,7 +73,7 @@ public class MailRead implements EmailRead {
 
         return null;
     }
-    
+
     @Override
     public void deleteOldMessages() throws MessagingException {
         delete = new IMAPdelete(server);

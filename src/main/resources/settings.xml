@@ -3,8 +3,8 @@
 <properties>
 
     <!-- passwords -->
-    <entry key="mail.smtp.password">qwerty12qwert</entry>
-    <entry key="mail.imap.password">qwerty12qwerty</entry>
+    <entry key="mail.smtp.password"></entry>
+    <entry key="mail.imap.password"></entry>
      
     <!-- smtp-settings -->
     <entry key="mail.smtp.auth">true</entry>
@@ -23,25 +23,30 @@
     <!-- Message settings -->
     
     <!-- Don't use tabs in "mail.message.body" unless
-         you want them to appear in e-mails. -->
+    you want them to appear in e-mails. -->
     <entry key="mail.message.body">
-Sähköpostin sisältö tähän.
-Mitenhän toimii monen rivin postit?
-Näemmä hyvin.
+        Sähköpostin sisältö tähän.
+        Mitenhän toimii monen rivin postit?
+        Näemmä hyvin.
     </entry>
     <entry key="mail.message.topic">Sähköpostin otsikko tähän</entry>
     <entry key="mail.message.replyto">okkopa2.2013@gmail.com</entry>
-    <entry key="mail.message.attachmentname">liite.pdf</entry>
      
     <!-- Database settings -->
     <!-- Url without .h2.db in the end. -->
-    <entry key="database.url">jdbc:h2:okkopa</entry>
-    <entry key="database.user">okkopa</entry>
-    <entry key="database.password">Okkopa2013</entry>
-
+    <entry key="database.h2.url">jdbc:h2:okkopa</entry>
+    <entry key="database.h2.user">okkopa</entry>
+    
+    <!-- Oracle settings (Kurki) -->
+    <entry key="database.oracle.host">bodbacka.cs.helsinki.fi</entry>
+    <entry key="database.oracle.user">tk_testi</entry>
+    <entry key="database.oracle.port">1521</entry>
+    <entry key="database.oracle.instance">test</entry>
+    <entry key="database.oracle.showcoursesforyears">5</entry>
+    
     <!-- Ldap settings -->
-    <entry key="ldap.user">tunnus tähän</entry>
-    <entry key="ldap.password">salasana tähän</entry>
+    <entry key="ldap.user">ou=tikli,ou=login,o=hy</entry>
+    <entry key="ldap.password"></entry>
     <entry key="ldap.keystore.file">src/main/resources/keystore</entry>
     <entry key="ldap.keystore.secret">okkopa2013</entry>
     <entry key="ldap.server.address">ldap-internal.it.helsinki.fi</entry>
@@ -58,6 +63,8 @@ Näemmä hyvin.
     <!-- Save exam papers with unreadable qr-codes. -->
     <entry key="exampaper.saveunreadable">true</entry>
     <entry key="exampaper.saveunreadablefolder">errorpdfs</entry>
+    <entry key="exampaper.deleteunreadableafterdays">14</entry>
+    <entry key="exampaper.attachmentname">exam.pdf</entry>
 
     <!-- Time after which email send is not retried and file will be deleted. -->
     <entry key="mail.send.retryexpirationminutes">1</entry>
@@ -65,7 +72,8 @@ Näemmä hyvin.
      
     <entry key="tikli.retryattempts">1</entry>
     <entry key="tikli.retrydealyinminutes">1</entry>
-     
+    <entry key="tikli.description">Koepaperi / Exam paper</entry>
+    <entry key="tikli.authorid">KARKULAHTI_O</entry>
     <entry key="logger.logcompletestack">false</entry>
      
 </properties>

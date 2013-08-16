@@ -37,9 +37,9 @@ public class IMAPserverTest {
         message.setSubject("subject2576Hf");
         message.setText("viesti");
         user.deliver(message);
-        
+
         Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
-        
+
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
     }
 
@@ -92,31 +92,31 @@ public class IMAPserverTest {
         server.login();
 
         server.selectAndGetFolder("dfrhtsytr");
-        
+
         assertEquals(IMAPFolder.exists(), false);
 
         server.close();
     }
-    
+
     @Test
     public void testCreateNewFolder() throws MessagingException {
         server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
-        
+
         server.createFolder("processed");
         server.selectAndGetFolder("processed");
-        
+
         server.close();
     }
-    
+
     @Test(expected = MessagingException.class)
     public void testCreateNewFolder2() throws MessagingException {
         server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
-        
+
         server.createFolder("processed");
         server.selectAndGetFolder("procesased");
-        
+
         server.close();
     }
 }

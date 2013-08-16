@@ -42,13 +42,21 @@
         <!--additivity true if child loggers inherit their parent's appenders.-->
         <level value="debug"/>
         <appender-ref ref="default.console" />
-    </logger>    
+    </logger>   
+    <logger name="fi.helsinki.cs.okkopa.ldap.LdapConnector" additivity="true"> 
+        <!--additivity true if child loggers inherit their parent's appenders.-->
+        <level value="debug"/>
+        <appender-ref ref="default.console" />
+    </logger>   
+      
     <!--Root-->
     <root>
-        <priority value ="info" />
-        <!--<appender-ref ref="default.console" />
+        <!--<priority value ="info" />
+        <appender-ref ref="default.console" />
         <appender-ref ref="default.file" />-->
         <appender-ref ref="rolling.file"/>
+        <level value="debug"/>
+        <appender-ref ref="default.console" />
     </root>
 
 </log4j:configuration>  

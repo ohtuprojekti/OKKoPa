@@ -1,11 +1,7 @@
 package fi.helsinki.cs.okkopa.model;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Single exam paper a list of page images and QR code information.
@@ -13,47 +9,48 @@ import java.util.List;
 public class ExamPaper {
 
     private byte[] pdf;
-    private String QRCodeString;
+    private String qrCodeString;
     private List<BufferedImage> pageImages;
-    private InputStream pdfStream;
     private Student student;
-    
+    private CourseInfo courseInfo;
+
     public void setStudent(Student student) {
         this.student = student;
     }
-    
+
     public Student getStudent() {
         return this.student;
     }
-    
+
     public String getQRCodeString() {
-        return QRCodeString;
+        return qrCodeString;
     }
-    
-    public void setQRCodeString(String QRCodeString) {
-        this.QRCodeString = QRCodeString;
+
+    public void setQRCodeString(String qrCodeString) {
+        this.qrCodeString = qrCodeString;
     }
 
     public List<BufferedImage> getPageImages() {
         return pageImages;
     }
 
-    public void addPageImage(BufferedImage pageAsImage) {
-        if (pageImages == null) {
-            this.pageImages = new ArrayList<>();
-        }
-        this.pageImages.add(pageAsImage);
+    public void setPageImages(List<BufferedImage> pageImages) {
+        this.pageImages = pageImages;
     }
-    
-    public InputStream getPdf() {
-        return new ByteArrayInputStream(pdf);
+
+    public byte[] getPdf() {
+        return pdf;
     }
 
     public void setPdf(byte[] pdf) {
         this.pdf = pdf;
     }
 
-    public void setPageImages(List<BufferedImage> pageImages) {
-        this.pageImages = pageImages;
+    public CourseInfo getCourseInfo() {
+        return courseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
     }
 }

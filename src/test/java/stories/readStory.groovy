@@ -9,8 +9,6 @@ import fi.helsinki.cs.okkopa.mail.read.MailRead
 import java.security.Security
 import com.icegreen.greenmail.util.DummySSLSocketFactory
 import com.icegreen.greenmail.user.GreenMailUser
-import fi.helsinki.cs.okkopa.qr.PDFSplitter
-import fi.helsinki.cs.okkopa.qr.ExamPaper
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender
 import fi.helsinki.cs.okkopa.mail.send.ExamPaperSenderImpl
 GreenMail greenMail

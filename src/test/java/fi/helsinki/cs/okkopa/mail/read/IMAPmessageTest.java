@@ -19,19 +19,20 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 
 public class IMAPmessageTest {
+
     private GreenMail greenMail;
     private GreenMailUser user;
     private IMAPserver server;
     private IMAPfolder IMAPfolder;
     private IMAPmessage IMAPmessage;
-    
+
     public IMAPmessageTest() {
     }
-    
+
     @Before
     public void setUp() throws MessagingException, UserException, InterruptedException {
         Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
-        
+
         ServerSetup sS = new ServerSetup(4008, "localhost", ServerSetup.PROTOCOL_IMAPS);
         greenMail = new GreenMail(sS);
         greenMail.start();
@@ -43,21 +44,20 @@ public class IMAPmessageTest {
         message.setSubject("subject2576Hf");
         message.setText("viesti");
         user.deliver(message);
-        
+
         assertTrue(greenMail.waitForIncomingEmail(5000, 1));
-        
+
         server = new IMAPserver("localhost", "okkopa", "soooosecret", 4008);
         server.login();
-        
+
         IMAPfolder = new IMAPfolder(server, "inbox");
     }
-    
+
     @After
     public void tearDown() throws MessagingException {
         server.close();
         greenMail.stop();
     }
-    
 //    @Test
 //    public void getSubject() throws MessagingException {
 //        IMAPFolder inboxFolder = IMAPfolder.getIMAPFolder();

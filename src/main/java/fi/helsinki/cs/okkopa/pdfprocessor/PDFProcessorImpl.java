@@ -8,6 +8,7 @@ import com.google.zxing.FormatException;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,21 +24,19 @@ public class PDFProcessorImpl implements PDFProcessor {
 
     private PDFSplitter splitter;
     private QRCodeReader reader;
-    private final double[] SCALERS = {1.0 / 3.0, 1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0};
+    private final double[] SCALERS = {1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0, 1.0 / 3.0};
 
+    /**
+     *
+     * @param splitter
+     * @param reader
+     */
     @Autowired
     public PDFProcessorImpl(PDFSplitter splitter, QRCodeReader reader) {
         this.splitter = splitter;
         this.reader = reader;
     }
 
-    /**
-     *
-     * @param pdfStream
-     * @return
-     * @throws DocumentException If there were problems reading or splitting the
-     * document.
-     */
     @Override
     public List<ExamPaper> splitPDF(InputStream pdfStream) throws DocumentException {
         try {
@@ -72,9 +71,10 @@ public class PDFProcessorImpl implements PDFProcessor {
 
     @Override
     public List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException {
-        PdfDecoder pdf = new PdfDecoder(true);
+        PdfDecoder pdf = new PdfDecoder(false);
         pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
-        pdf.openPdfFileFromInputStream(examPaper.getPdf(), true);
+        InputStream is = new ByteArrayInputStream(examPaper.getPdf());
+        pdf.openPdfFileFromInputStream(is, true);
 
         ArrayList<BufferedImage> pageImages = new ArrayList<>();
         for (int i = 1; i <= pdf.getPageCount(); i++) {

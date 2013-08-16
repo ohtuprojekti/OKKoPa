@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.ldap;
 
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -13,7 +9,7 @@ import com.unboundid.ldap.sdk.SimpleBindRequest;
 import com.unboundid.util.ssl.KeyStoreKeyManager;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
-import fi.helsinki.cs.okkopa.Settings;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;
@@ -25,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class LdapConnector {
 
     private Settings settings;
-    private static Logger LOGGER = Logger.getLogger(LdapConnector.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LdapConnector.class.getName());
     private String searchFilter;
     private String baseOU;
     private String bindDN;
@@ -36,38 +32,40 @@ public class LdapConnector {
         this.settings = settings;
         this.searchFilter = "(uid=%s)";
         this.baseOU = "dc=helsinki,dc=fi";
-        this.bindDN = "uid=" + settings.getSettings().getProperty("ldap.user") + baseOU;
-        this.bindPWD = settings.getSettings().getProperty("ldap.password");
+        this.bindDN = settings.getProperty("ldap.user");
+        this.bindPWD = settings.getProperty("ldap.password");
     }
 
-    public Student fetchStudent(String username) throws NotFoundException, GeneralSecurityException, LDAPException {
+    public Student setStudentInfo(Student student) throws NotFoundException, GeneralSecurityException, LDAPException {
         LDAPConnection ldc = null;
 
         try {
-            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getSettings().getProperty("ldap.keystore.file"), settings.getSettings().getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
-            ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getSettings().getProperty("ldap.server.address"), Integer.parseInt(settings.getSettings().getProperty("ldap.server.port")));
-    //Authentication:
-    //        SimpleBindRequest bindReq = new SimpleBindRequest(bindDN,bindPWD);
-    //        bindReq.setResponseTimeoutMillis(1000);
-    //        ldc.bind(bindReq);
+            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager(settings.getProperty("ldap.keystore.file"), settings.getProperty("ldap.keystore.secret").toCharArray()), new TrustAllTrustManager(true));
+            ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getProperty("ldap.server.address"), Integer.parseInt(settings.getProperty("ldap.server.port")));
 
-            SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, username), "mail", "schacPersonalUniqueCode");
+            SimpleBindRequest bindReq = new SimpleBindRequest(bindDN, bindPWD);
+            bindReq.setResponseTimeoutMillis(1000);
+            ldc.bind(bindReq);
+
+            SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, student.getUsername()), "mail", "schacPersonalUniqueCode");
 
             if (result.getEntryCount() > 1) {
-                throw new NotFoundException("Too many results from LDAP-query with username " + username + ".");
+                throw new NotFoundException("Too many results from LDAP-query with username " + student.getUsername() + ".");
             }
 
             if (result.getEntryCount() < 1) {
                 throw new NotFoundException("No student information returned from LDAP.");
             }
-            
-            Student currentStudent = new Student();
+
             SearchResultEntry entry = result.getSearchEntries().get(0);
-            currentStudent.setEmail(entry.getAttributeValue("mail"));
-            currentStudent.setStudentNumber(entry.getAttributeValue("schacPersonalUniqueCode"));
-            currentStudent.setUsername(username);
-            
-            return currentStudent;
+//          currentStudent.setEmail(entry.getAttributeValue("mail"));
+            String[] strArr = entry.getAttributeValue("schacPersonalUniqueCode").split(":");
+            String studentNumber = strArr[strArr.length - 1];
+            //student.setStudentNumber(studentNumber);
+            student.setStudentNumber("012617177");
+            LOGGER.info("Found student with student number: " + studentNumber);
+
+            return student;
 
         } catch (LDAPException | GeneralSecurityException | NotFoundException ex) {
             if (ldc != null) {
@@ -76,26 +74,4 @@ public class LdapConnector {
             throw ex;
         }
     }
-//    public static void main(String[] args) {
-//        test();
-//    }
-//
-//    public static void test() {
-//        try {
-//            SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager("src/main/resources/keystore", "okkopa2013".toCharArray()), new TrustAllTrustManager(true));
-//            LDAPConnection ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), "ldap-internal.it.helsinki.fi", 636);
-//            SearchResult result = ldc.search("ou=org,o=hy", SearchScope.SUBORDINATE_SUBTREE, "(ou=A02700)", null);
-//            System.out.println("Found: " + result.getEntryCount() + " results.");
-//
-//            List<SearchResultEntry> entry = result.getSearchEntries();
-//            System.out.println(entry.get(0).getAttributeValue("postalAddress"));
-//
-//
-//            ldc.close();
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//
-//
-//    }
 }
