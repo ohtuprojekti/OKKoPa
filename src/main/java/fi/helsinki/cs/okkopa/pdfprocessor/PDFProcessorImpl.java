@@ -24,7 +24,7 @@ public class PDFProcessorImpl implements PDFProcessor {
 
     private PDFSplitter splitter;
     private QRCodeReader reader;
-    private final double[] SCALERS = {1.0 / 3.0, 1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0};
+    private final double[] SCALERS = {1.0, 2.5 / 3.0, 2.0 / 3.0, 1.5 / 3.0, 1.0 / 3.0};
 
     /**
      *
@@ -71,7 +71,7 @@ public class PDFProcessorImpl implements PDFProcessor {
 
     @Override
     public List<BufferedImage> getPageImages(ExamPaper examPaper) throws PdfException {
-        PdfDecoder pdf = new PdfDecoder(true);
+        PdfDecoder pdf = new PdfDecoder(false);
         pdf.setExtractionMode(PdfDecoder.FINALIMAGES);
         InputStream is = new ByteArrayInputStream(examPaper.getPdf());
         pdf.openPdfFileFromInputStream(is, true);

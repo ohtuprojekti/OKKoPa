@@ -3,14 +3,12 @@ package fi.helsinki.cs.okkopa.main.stage;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
-import fi.helsinki.cs.okkopa.main.OkkopaRunner;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.io.IOUtils;
 import org.jpedal.exception.PdfException;
@@ -52,7 +50,7 @@ public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
                     IOUtils.closeQuietly(stream);
                     LOGGER.debug("Tallennettin virheellinen PDF.");
                 } catch (FileAlreadyExistsException ex1) {
-                    java.util.logging.Logger.getLogger(OkkopaRunner.class.getName()).log(Level.SEVERE, "File already exists", ex1);
+                    exceptionLogger.logException(ex);
                 }
             }
             // Don't continue if we couldn't read QR code.

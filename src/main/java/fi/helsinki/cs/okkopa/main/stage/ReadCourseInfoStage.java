@@ -52,8 +52,7 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
 
     public CourseInfo getCourseInfo(ExamPaper examPaper) throws NotFoundException {
         String[] fields = examPaper.getQRCodeString().split(":");
-        LOGGER.debug(examPaper.getQRCodeString());
-        LOGGER.debug(Arrays.toString(fields));
+        LOGGER.debug("Kurssi-info luettu: " + examPaper.getQRCodeString());
         try {
             return new CourseInfo(fields[0], fields[1], Integer.parseInt(fields[2]), fields[3], Integer.parseInt(fields[4]));
         } catch (Exception e) {

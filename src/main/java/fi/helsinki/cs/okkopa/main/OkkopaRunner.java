@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.main;
 
+import fi.helsinki.cs.okkopa.main.stage.DeleteOldErrorPDFsStage;
 import fi.helsinki.cs.okkopa.main.stage.GetEmailStage;
 import fi.helsinki.cs.okkopa.main.stage.ReadCourseInfoStage;
 import fi.helsinki.cs.okkopa.main.stage.ReadQRCodeStage;
@@ -8,22 +9,25 @@ import fi.helsinki.cs.okkopa.main.stage.SaveToTikliStage;
 import fi.helsinki.cs.okkopa.main.stage.SendEmailStage;
 import fi.helsinki.cs.okkopa.main.stage.SetStudentInfoStage;
 import fi.helsinki.cs.okkopa.main.stage.SplitPDFStage;
+import fi.helsinki.cs.okkopa.main.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OkkopaRunner implements Runnable {
 
-    private RetryFailedEmailsStage retryFailedEmailsStage;
-
+    private Stage first;
+    
+    
     @Autowired
-    public OkkopaRunner(RetryFailedEmailsStage retryFailedEmailsStage,
+    public OkkopaRunner(DeleteOldErrorPDFsStage errorPDFStage, RetryFailedEmailsStage retryFailedEmailsStage,
             GetEmailStage getEmailStage, SplitPDFStage splitPDFStage,
             ReadCourseInfoStage readCourseInfoStage, ReadQRCodeStage readQRCodeStage,
             SetStudentInfoStage setStudentInfoStage, SendEmailStage sendEmailStage,
             SaveToTikliStage saveToTikliStage) {
         // cleanup and error correction stages
-        this.retryFailedEmailsStage = retryFailedEmailsStage;
+        this.first = errorPDFStage;
+        this.first.setNext(retryFailedEmailsStage);
         retryFailedEmailsStage.setNext(getEmailStage);
         // normal process stages
         getEmailStage.setNext(splitPDFStage);
@@ -33,13 +37,10 @@ public class OkkopaRunner implements Runnable {
         setStudentInfoStage.setNext(sendEmailStage);
         sendEmailStage.setNext(saveToTikliStage);
 
-//        this.errorPDFRemover = new ErrorPDFRemover(settings);
     }
 
     @Override
     public void run() {
-        retryFailedEmailsStage.process(null);
-//        LOGGER.debug("Poistetaan vanhoja epäonnistuneita viestejä");
-//        errorPDFRemover.deleteOldMessages();
+        this.first.process(null);
     }
 }
