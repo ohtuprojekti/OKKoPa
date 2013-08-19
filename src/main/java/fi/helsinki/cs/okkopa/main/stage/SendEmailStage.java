@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
-import fi.helsinki.cs.okkopa.database.FailedEmailDatabase;
+import fi.helsinki.cs.okkopa.database.FailedEmailDAO;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -26,11 +26,11 @@ public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
     private EmailSender emailSender;
     private String saveRetryFolder;
     private Saver fileSaver;
-    private FailedEmailDatabase failedEmailDatabase;
+    private FailedEmailDAO failedEmailDatabase;
 
     @Autowired
     public SendEmailStage(EmailSender emailSender, ExceptionLogger exceptionLogger,
-            Settings settings, Saver fileSaver, FailedEmailDatabase failedEmailDatabase) {
+            Settings settings, Saver fileSaver, FailedEmailDAO failedEmailDatabase) {
         this.emailSender = emailSender;
         this.exceptionLogger = exceptionLogger;
         saveRetryFolder = settings.getProperty("mail.send.retrysavefolder");

@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
-import fi.helsinki.cs.okkopa.database.QRCodeDatabase;
+import fi.helsinki.cs.okkopa.database.QRCodeDAO;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
@@ -15,10 +15,10 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
 
     private static Logger LOGGER = Logger.getLogger(SetStudentInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
-    private QRCodeDatabase qRCodeDatabase;
+    private QRCodeDAO qRCodeDatabase;
 
     @Autowired
-    public SetStudentInfoStage(QRCodeDatabase qRCodeDatabase, ExceptionLogger exceptionLogger) {
+    public SetStudentInfoStage(QRCodeDAO qRCodeDatabase, ExceptionLogger exceptionLogger) {
         this.qRCodeDatabase = qRCodeDatabase;
         this.exceptionLogger = exceptionLogger;
     }

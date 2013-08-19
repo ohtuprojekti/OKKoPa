@@ -2,30 +2,29 @@ package fi.helsinki.cs.okkopa.database;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.QRCode;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Provides database connection to store generated QR-code strings
+ * (anonymous labels).
+ */
 @Component
-public class QRCodeDatabase {
+public class QRCodeDAO {
 
     private Dao<QRCode, String> qrCodeDao;
-    private ConnectionSource connectionSource;
 
+    /**
+     *
+     * @param settings
+     * @throws SQLException
+     */
     @Autowired
-    public QRCodeDatabase(Settings settings) throws SQLException {
-        String databaseUrl = settings.getProperty("database.h2.url");
-        String username = settings.getProperty("database.h2.user");
-        String password = settings.getProperty("database.h2.password");
-
-        // create a connection source to our database
-        connectionSource = new JdbcConnectionSource(databaseUrl, username, password);
+    public QRCodeDAO(OkkopaDatabaseConnectionSource connectionSource) throws SQLException {
 
         // instantiate the dao
         qrCodeDao = DaoManager.createDao(connectionSource, QRCode.class);
@@ -34,6 +33,13 @@ public class QRCodeDatabase {
         TableUtils.createTableIfNotExists(connectionSource, QRCode.class);
     }
 
+    /**
+     *
+     * @param qrcodeString
+     * @return
+     * @throws SQLException
+     * @throws NotFoundException
+     */
     public String getUserID(String qrcodeString) throws SQLException, NotFoundException {
         QRCode qrCode = qrCodeDao.queryForId(qrcodeString);
         if (qrCode == null) {
@@ -46,7 +52,7 @@ public class QRCodeDatabase {
         QRCode qrCode = new QRCode(qrCodeString, "");
 
         if (!qrCodeDao.idExists(qrCodeString)) {
-            qrCodeDao.createIfNotExists(qrCode);
+            qrCodeDao.create(qrCode);
             return true;
         }
         return false;
@@ -61,9 +67,5 @@ public class QRCodeDatabase {
             return true;
         }
         return false;
-    }
-
-    void closeConnectionSource() throws SQLException {
-        connectionSource.close();
     }
 }

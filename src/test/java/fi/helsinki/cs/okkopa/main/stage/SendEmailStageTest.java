@@ -4,7 +4,7 @@
  */
 package fi.helsinki.cs.okkopa.main.stage;
 
-import fi.helsinki.cs.okkopa.database.FailedEmailDatabase;
+import fi.helsinki.cs.okkopa.database.FailedEmailDAO;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -31,7 +31,7 @@ public class SendEmailStageTest {
     private EmailSender emailSenderMock;
     private Settings settingsMock;
     private Saver saverMock;
-    private FailedEmailDatabase failedEmailDatabaseMock;
+    private FailedEmailDAO failedEmailDatabaseMock;
     private Stage nextSatageMock;
     private Student studentMock;
     private String saveRetryFolder;
@@ -56,7 +56,7 @@ public class SendEmailStageTest {
         saverMock = mock(Saver.class);
         nextSatageMock = mock(Stage.class);
         studentMock = mock(Student.class);
-        failedEmailDatabaseMock = mock(FailedEmailDatabase.class);
+        failedEmailDatabaseMock = mock(FailedEmailDAO.class);
         saveRetryFolder = "testi";
         when(settingsMock.getProperty("mail.send.retrysavefolder")).thenReturn(saveRetryFolder);
         when(examPaperMock.getPdf()).thenReturn(new byte[1]);
