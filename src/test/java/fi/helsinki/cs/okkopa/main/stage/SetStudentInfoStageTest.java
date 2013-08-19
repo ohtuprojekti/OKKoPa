@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
+import fi.helsinki.cs.okkopa.database.MissedExamDao;
 import fi.helsinki.cs.okkopa.database.QRCodeDAO;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -18,6 +19,7 @@ public class SetStudentInfoStageTest {
 
     private ExceptionLogger exceptionLoggerMock;
     private QRCodeDAO qrCodeDatabaseMock;
+    private MissedExamDao missedExamDatabaseMock;
     private SetStudentInfoStage setStudentInfoStage;
     private Stage nextStage;
     private ExamPaper mockPaper;
@@ -37,7 +39,8 @@ public class SetStudentInfoStageTest {
     public void setUp() {
         exceptionLoggerMock = mock(ExceptionLogger.class);
         qrCodeDatabaseMock = mock(QRCodeDAO.class);
-        setStudentInfoStage = new SetStudentInfoStage(qrCodeDatabaseMock, exceptionLoggerMock);
+        missedExamDatabaseMock = mock(MissedExamDao.class);
+        setStudentInfoStage = new SetStudentInfoStage(qrCodeDatabaseMock, missedExamDatabaseMock, exceptionLoggerMock);
         nextStage = mock(Stage.class);
         setStudentInfoStage.setNext(nextStage);
         mockPaper = mock(ExamPaper.class);
