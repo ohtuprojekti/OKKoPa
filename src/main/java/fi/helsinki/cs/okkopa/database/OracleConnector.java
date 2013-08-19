@@ -14,9 +14,11 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Provides a connection to Kurki Oracle database.
+ */
 public class OracleConnector {
 
     private static Logger LOGGER = Logger.getLogger(OracleConnector.class.getName());
@@ -32,23 +34,32 @@ public class OracleConnector {
     private Dao<FeedbackDbModel, String> feedbackDbModel;
     private Dao<StudentDbModel, Object> studentDbModel;
 
+    /**
+     *
+     * @param settings
+     */
     @Autowired
     public OracleConnector(Settings settings) {
-        System.out.println("OracleConnector settings: "+settings);
         this.pwd = settings.getProperty("database.oracle.password");
         this.user = settings.getProperty("database.oracle.user");
         this.host = settings.getProperty("database.oracle.host");
         this.port = settings.getProperty("database.oracle.port");
         this.instance = settings.getProperty("database.oracle.instance");
         this.yearOffset = Integer.parseInt(settings.getProperty("database.oracle.showcoursesforyears"));
-
         this.url = "jdbc:oracle:thin:@" + this.host + ":" + this.port + ":" + this.instance;
     }
 
+    /**
+     *
+     * @throws SQLException
+     */
     public void connect() throws SQLException {
         this.connectionSource = new JdbcConnectionSource(url, user, pwd);
     }
 
+    /**
+     *
+     */
     public void disconnect() {
         try {
             this.connectionSource.close();
@@ -57,6 +68,11 @@ public class OracleConnector {
         }
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public List<CourseDbModel> getCourseList() throws SQLException {
         this.courseDbModel = DaoManager.createDao(connectionSource, CourseDbModel.class);
         int startYear, endYear;
@@ -68,6 +84,12 @@ public class OracleConnector {
     }
 
 
+    /**
+     *
+     * @param course
+     * @return
+     * @throws SQLException
+     */
     public boolean courseExists(CourseDbModel course) throws SQLException {
         this.courseDbModel = DaoManager.createDao(connectionSource, CourseDbModel.class);
         List<CourseDbModel> result;
@@ -81,6 +103,12 @@ public class OracleConnector {
 
     }
 
+    /**
+     *
+     * @param student
+     * @return
+     * @throws SQLException
+     */
     public boolean studentExists(StudentDbModel student) throws SQLException {
         this.studentDbModel = DaoManager.createDao(connectionSource, StudentDbModel.class);
         List<StudentDbModel> result;
@@ -94,6 +122,11 @@ public class OracleConnector {
 
     }
 
+    /**
+     *
+     * @param newRow
+     * @throws SQLException
+     */
     public void insertFeedBackRow(FeedbackDbModel newRow) throws SQLException {
         this.feedbackDbModel = DaoManager.createDao(connectionSource, FeedbackDbModel.class);
         if (this.feedbackDbModel.create(newRow) != 1) {

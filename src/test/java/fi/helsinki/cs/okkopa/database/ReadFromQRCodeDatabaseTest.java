@@ -12,14 +12,16 @@ import static org.junit.Assert.*;
 
 public class ReadFromQRCodeDatabaseTest {
 
-    QRCodeDatabase database;
+    OkkopaDatabaseConnectionSource connectionSource;
+    QRCodeDAO database;
 
     public ReadFromQRCodeDatabaseTest() {
     }
 
     @Before
     public void setUp() throws FileNotFoundException, SQLException, IOException {
-        database = new QRCodeDatabase(new Settings("databasetestsettings.xml"));
+         connectionSource = new OkkopaDatabaseConnectionSource(new Settings("databasetestsettings.xml"));
+        database = new QRCodeDAO(connectionSource);
 
         database.addQRCode("0kkopa142921400");
         database.addUSer("0kkopa142921400", "ktunnus");
@@ -28,8 +30,8 @@ public class ReadFromQRCodeDatabaseTest {
     }
 
     @After
-    public void tearDown() throws SQLException {
-        database.closeConnectionSource();
+    public void tearDown() {
+        connectionSource.closeQuietly();
     }
 
     @Test(expected = NotFoundException.class)

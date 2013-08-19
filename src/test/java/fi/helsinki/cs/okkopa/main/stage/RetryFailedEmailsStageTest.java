@@ -1,6 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
-import fi.helsinki.cs.okkopa.database.FailedEmailDatabase;
+import fi.helsinki.cs.okkopa.database.FailedEmailDAO;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -21,7 +21,7 @@ public class RetryFailedEmailsStageTest {
     private ExceptionLogger loggerMock;
     private Settings settingsMock;
     private Saver saverMock;
-    private FailedEmailDatabase dbMock;
+    private FailedEmailDAO dbMock;
     private RetryFailedEmailsStage retryStage;
     private Stage nextStageMock;
 
@@ -42,7 +42,7 @@ public class RetryFailedEmailsStageTest {
         this.loggerMock = mock(ExceptionLogger.class);
         this.settingsMock = mock(Settings.class);
         this.saverMock = mock(Saver.class);
-        this.dbMock = mock(FailedEmailDatabase.class);
+        this.dbMock = mock(FailedEmailDAO.class);
         when(settingsMock.getProperty("mail.send.retryexpirationminutes")).thenReturn("5");
         this.retryStage = new RetryFailedEmailsStage(senderMock, loggerMock, settingsMock, saverMock, dbMock);
         this.nextStageMock = mock(Stage.class);

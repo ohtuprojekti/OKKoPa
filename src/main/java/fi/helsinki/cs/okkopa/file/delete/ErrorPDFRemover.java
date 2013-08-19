@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Removes old unreadble attachments from the disk. File age must be determined
+ * Removes old unreadable attachments from the disk. File age must be determined
  * in a settings file.
  *
  */
