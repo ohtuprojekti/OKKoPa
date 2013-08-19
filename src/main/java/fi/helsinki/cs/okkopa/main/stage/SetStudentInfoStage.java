@@ -28,19 +28,26 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
         try {
             LOGGER.debug("ID: " + examPaper.getQRCodeString());
             String userId = fetchUserId(examPaper.getQRCodeString());
+            if (userId == null) {
+                //Rekisteröimätön anonyymikoodi.
+                qRCodeDatabase.addMissedExam(examPaper.getQRCodeString());
+                return;
+            }
             Student student = new Student();
             examPaper.setStudent(student);
             student.setUsername(userId);
             // TODO katenointi
             student.setEmail("okkopa.2013@gmail.com");
-        } catch (SQLException | NotFoundException ex) {
+        } catch (NotFoundException | SQLException ex) {
             exceptionLogger.logException(ex);
-            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä sitä vastannut yksikään geneerinen tunnus.");
+            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä anonyymi koodi.");
             // QR code isn't an user id and doesn't match any database entries.
             return;
         }
         processNextStages(examPaper);
     }
+    
+    
 
     private String fetchUserId(String qrcode) throws SQLException, NotFoundException {
         // Filter too short

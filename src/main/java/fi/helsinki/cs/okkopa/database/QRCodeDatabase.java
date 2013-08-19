@@ -7,6 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
+import fi.helsinki.cs.okkopa.model.MissedExamDbModel;
 import fi.helsinki.cs.okkopa.model.QRCode;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class QRCodeDatabase {
 
     private Dao<QRCode, String> qrCodeDao;
+    private Dao<MissedExamDbModel, Void> missedExamDao;
     private ConnectionSource connectionSource;
 
     @Autowired
@@ -43,7 +45,7 @@ public class QRCodeDatabase {
     }
 
     boolean addQRCode(String qrCodeString) throws SQLException {
-        QRCode qrCode = new QRCode(qrCodeString, "");
+        QRCode qrCode = new QRCode(qrCodeString, null);
 
         if (!qrCodeDao.idExists(qrCodeString)) {
             qrCodeDao.createIfNotExists(qrCode);
@@ -55,12 +57,18 @@ public class QRCodeDatabase {
     boolean addUSer(String qrCodeString, String UserId) throws SQLException {
         QRCode qrCode = qrCodeDao.queryForId(qrCodeString);
 
-        if (qrCode.getUserId().equals("")) {
+        if (qrCode.getUserId() == null) {
             qrCode = new QRCode(qrCodeString, UserId);
             qrCodeDao.update(qrCode);
             return true;
         }
         return false;
+    }
+    
+    public void addMissedExam(String anonymousCode) throws SQLException {
+        QRCode qrCode = qrCodeDao.queryForId(anonymousCode);
+        MissedExamDbModel missedExam = new MissedExamDbModel(qrCode);
+        missedExamDao.create(missedExam);
     }
 
     void closeConnectionSource() throws SQLException {
