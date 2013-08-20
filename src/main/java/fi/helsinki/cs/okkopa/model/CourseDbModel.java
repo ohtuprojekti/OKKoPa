@@ -19,9 +19,20 @@ public class CourseDbModel {
     @DatabaseField(columnName = "NIMI")
     private String name;
 
+    /**
+     *
+     */
     public CourseDbModel() {
     }
 
+    /**
+     * Initializes course code , period, year, type and course number. 
+     * @param courseCode
+     * @param period
+     * @param year
+     * @param type
+     * @param courseNumber
+     */
     public CourseDbModel(String courseCode, String period, int year, String type, int courseNumber) {
         this.courseCode = courseCode;
         this.period = period;
@@ -30,34 +41,68 @@ public class CourseDbModel {
         this.courseNumber = courseNumber;
     }
     
+    /**
+     *Initializes course information which defined in class CourseInfo
+     * @param course
+     */
     public CourseDbModel(CourseInfo course) {
         this(course.getCourseCode(), course.getPeriod(), course.getYear(), course.getType(), course.getCourseNumber());
     }
 
+    /**
+     * Gets course code.
+     * @return course code
+     */
     public String getCourseCode() {
         return courseCode;
     }
 
+    /**
+     *Gets period.
+     * @return period.
+     */
     public String getPeriod() {
         return period;
     }
 
+    /**
+     *
+     *Gets year.
+     * @param year
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     *
+     *Gets type of course
+     * @return type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     *Gets course number.
+     * @return course number.
+     */
     public int getCourseNumber() {
         return courseNumber;
     }
 
+    /**
+     *Gets name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *Sets name.
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
