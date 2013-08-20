@@ -9,7 +9,6 @@ public class ReferenceNumber {
     private boolean reset;
     private int place;
     private StringBuilder sb;
-    private int tarkistus;
     private int random;
     private String string;
     private int size;
@@ -71,9 +70,9 @@ public class ReferenceNumber {
         sb = new StringBuilder(9);
         sb.append(random);
 
-        tarkistus = Math.abs(number % 10 - 10);
-        if (tarkistus != 10) {
-            sb.append(tarkistus);
+        int checksum = Math.abs(number % 10 - 10);
+        if (checksum != 10) {
+            sb.append(checksum);
         } else {
             sb.append(0);
         }

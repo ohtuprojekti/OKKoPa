@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExceptionLogger {
 
-    private static Logger LOGGER = Logger.getLogger(ExceptionLogger.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ExceptionLogger.class.getName());
     private final boolean logCompleteExceptionStack;
 
     @Autowired

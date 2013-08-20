@@ -10,13 +10,13 @@ public class Student {
     private String email;
     private String studentNumber;
     private String username;
-
+    
+    /**
+     *Initializes and hold student information.
+     */
     public Student() {
     }
 
-    /**
-     * Constructor that sets username, e-mail and student number
-     */
     public Student(String username, String email, String studentNumber) {
         this.username = username;
         this.email = email;

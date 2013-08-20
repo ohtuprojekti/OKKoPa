@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SplitPDFStage extends Stage<InputStream, List<ExamPaper>> {
 
-    private static Logger LOGGER = Logger.getLogger(SplitPDFStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SplitPDFStage.class.getName());
     PDFProcessor pdfProcessor;
     ExceptionLogger exceptionLogger;
 

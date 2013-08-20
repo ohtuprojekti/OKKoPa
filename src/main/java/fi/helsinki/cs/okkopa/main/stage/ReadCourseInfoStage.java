@@ -7,16 +7,12 @@ import fi.helsinki.cs.okkopa.main.BatchDetails;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.BatchDbModel;
-import fi.helsinki.cs.okkopa.model.CourseInfo;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystemNotFoundException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.jpedal.exception.PdfException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private PDFProcessor pdfProcessor;
     private BatchDetails batch;

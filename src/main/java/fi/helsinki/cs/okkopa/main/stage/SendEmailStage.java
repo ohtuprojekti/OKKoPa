@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(SendEmailStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SendEmailStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private EmailSender emailSender;
     private String saveRetryFolder;

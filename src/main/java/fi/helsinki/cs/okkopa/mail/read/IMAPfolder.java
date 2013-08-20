@@ -21,7 +21,7 @@ public class IMAPfolder {
     private int index = 0;
     private IMAPcopy copy;
     private final String folderName;
-    private static Logger LOGGER = Logger.getLogger(IMAPfolder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IMAPfolder.class.getName());
 
     /**
      * Opens and formats folder to use.

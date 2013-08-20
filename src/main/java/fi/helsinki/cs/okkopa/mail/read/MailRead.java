@@ -23,9 +23,8 @@ public class MailRead implements EmailRead {
     private int ProcessedHowManyDaysOldAreToBeDeleted;
     private IMAPmessage IMAPmessage;
     private ArrayList<InputStream> attachments;
-    private IMAPdelete delete;
     private String processedFolderToEmpty;
-    private static Logger LOGGER = Logger.getLogger(MailRead.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MailRead.class.getName());
 
     @Autowired
     public MailRead(Settings settings) {
@@ -76,7 +75,7 @@ public class MailRead implements EmailRead {
 
     @Override
     public void deleteOldMessages() throws MessagingException {
-        delete = new IMAPdelete(server);
+        IMAPdelete delete = new IMAPdelete(server);
         delete.deleteOldMessages(ProcessedHowManyDaysOldAreToBeDeleted, processedFolderToEmpty);
     }
 }

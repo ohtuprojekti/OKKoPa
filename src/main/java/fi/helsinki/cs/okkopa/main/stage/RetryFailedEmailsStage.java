@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RetryFailedEmailsStage extends Stage {
 
-    private static Logger LOGGER = Logger.getLogger(RetryFailedEmailsStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RetryFailedEmailsStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private EmailSender emailSender;
     private String saveRetryFolder;
