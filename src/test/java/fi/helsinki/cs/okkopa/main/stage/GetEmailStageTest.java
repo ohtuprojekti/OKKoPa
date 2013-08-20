@@ -5,6 +5,7 @@ import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import org.junit.After;
@@ -48,11 +49,10 @@ public class GetEmailStageTest {
 
     @Test
     public void testConnectAndClose() throws NoSuchProviderException, MessagingException, MessagingException, IOException {
-        when(emailReadMock.getNextMessagesAttachments()).thenReturn(null);
         getEmailStage.process(null);
         verify(emailReadMock, times(1)).connect();
-        verify(emailReadMock, times(1)).close();
-        verify(nextStage, times(0)).process(any());
+        verify(emailReadMock, times(1)).closeQuietly();
+        verify(nextStage, never()).process(any());
     }
 
     @Test
@@ -60,7 +60,8 @@ public class GetEmailStageTest {
         InputStream is = mock(InputStream.class);
         ArrayList<InputStream> list = new ArrayList<>();
         list.add(is);
-        when(emailReadMock.getNextMessagesAttachments()).thenReturn(list, null);
+        when(emailReadMock.getNextMessage()).thenReturn(mock(Message.class), null);
+        when(emailReadMock.getMessagesAttachments(any(Message.class))).thenReturn(list);
         getEmailStage.process(null);
         verify(nextStage, times(1)).process(any());
         verify(exceptionLoggerMock, never()).logException(any(Exception.class));
@@ -75,7 +76,8 @@ public class GetEmailStageTest {
         list.add(is);
         list.add(is);
         list.add(is);
-        when(emailReadMock.getNextMessagesAttachments()).thenReturn(list, null);
+        when(emailReadMock.getNextMessage()).thenReturn(mock(Message.class), null);
+        when(emailReadMock.getMessagesAttachments(any(Message.class))).thenReturn(list);
         getEmailStage.process(null);
         verify(nextStage, times(5)).process(any());
         verify(exceptionLoggerMock, never()).logException(any(Exception.class));
@@ -85,8 +87,8 @@ public class GetEmailStageTest {
     public void testServerThrowsException() throws NoSuchProviderException, MessagingException, IOException {
         doThrow(new MessagingException()).when(emailReadMock).connect();
         getEmailStage.process(null);
-        verify(emailReadMock, never()).getNextMessagesAttachments();
-        verify(emailReadMock, times(1)).close();
+        verify(emailReadMock, never()).getNextMessage();
+        verify(emailReadMock, times(1)).closeQuietly();
         verify(exceptionLoggerMock, times(1)).logException(any(Exception.class));
     }
 }

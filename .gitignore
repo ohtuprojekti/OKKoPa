@@ -1,6 +1,6 @@
 /target
 log.out
-rollinglog.out
+rollinglog.*
 /src/test/resources/savetest
 /src/main/resources/passwords.xml
 /errorpdfs

@@ -48,7 +48,7 @@ public class ReadFromQRCodeDatabaseTest {
     @Test
     public void addQRCodeToDatabase() throws SQLException, NotFoundException {
         database.addQRCode("0kkopa142245400");
-        assertEquals("", database.getUserID("0kkopa142245400"));
+        assertNull(database.getUserID("0kkopa142245400"));
 
         assertEquals(false, database.addQRCode("0kkopa142245400"));
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import fi.helsinki.cs.okkopa.model.ExamPaper;
@@ -11,12 +7,11 @@ import java.io.InputStream;
 import java.util.List;
 import org.jpedal.exception.PdfException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- *
- * @author anttkaik
- */
+// On if needed (SLOW)
+@Ignore
 public class PDFProcessingSpeedTest {
 
     PDFSplitter splitter;
