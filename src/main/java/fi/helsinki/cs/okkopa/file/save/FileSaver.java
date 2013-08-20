@@ -5,10 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.nio.file.FileAlreadyExistsException;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +16,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FileSaver implements Saver {
+    
+    private static final Logger LOGGER = Logger.getLogger(FileSaver.class.getName());
 
     public FileSaver() {
     }
@@ -54,13 +55,13 @@ public class FileSaver implements Saver {
     @Override
     public boolean saveInputStream(InputStream inputStream, String folderPath, String fileName) throws FileAlreadyExistsException {
         if (inputStream == null || folderPath == null || fileName == null) {
-            Logger.getLogger(FileSaver.class.getName()).log(Level.WARNING, "saveInputStream got null parameter. Returning false!");
+            LOGGER.warn("saveInputStream got null parameter. Returning false!");
             return false;
         }
 
         File folder = new File(folderPath);
         if (!folder.exists() && !folder.mkdirs()) {
-            Logger.getLogger(FileSaver.class.getName()).log(Level.WARNING, "Failed to create folder " + folderPath + ".");
+            LOGGER.warn("Failed to create folder " + folderPath + ".");
             return false;
         }
         File file = new File(folderPath + "/" + fileName);
@@ -74,7 +75,7 @@ public class FileSaver implements Saver {
             outputStream.close();
             inputStream.close();
         } catch (IOException ex) {
-            Logger.getLogger(FileSaver.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error(ex.toString(), ex);
             return false;
         }
         return true;

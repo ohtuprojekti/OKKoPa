@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadQRCodeStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReadQRCodeStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private Saver fileSaver;
     private String saveErrorFolder;
