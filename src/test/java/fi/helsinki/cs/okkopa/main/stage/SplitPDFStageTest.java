@@ -1,6 +1,7 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.exception.DocumentException;
+import fi.helsinki.cs.okkopa.main.BatchDetails;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
@@ -20,6 +21,7 @@ public class SplitPDFStageTest {
     private PDFProcessor pdfProcessorMock;
     private SplitPDFStage splitPDFStage;
     private Stage nextStage;
+    private BatchDetails batchMock;
 
     public SplitPDFStageTest() {
     }
@@ -36,7 +38,8 @@ public class SplitPDFStageTest {
     public void setUp() {
         exceptionLoggerMock = mock(ExceptionLogger.class);
         pdfProcessorMock = mock(PDFProcessor.class);
-        splitPDFStage = new SplitPDFStage(pdfProcessorMock, exceptionLoggerMock);
+        batchMock = mock(BatchDetails.class);
+        splitPDFStage = new SplitPDFStage(pdfProcessorMock, exceptionLoggerMock, batchMock);
         nextStage = mock(Stage.class);
         splitPDFStage.setNext(nextStage);
     }

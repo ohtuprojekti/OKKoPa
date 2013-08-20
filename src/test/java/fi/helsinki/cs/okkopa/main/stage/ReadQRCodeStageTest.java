@@ -6,6 +6,7 @@ package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.file.save.Saver;
+import fi.helsinki.cs.okkopa.main.BatchDetails;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
@@ -32,6 +33,7 @@ public class ReadQRCodeStageTest {
     private ExamPaper examPaperMock;
     private Stage nextSatageMock;
     private String saveRetryFolder;
+    private BatchDetails batchMock;
 
     public ReadQRCodeStageTest() {
     }
@@ -52,10 +54,11 @@ public class ReadQRCodeStageTest {
         exceptionLoggerMock = mock(ExceptionLogger.class);
         examPaperMock = mock(ExamPaper.class);
         nextSatageMock = mock(Stage.class);
+        batchMock = mock(BatchDetails.class);
         saveRetryFolder = "testi";
         when(settingsMock.getProperty("exampaper.saveunreadablefolder")).thenReturn(saveRetryFolder);
         when(settingsMock.getProperty("exampaper.saveunreadable")).thenReturn("true");
-        readqrCodeStage = new ReadQRCodeStage(saverMock, pdfProcessorMock, exceptionLoggerMock, settingsMock);
+        readqrCodeStage = new ReadQRCodeStage(saverMock, pdfProcessorMock, exceptionLoggerMock, settingsMock, batchMock);
         readqrCodeStage.setNext(nextSatageMock);
         when(examPaperMock.getPdf()).thenReturn(new byte[1]);
     }
