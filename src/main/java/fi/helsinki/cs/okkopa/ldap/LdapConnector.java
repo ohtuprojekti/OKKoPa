@@ -17,6 +17,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * LDAP-connector. Connects to LDAP and fetches student number matching given user id.
+ * 
+ */
+
 @Component
 public class LdapConnector {
 
@@ -27,6 +32,13 @@ public class LdapConnector {
     private String bindDN;
     private String bindPWD;
 
+    /**
+     * Creates a new LdapConnector with settings given as a parameter.
+     * 
+     * @param settings  The settings file that contains credentials LDAP host name, port, bindDN (user name), 
+     * password, key store file location and key store secret.
+     * 
+     */
     @Autowired
     public LdapConnector(Settings settings) {
         this.settings = settings;
@@ -36,6 +48,14 @@ public class LdapConnector {
         this.bindPWD = settings.getProperty("ldap.password");
     }
 
+    /**
+     * Fetches student number matching username from LDAP.
+     * Sets the student number to a Student object and returns it if a number is found. 
+     * Throws an exception if LDAP connection / search fails, or if more than one or no results are found.
+     * 
+     * @param student a container for username, e-mail address and student number for a single student. Contains just a user name when given as a parameter, should contain also student number when returned.
+     * 
+     */
     public Student setStudentInfo(Student student) throws NotFoundException, GeneralSecurityException, LDAPException {
         LDAPConnection ldc = null;
 
@@ -47,7 +67,7 @@ public class LdapConnector {
             bindReq.setResponseTimeoutMillis(1000);
             ldc.bind(bindReq);
 
-            SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, student.getUsername()), "mail", "schacPersonalUniqueCode");
+            SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, student.getUsername()), "schacPersonalUniqueCode");
 
             if (result.getEntryCount() > 1) {
                 throw new NotFoundException("Too many results from LDAP-query with username " + student.getUsername() + ".");
