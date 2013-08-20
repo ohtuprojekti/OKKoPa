@@ -14,13 +14,13 @@ import javax.mail.util.ByteArrayDataSource;
  */
 public class OKKoPaMessage {
 
-    Multipart body;
-    Properties properties;
+    private Multipart body;
+    private Properties properties;
     private static final int VIESTI_INDEX = 0;
     private static final String PDF_MIME_NAME = "application/pdf";
-    String subject;
-    String receiver;
-    String sender;
+    private String subject;
+    private String receiver;
+    private String sender;
     private Session session;
 
     /**
@@ -175,5 +175,13 @@ public class OKKoPaMessage {
      */
     public void addPDFAttachment(InputStream is, String name) throws IOException, MessagingException {
         addAttachment(is, PDF_MIME_NAME, name);
+    }
+
+    public Multipart getBody() {
+        return body;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

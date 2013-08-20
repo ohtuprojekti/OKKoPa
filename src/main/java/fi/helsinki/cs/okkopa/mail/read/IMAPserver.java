@@ -24,7 +24,6 @@ public class IMAPserver {
     private String IMAPadress;
     private String username;
     private String password;
-    private IMAPFolder newFolder;
 
     /**
      * Formats offline settings ready for login.
@@ -134,10 +133,10 @@ public class IMAPserver {
         }
     }
 
-    public void createFolder(String newFolder) throws MessagingException {
-        this.newFolder = (IMAPFolder) store.getFolder(newFolder);
-        if (!this.newFolder.exists()) {
-            this.newFolder.create(Folder.HOLDS_MESSAGES);
+    public void createFolder(String newFolderName) throws MessagingException {
+        IMAPFolder newFolder = (IMAPFolder) store.getFolder(newFolderName);
+        if (!newFolder.exists()) {
+            newFolder.create(Folder.HOLDS_MESSAGES);
         }
     }
 }

@@ -59,14 +59,14 @@ public class OKKoPaMessageTest {
     public void testSetText() throws Exception {
         OKKoPaMessage msg = new OKKoPaMessage("a", "b", props);
         msg.setText("viestin sisalto");
-        assertEquals(msg.body.getBodyPart(0).getContent().toString(), "viestin sisalto");
+        assertEquals(msg.getBody().getBodyPart(0).getContent().toString(), "viestin sisalto");
     }
 
     @Test
     public void testSetSubject() throws Exception {
         OKKoPaMessage msg = new OKKoPaMessage("a", "b", props);
         msg.setSubject("aihe");
-        assertEquals(msg.subject, "aihe");
+        assertEquals(msg.getSubject(), "aihe");
     }
 
     @Test

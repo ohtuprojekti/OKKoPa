@@ -5,11 +5,10 @@ import fi.helsinki.cs.okkopa.main.Settings;
 public class Reference {
 
     private final ReferenceNumber number;
-    private final Integer size;
     private final ReferenceString letters;
 
     public Reference(Settings settings) {
-        this.size = Integer.valueOf(settings.getProperty("reference.anonymous.size"));
+        Integer size = Integer.valueOf(settings.getProperty("reference.anonymous.size"));
 
         this.number = new ReferenceNumber(size);
         this.letters = new ReferenceString(size);

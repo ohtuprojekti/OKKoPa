@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class OracleConnector {
 
-    private static Logger LOGGER = Logger.getLogger(OracleConnector.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OracleConnector.class.getName());
     private ConnectionSource connectionSource;
     private String url;
     private String pwd;
