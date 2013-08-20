@@ -1,5 +1,10 @@
 package fi.helsinki.cs.okkopa.model;
 
+/**
+ * A Container class for student information.
+ * Contains e-mail address, student number and username.
+ *
+ */
 public class Student {
 
     private String email;
@@ -11,39 +16,51 @@ public class Student {
      */
     public Student() {
     }
-    
-    /**
-     *Intializes student information like: username, E-mail, student number.
-     * @param username
-     * @param email
-     * @param studentNumber
-     */
+
     public Student(String username, String email, String studentNumber) {
         this.username = username;
         this.email = email;
         this.studentNumber = studentNumber;
     }
 
+    /**
+     * Returns e-mail address.  
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets e-mail address.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Returns student number.
+     */
     public String getStudentNumber() {
         return studentNumber;
     }
 
+    /**
+     * Sets student number.
+     */
     public void setStudentNumber(String studentNumber) {
         this.studentNumber = studentNumber;
     }
 
+    /**
+     * Returns username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets username.
+     */
     public void setUsername(String username) {
         this.username = username;
     }

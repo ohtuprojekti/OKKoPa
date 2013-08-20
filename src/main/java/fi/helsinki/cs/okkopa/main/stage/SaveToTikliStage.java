@@ -4,6 +4,7 @@ import com.unboundid.ldap.sdk.LDAPException;
 import fi.helsinki.cs.okkopa.database.OracleConnector;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.ldap.LdapConnector;
+import fi.helsinki.cs.okkopa.main.BatchDetails;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.CourseDbModel;
@@ -26,20 +27,22 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
     private ExceptionLogger exceptionLogger;
     private OracleConnector oc;
     private Settings settings;
+    private BatchDetails batch;
 
     @Autowired
     public SaveToTikliStage(LdapConnector ldapConnector, Settings settings,
-            ExceptionLogger exceptionLogger) {
+            ExceptionLogger exceptionLogger, BatchDetails batch) {
         this.settings = settings;
         this.ldapConnector = ldapConnector;
         tikliEnabled = Boolean.parseBoolean(settings.getProperty("tikli.enable"));
         this.exceptionLogger = exceptionLogger;
         this.oc = new OracleConnector(settings);
+        this.batch = batch;
     }
 
     @Override
     public void process(ExamPaper examPaper) {
-        if (examPaper.getCourseInfo() != null && tikliEnabled) {
+        if (batch.getCourseCode() != null && tikliEnabled) {
             // Get student number from LDAP:
             try {
                 ldapConnector.setStudentInfo(examPaper.getStudent());
@@ -53,7 +56,7 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
     }
 
     private void saveToTikli(ExamPaper examPaper) {
-        CourseDbModel course = new CourseDbModel(examPaper.getCourseInfo());
+        CourseDbModel course = new CourseDbModel(batch);
         FeedbackDbModel feedback = new FeedbackDbModel(settings, course, examPaper.getPdf(), examPaper.getStudent().getStudentNumber());
         StudentDbModel student = new StudentDbModel(examPaper.getStudent());
         try {

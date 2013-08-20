@@ -39,7 +39,7 @@ public class MissedExamDaoTest {
         missedExamDao = new MissedExamDao(connectionSource);
         qrCodeDao = new QRCodeDAO(connectionSource);
         qrCodeDao.addQRCode("0kkopa142921400");
-        qrCodeDao.addUSer("0kkopa142921400", "ktunnus");
+        qrCodeDao.addUser("0kkopa142921400", "ktunnus");
 
         qrCodeDao.addQRCode("0kkopa143562150");
       
