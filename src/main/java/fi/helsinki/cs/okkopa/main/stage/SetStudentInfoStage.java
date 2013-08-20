@@ -1,5 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
+import fi.helsinki.cs.okkopa.database.MissedExamDao;
 import fi.helsinki.cs.okkopa.database.QRCodeDAO;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
@@ -16,11 +17,13 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
     private static final Logger LOGGER = Logger.getLogger(SetStudentInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private QRCodeDAO qRCodeDatabase;
+    private MissedExamDao missedExamDAO;
 
     @Autowired
-    public SetStudentInfoStage(QRCodeDAO qRCodeDatabase, ExceptionLogger exceptionLogger) {
+    public SetStudentInfoStage(QRCodeDAO qRCodeDatabase, MissedExamDao missedExamDAO, ExceptionLogger exceptionLogger) {
         this.qRCodeDatabase = qRCodeDatabase;
         this.exceptionLogger = exceptionLogger;
+        this.missedExamDAO = missedExamDAO;
     }
 
     @Override
@@ -28,19 +31,26 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
         try {
             LOGGER.debug("ID: " + examPaper.getQRCodeString());
             String userId = fetchUserId(examPaper.getQRCodeString());
+            if (userId == null) {
+                //Rekisteröimätön anonyymikoodi.
+                missedExamDAO.addMissedExam(examPaper.getQRCodeString());
+                return;
+            }
             Student student = new Student();
             examPaper.setStudent(student);
             student.setUsername(userId);
             // TODO katenointi
             student.setEmail("okkopa.2013@gmail.com");
-        } catch (SQLException | NotFoundException ex) {
+        } catch (NotFoundException | SQLException ex) {
             exceptionLogger.logException(ex);
-            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä sitä vastannut yksikään geneerinen tunnus.");
+            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä anonyymi koodi.");
             // QR code isn't an user id and doesn't match any database entries.
             return;
         }
         processNextStages(examPaper);
     }
+    
+    
 
     private String fetchUserId(String qrcode) throws SQLException, NotFoundException {
         // Filter too short

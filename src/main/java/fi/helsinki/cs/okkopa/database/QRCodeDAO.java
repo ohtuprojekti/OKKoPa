@@ -4,7 +4,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.table.TableUtils;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.model.QRCode;
+import fi.helsinki.cs.okkopa.model.MissedExamDbModel;
+import fi.helsinki.cs.okkopa.model.QRCodeDbModel;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QRCodeDAO {
 
-    private Dao<QRCode, String> qrCodeDao;
+    private Dao<QRCodeDbModel, String> qrCodeDao;
 
     /**
      *
@@ -25,12 +26,11 @@ public class QRCodeDAO {
      */
     @Autowired
     public QRCodeDAO(OkkopaDatabaseConnectionSource connectionSource) throws SQLException {
-
         // instantiate the dao
-        qrCodeDao = DaoManager.createDao(connectionSource, QRCode.class);
+        qrCodeDao = DaoManager.createDao(connectionSource, QRCodeDbModel.class);
 
         // if you need to create the 'accounts' table make this call
-        TableUtils.createTableIfNotExists(connectionSource, QRCode.class);
+        TableUtils.createTableIfNotExists(connectionSource, QRCodeDbModel.class);
     }
 
     /**
@@ -41,7 +41,7 @@ public class QRCodeDAO {
      * @throws NotFoundException
      */
     public String getUserID(String qrcodeString) throws SQLException, NotFoundException {
-        QRCode qrCode = qrCodeDao.queryForId(qrcodeString);
+        QRCodeDbModel qrCode = qrCodeDao.queryForId(qrcodeString);
         if (qrCode == null) {
             throw new NotFoundException();
         }
@@ -49,7 +49,7 @@ public class QRCodeDAO {
     }
 
     boolean addQRCode(String qrCodeString) throws SQLException {
-        QRCode qrCode = new QRCode(qrCodeString, "");
+        QRCodeDbModel qrCode = new QRCodeDbModel(qrCodeString, null);
 
         if (!qrCodeDao.idExists(qrCodeString)) {
             qrCodeDao.create(qrCode);
@@ -59,13 +59,15 @@ public class QRCodeDAO {
     }
 
     boolean addUSer(String qrCodeString, String UserId) throws SQLException {
-        QRCode qrCode = qrCodeDao.queryForId(qrCodeString);
+        QRCodeDbModel qrCode = qrCodeDao.queryForId(qrCodeString);
 
-        if (qrCode.getUserId().equals("")) {
-            qrCode = new QRCode(qrCodeString, UserId);
+        if (qrCode.getUserId() == null) {
+            qrCode = new QRCodeDbModel(qrCodeString, UserId);
             qrCodeDao.update(qrCode);
             return true;
         }
         return false;
     }
+
+
 }

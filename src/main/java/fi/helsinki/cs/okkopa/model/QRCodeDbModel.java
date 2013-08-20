@@ -4,17 +4,17 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "qrCodes")
-public class QRCode {
+public class QRCodeDbModel {
 
     @DatabaseField(id = true, columnName = "qrCode")
     private String qrCodeString;
     @DatabaseField(columnName = "userId")
     private String userId;
 
-    public QRCode() {
+    public QRCodeDbModel() {
     }
 
-    public QRCode(String qrCodeString, String userId) {
+    public QRCodeDbModel(String qrCodeString, String userId) {
         this.qrCodeString = qrCodeString;
         this.userId = userId;
     }

@@ -77,17 +77,25 @@
     <entry key="logger.logcompletestack">false</entry>
     
     <!-- Texts for GUI -->
-    <entry key="gui.front.header">OKKoPa - etusivun luonti</entry>
+    <entry key="gui.front.header">OKKoPa - kansisivun luonti</entry>
     <entry key="gui.front.help">Tarvitsetko apua? Ota yhteys Ossiin!</entry>
+    <entry key="gui.front.link">Kansilehtien luonti (luennoitsijat)</entry>
+    <entry key="gui.front.info">Lisätietoa kannesta</entry>
     
     <entry key="gui.create.header">OKKoPa - viitteiden luonti</entry>
     <entry key="gui.create.help">Tarvitsetko apua? Ota yhteys Ossiin!</entry>
+    <entry key="gui.create.link">Viitteiden luonti (vain admin)</entry>
+    <entry key="gui.create.info">Lisätietoa luonnista</entry>
     
     <entry key="gui.add.header">OKKoPa - viitteiden rekisteröinti</entry>
     <entry key="gui.add.help">Tarvitsetko apua? Ota yhteys Ossiin!</entry>
+    <entry key="gui.add.link">Viitteiden rekisteröinti</entry>
+    <entry key="gui.add.info">Lisätietoa rekisteröinnistä</entry>
+    
     <entry key="gui.add.reference.typo">Kirjoitit viitteesi väärin, tarkista oikeinkirjoitus.</entry>
     <entry key="gui.add.username.typo">Käyttäjätunnus pitää olla yli kaksi merkkiä pitkä.</entry>
     <entry key="gui.add.username.ok">homma OK! Koe tulee sinulle kunhan se on tarkistettu.</entry>
     <entry key="gui.add.username.double">"Joku oli jo rekisteröitynyt antamallesi QR-koodille. Ota yhteyttä Ossiin, ja selvitä hässäkkä."</entry>
     <entry key="gui.add.username.noreferenceondb">"antamaasi viitettä ei löytynyt, etkai vaan yritä syöttää paskaa sisään?"</entry>
+    
 </properties>
