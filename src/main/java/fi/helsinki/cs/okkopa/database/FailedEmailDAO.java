@@ -2,9 +2,8 @@ package fi.helsinki.cs.okkopa.database;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import fi.helsinki.cs.okkopa.model.FailedEmail;
+import fi.helsinki.cs.okkopa.model.FailedEmailDbModel;
 import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FailedEmailDAO {
 
-    private Dao<FailedEmail, String> emailDao;
+    private Dao<FailedEmailDbModel, String> emailDao;
 
     /**
      * Sets up the DAO for the FailedEmail table.
@@ -27,10 +26,10 @@ public class FailedEmailDAO {
     @Autowired
     public FailedEmailDAO(OkkopaDatabaseConnectionSource connectionSource) throws SQLException {
         // instantiate the dao
-        emailDao = DaoManager.createDao(connectionSource, FailedEmail.class);
+        emailDao = DaoManager.createDao(connectionSource, FailedEmailDbModel.class);
 
         // creates table if it doesn't exist
-        TableUtils.createTableIfNotExists(connectionSource, FailedEmail.class);
+        TableUtils.createTableIfNotExists(connectionSource, FailedEmailDbModel.class);
     }
 
     /**
@@ -39,7 +38,7 @@ public class FailedEmailDAO {
      * @param failedEmail FailedEmail to store.
      * @throws SQLException In case of any failure while saving.
      */
-    public void addFailedEmail(FailedEmail failedEmail) throws SQLException {
+    public void addFailedEmail(FailedEmailDbModel failedEmail) throws SQLException {
         emailDao.create(failedEmail);
     }
 
@@ -49,7 +48,7 @@ public class FailedEmailDAO {
      * @return A list of all FailedEmails.
      * @throws SQLException In case of failure with database.
      */
-    public List<FailedEmail> listAll() throws SQLException {
+    public List<FailedEmailDbModel> listAll() throws SQLException {
         return emailDao.queryForAll();
     }
 }

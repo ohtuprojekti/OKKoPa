@@ -32,20 +32,16 @@ public class OKKoPaMessageTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws InterruptedException {
-        Thread.sleep(5000);
+    public static void tearDownClass() {
     }
 
     @Before
-    public void setUp() throws MessagingException, FileNotFoundException, IOException {
+    public void setUp() throws MessagingException, FileNotFoundException, IOException, InterruptedException {
+        Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
         ServerSetup setup = new ServerSetup(4012, "localhost", ServerSetup.PROTOCOL_SMTPS);
-        greenMail = new GreenMail(setup); //uses test ports by default
+        greenMail = new GreenMail(setup);
         greenMail.start();
         props = (new Settings("smtptestsettings.xml"));
-
-        //XTrustProvider provider = new XTrustProvider();
-        //provider.install();
-        Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
     }
 
     @After

@@ -10,7 +10,7 @@ import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
-import fi.helsinki.cs.okkopa.model.FailedEmail;
+import fi.helsinki.cs.okkopa.model.FailedEmailDbModel;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
@@ -88,7 +88,7 @@ public class SendEmailStageTest {
         verify(emailSenderMock, times(1)).send(anyString(), any(InputStream.class));
         verify(exceptionLoggerMock, times(1)).logException(any(Exception.class));
         verify(saverMock, times(1)).saveInputStream(any(InputStream.class), eq(saveRetryFolder), anyString());
-        verify(failedEmailDatabaseMock, times(1)).addFailedEmail(any(FailedEmail.class));
+        verify(failedEmailDatabaseMock, times(1)).addFailedEmail(any(FailedEmailDbModel.class));
         verify(nextSatageMock, times(1)).process(examPaperMock);
 
     }

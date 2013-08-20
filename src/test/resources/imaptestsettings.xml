@@ -25,12 +25,14 @@
     
     <!-- Message settings -->
     
-    <!-- Don't use tabs in "mail.defaultmessage.body" unless
+    <!-- Don't use tabs in "mail.message.body" unless
     you want them to appear in e-mails. -->
-    <entry key="mail.message.defaultbody">ERROR #156564
-        
+    <entry key="mail.message.body">
+        Sähköpostin sisältö tähän.
+        Mitenhän toimii monen rivin postit?
+        Näemmä hyvin.
     </entry>
-    <entry key="mail.message.defaulttopic">Sähköpostin otsikko tähän</entry>
+    <entry key="mail.message.topic">Sähköpostin otsikko tähän</entry>
     <entry key="mail.message.replyto">okkopa2.2013@gmail.com</entry>
      
     <!-- Database settings -->
