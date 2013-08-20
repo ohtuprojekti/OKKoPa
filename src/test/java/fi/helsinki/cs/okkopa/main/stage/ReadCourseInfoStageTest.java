@@ -1,7 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
-import fi.helsinki.cs.okkopa.model.CourseInfo;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import java.util.List;
 import org.junit.After;

@@ -24,7 +24,7 @@ public class ReadFromQRCodeDatabaseTest {
         database = new QRCodeDAO(connectionSource);
 
         database.addQRCode("0kkopa142921400");
-        database.addUSer("0kkopa142921400", "ktunnus");
+        database.addUser("0kkopa142921400", "ktunnus");
 
         database.addQRCode("0kkopa143562150");
     }
@@ -48,11 +48,11 @@ public class ReadFromQRCodeDatabaseTest {
     @Test
     public void addQRCodeToDatabase() throws SQLException, NotFoundException {
         database.addQRCode("0kkopa142245400");
-        assertEquals("", database.getUserID("0kkopa142245400"));
+        assertNull(database.getUserID("0kkopa142245400"));
 
         assertEquals(false, database.addQRCode("0kkopa142245400"));
 
-        database.addUSer("0kkopa142245400", "testi2u");
+        database.addUser("0kkopa142245400", "testi2u");
         assertEquals("testi2u", database.getUserID("0kkopa142245400"));
     }
 }

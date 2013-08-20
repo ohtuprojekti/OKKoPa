@@ -3,6 +3,7 @@ package fi.helsinki.cs.okkopa.mail.read;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 
@@ -11,7 +12,9 @@ public interface EmailRead {
     /**
      * Closes the connection.
      */
-    void close();
+    void close() throws MessagingException;
+    
+    void closeQuietly();
 
     /**
      * Connects into the email server.
@@ -19,7 +22,9 @@ public interface EmailRead {
      * @throws NoSuchProviderException
      * @throws MessagingException
      */
-    void connect() throws NoSuchProviderException, MessagingException;
+    void connect() throws MessagingException;
+    
+    Message getNextMessage() throws MessagingException;
 
     /**
      * Returns list of next email's attachments as list.
@@ -28,13 +33,7 @@ public interface EmailRead {
      * @throws MessagingException
      * @throws IOException
      */
-    List<InputStream> getNextMessagesAttachments() throws MessagingException, IOException;
-
-    /**
-     * Deletes old messages from processed folder. How old messages are
-     * specified in settings file.
-     *
-     * @throws MessagingException
-     */
-    void deleteOldMessages() throws MessagingException;
+    List<InputStream> getMessagesAttachments(Message message) throws MessagingException, IOException;
+    
+    void cleanUpMessage(Message message) throws MessagingException;
 }

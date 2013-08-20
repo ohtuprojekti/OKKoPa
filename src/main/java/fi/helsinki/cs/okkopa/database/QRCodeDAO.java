@@ -58,7 +58,7 @@ public class QRCodeDAO {
         return false;
     }
 
-    boolean addUSer(String qrCodeString, String UserId) throws SQLException {
+    boolean addUser(String qrCodeString, String UserId) throws SQLException {
         QRCodeDbModel qrCode = qrCodeDao.queryForId(qrCodeString);
 
         if (qrCode.getUserId() == null) {

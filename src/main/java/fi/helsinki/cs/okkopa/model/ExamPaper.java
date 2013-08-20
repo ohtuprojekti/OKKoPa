@@ -12,7 +12,6 @@ public class ExamPaper {
     private String qrCodeString;
     private List<BufferedImage> pageImages;
     private Student student;
-    private CourseInfo courseInfo;
 
     public void setStudent(Student student) {
         this.student = student;
@@ -46,11 +45,4 @@ public class ExamPaper {
         this.pdf = pdf;
     }
 
-    public CourseInfo getCourseInfo() {
-        return courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
 }
