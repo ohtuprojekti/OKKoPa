@@ -16,6 +16,11 @@ public class MissedExamDbModel {
     @DatabaseField(columnName = "date")
     private Date date;
     
+    public MissedExamDbModel() {
+        this.date = new Date();
+    }
+    
+    
     public MissedExamDbModel(QRCodeDbModel qRCode) {
         this.qrCode = qRCode;
         this.date = new Date();
