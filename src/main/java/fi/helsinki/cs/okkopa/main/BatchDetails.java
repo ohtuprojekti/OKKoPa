@@ -4,19 +4,26 @@
  */
 package fi.helsinki.cs.okkopa.main;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BatchDetails {
-    
+
+    private int successfulTikliSaves;
     private int totalPages;
-    private int failedScans; 
+    private int failedScans;
     private String reportEmailAddress;
-    private String defaultEmailContent;
+    private String emailContent;
     private Settings settings;
-    
-    
+
+    @Autowired
+    public BatchDetails(Settings settings) {
+        this.settings = settings;
+        reset();
+    }
     //Courseinfo:
+
     public String getCourseCode() {
         return courseCode;
     }
@@ -61,11 +68,6 @@ public class BatchDetails {
     private int year;
     private String type;
     private int courseNumber;
-    
-    public BatchDetails(Settings settings) {
-        this.settings = settings;
-        reset();
-    }
 
     public int getTotalPages() {
         return totalPages;
@@ -83,6 +85,10 @@ public class BatchDetails {
         this.failedScans = failedScans;
     }
 
+    public void addFailedScan() {
+        this.failedScans++;
+    }
+
     public String getReportEmailAddress() {
         return reportEmailAddress;
     }
@@ -91,16 +97,28 @@ public class BatchDetails {
         this.reportEmailAddress = reportEmailAddress;
     }
 
-    public String getDefaultEmailContent() {
-        return defaultEmailContent;
+    public String getEmailContent() {
+        return emailContent;
     }
 
-    public void setDefaultEmailContent(String emailContent) {
-        this.defaultEmailContent = emailContent;
+    public void setEmailContent(String emailContent) {
+        this.emailContent = emailContent;
+    }
+
+    public int getSuccessfulTikliSaves() {
+        return successfulTikliSaves;
+    }
+
+    public void setSuccessfulTikliSaves(int successfulTikliSaves) {
+        this.successfulTikliSaves = successfulTikliSaves;
+    }
+    
+    public void addSuccessfulTikliSave() {
+        this.successfulTikliSaves++;
     }
 
     public void reset() {
-        this.defaultEmailContent = settings.getProperty("mail.defaultmessage.body");
+        this.emailContent = settings.getProperty("mail.defaultmessage.body");
         this.reportEmailAddress = null;
         this.totalPages = 0;
         this.failedScans = 0;
@@ -109,9 +127,7 @@ public class BatchDetails {
         this.period = null;
         this.type = null;
         this.year = 0;
-        
+        this.successfulTikliSaves = 0;
+
     }
-    
-    
-    
 }

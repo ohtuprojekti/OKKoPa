@@ -44,13 +44,14 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
         try {
             courseInfoPage.setPageImages(pdfProcessor.getPageImages(courseInfoPage));
             courseInfoPage.setQRCodeString(pdfProcessor.readQRCode(courseInfoPage));
-                setBatchDetails(courseInfoPage);
+            setBatchDetails(courseInfoPage);
 
             // Remove if succesful so that the page won't be processed as
             // a normal exam paper.
             examPapers.remove(0);
             LOGGER.debug("Kurssi-info luettu onnistuneesti.");
         } catch (PdfException | NotFoundException  | SQLException | IOException ex) {
+            LOGGER.debug("jotain meni pieleen");
             exceptionLogger.logException(ex);
         }
 
@@ -72,7 +73,7 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
 //        }
 //    }
     public void setBatchDetails(ExamPaper examPaper) throws SQLException, FileNotFoundException, IOException, NotFoundException {
-        String[] fields = examPaper.getQRCodeString().split(":");
+        String[] fields = (examPaper.getQRCodeString() + ":236").split(":");
         LOGGER.debug("Kurssi-info luettu: " + examPaper.getQRCodeString());
         batch.setCourseCode(fields[0]);
         batch.setPeriod(fields[1]);
@@ -80,13 +81,14 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
         batch.setType(fields[3]);
         batch.setCourseNumber(Integer.parseInt(fields[4]));
 
-        if (fields.length >= 5) {
+        if (fields.length >= 6) {
             BatchDetailDAO batchDao = new BatchDetailDAO(new OkkopaDatabaseConnectionSource(new Settings("settings.xml")));
-
+            batchDao.addBatchDetails(new BatchDbModel("236", "Viesti kannasta", "okkopa.2013@gmail.com"));
             BatchDbModel bdm;
+            
             bdm = batchDao.getBatchDetails(fields[5]);
 
-            batch.setDefaultEmailContent(bdm.getEmailContent());
+            batch.setEmailContent(bdm.getEmailContent());
             batch.setReportEmailAddress(bdm.getReportEmailAddress());
         }
 

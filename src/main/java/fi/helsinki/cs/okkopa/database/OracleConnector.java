@@ -95,7 +95,6 @@ public class OracleConnector {
         List<CourseDbModel> result;
         result = this.courseDbModel.queryForMatching(course);
         if (result.size() == 1) {
-            System.out.println(result.get(0).getName());
             return true;
         } else {
             return false;
@@ -114,7 +113,6 @@ public class OracleConnector {
         List<StudentDbModel> result;
         result = this.studentDbModel.queryForMatching(student);
         if (result.size() == 1) {
-            System.out.println(result.get(0).getStudentNumber());
             return true;
         } else {
             return false;

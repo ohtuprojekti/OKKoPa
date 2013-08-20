@@ -25,6 +25,10 @@ public class BatchDetailDAO {
 
     }
 
+    public void addBatchDetails(BatchDbModel batchInfo) throws SQLException {
+        batchDbDao.createIfNotExists(batchInfo);
+    }
+    
     public BatchDbModel getBatchDetails(String id) throws SQLException, NotFoundException {
         BatchDbModel batchDb = batchDbDao.queryForId(id);
         if (batchDb == null) {

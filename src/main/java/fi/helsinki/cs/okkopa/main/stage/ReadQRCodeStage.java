@@ -2,6 +2,7 @@ package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.file.save.Saver;
+import fi.helsinki.cs.okkopa.main.BatchDetails;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
@@ -24,10 +25,12 @@ public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
     private String saveErrorFolder;
     private boolean saveOnExamPaperPDFError;
     private PDFProcessor pdfProcessor;
+    private BatchDetails batch;
 
     @Autowired
     public ReadQRCodeStage(Saver fileSaver, PDFProcessor pdfProcessor,
-            ExceptionLogger exceptionLogger, Settings settings) {
+            ExceptionLogger exceptionLogger, Settings settings, BatchDetails batch) {
+        this.batch = batch;
         this.exceptionLogger = exceptionLogger;
         this.fileSaver = fileSaver;
         this.pdfProcessor = pdfProcessor;
@@ -43,6 +46,7 @@ public class ReadQRCodeStage extends Stage<ExamPaper, ExamPaper> {
         } catch (PdfException | NotFoundException ex) {
             exceptionLogger.logException(ex);
             LOGGER.debug("QR-koodia ei pystytty lukemaan.");
+            batch.addFailedScan();
             if (saveOnExamPaperPDFError) {
                 try {
                     InputStream stream = new ByteArrayInputStream(examPaper.getPdf());

@@ -48,6 +48,7 @@ public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
                 ldapConnector.setStudentInfo(examPaper.getStudent());
                 saveToTikli(examPaper);
                 LOGGER.debug("Koepaperi tallennettu Tikliin.");
+                batch.addSuccessfulTikliSave();
             } catch (NotFoundException | LDAPException | GeneralSecurityException ex) {
                 exceptionLogger.logException(ex);
             }
