@@ -5,7 +5,7 @@ import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
-import fi.helsinki.cs.okkopa.model.FailedEmail;
+import fi.helsinki.cs.okkopa.model.FailedEmailDbModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,7 +48,7 @@ public class RetryFailedEmailsStage extends Stage {
         processNextStages(null);
     }
 
-    private void sendEmail(FailedEmail failedEmail, InputStream attachment) throws MessagingException {
+    private void sendEmail(FailedEmailDbModel failedEmail, InputStream attachment) throws MessagingException {
         LOGGER.debug("Lähetetään sähköposti.");
         emailSender.send(failedEmail.getReceiverEmail(), attachment);
     }
@@ -62,7 +62,7 @@ public class RetryFailedEmailsStage extends Stage {
             return;
         };
         // Get list of failed emails from database
-        List<FailedEmail> failedEmails;
+        List<FailedEmailDbModel> failedEmails;
         try {
             failedEmails = failedEmailDatabase.listAll();
         } catch (SQLException ex) {
@@ -70,7 +70,7 @@ public class RetryFailedEmailsStage extends Stage {
             return;
         }
         // Match files and send
-        for (FailedEmail failedEmail : failedEmails) {
+        for (FailedEmailDbModel failedEmail : failedEmails) {
             for (File pdf : fileList) {
                 if (failedEmail.getFilename().equals(pdf.getName())) {
                     if (retryFailedEmail(pdf, failedEmail)) {
@@ -82,7 +82,7 @@ public class RetryFailedEmailsStage extends Stage {
         // TODO clean nonmatching database <-> folder
     }
 
-    private boolean retryFailedEmail(File pdf, FailedEmail failedEmail) {
+    private boolean retryFailedEmail(File pdf, FailedEmailDbModel failedEmail) {
         FileInputStream fis;
         try {
             fis = new FileInputStream(pdf);

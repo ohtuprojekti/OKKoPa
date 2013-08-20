@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "failedEmail")
-public class FailedEmail {
+public class FailedEmailDbModel {
 
     @DatabaseField(id = true, columnName = "filename")
     private String filename;
@@ -14,7 +14,7 @@ public class FailedEmail {
     @DatabaseField(columnName = "failTime")
     private Date failTime;
 
-    public FailedEmail() {
+    public FailedEmailDbModel() {
     }
 
     public String getFilename() {

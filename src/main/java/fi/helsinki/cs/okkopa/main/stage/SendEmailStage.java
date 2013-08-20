@@ -6,7 +6,7 @@ import fi.helsinki.cs.okkopa.file.save.Saver;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
-import fi.helsinki.cs.okkopa.model.FailedEmail;
+import fi.helsinki.cs.okkopa.model.FailedEmailDbModel;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
@@ -65,7 +65,7 @@ public class SendEmailStage extends Stage<ExamPaper, ExamPaper> {
             InputStream is = new ByteArrayInputStream(examPaper.getPdf());
             fileSaver.saveInputStream(is, saveRetryFolder, filename);
             IOUtils.closeQuietly(is);
-            FailedEmail failedEmail = new FailedEmail();
+            FailedEmailDbModel failedEmail = new FailedEmailDbModel();
             failedEmail.setFilename(filename);
             failedEmail.setReceiverEmail(examPaper.getStudent().getEmail());
             failedEmail.setFailTime(new Date());
