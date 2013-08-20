@@ -5,10 +5,19 @@ public class Student {
     private String email;
     private String studentNumber;
     private String username;
-
+    
+    /**
+     *Initializes and hold student information.
+     */
     public Student() {
     }
-
+    
+    /**
+     *Intializes student information like: username, E-mail, student number.
+     * @param username
+     * @param email
+     * @param studentNumber
+     */
     public Student(String username, String email, String studentNumber) {
         this.username = username;
         this.email = email;
