@@ -11,9 +11,9 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "MissedExam")
 public class MissedExamDbModel {
-    @DatabaseField(columnName = "qrCode", foreign = true)
+    @DatabaseField(columnName = "qrCode", foreign = true, canBeNull = false)
     private QRCodeDbModel qrCode;
-    @DatabaseField(columnName = "date")
+    @DatabaseField(columnName = "date", canBeNull = false)
     private Date date;
     
     public MissedExamDbModel() {
