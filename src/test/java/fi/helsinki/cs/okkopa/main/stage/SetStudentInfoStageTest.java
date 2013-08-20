@@ -62,10 +62,20 @@ public class SetStudentInfoStageTest {
     @Test
     public void testWithGeneratedId() throws SQLException, NotFoundException {
         when(mockPaper.getQRCodeString()).thenReturn("4GeneratedBecauseStartsWithNumber");
+        when(qrCodeDatabaseMock.getUserID("4GeneratedBecauseStartsWithNumber")).thenReturn("jeejee");
         setStudentInfoStage.process(mockPaper);
         verify(qrCodeDatabaseMock, times(1)).getUserID("4GeneratedBecauseStartsWithNumber");
         verify(mockPaper, times(1)).setStudent(any(Student.class));
         verify(nextStage, times(1)).process(mockPaper);
+    }
+    
+    @Test
+    public void testWithGeneratedIdReturningNull() throws SQLException, NotFoundException {
+        when(mockPaper.getQRCodeString()).thenReturn("4GeneratedBecauseStartsWithNumber");
+        setStudentInfoStage.process(mockPaper);
+        verify(qrCodeDatabaseMock, times(1)).getUserID("4GeneratedBecauseStartsWithNumber");
+        verify(mockPaper, never()).setStudent(any(Student.class));
+        verify(nextStage, never()).process(mockPaper);
     }
 
     @Test

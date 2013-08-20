@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SaveToTikliStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(SaveToTikliStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SaveToTikliStage.class.getName());
     private boolean tikliEnabled;
     private LdapConnector ldapConnector;
     private ExceptionLogger exceptionLogger;

@@ -5,7 +5,6 @@ import fi.helsinki.cs.okkopa.main.ExceptionLogger;
 import fi.helsinki.cs.okkopa.model.CourseInfo;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFProcessor;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.jpedal.exception.PdfException;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReadCourseInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private PDFProcessor pdfProcessor;
 

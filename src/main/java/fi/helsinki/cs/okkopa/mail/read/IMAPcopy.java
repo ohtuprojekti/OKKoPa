@@ -9,11 +9,7 @@ import javax.mail.MessagingException;
  */
 public class IMAPcopy {
 
-    private IMAPFolder folderFrom;
-    private IMAPFolder folderTo;
     private IMAPserver server;
-    private Message message;
-    private Message[] messages;
 
     /**
      * Formats to use, gets server-node.
@@ -34,15 +30,15 @@ public class IMAPcopy {
      * @throws MessagingException
      */
     public void copyMessage(Message message, String fromBox, String toBox) throws MessagingException {
-        this.folderFrom = this.server.selectAndGetFolder(fromBox);
-        this.folderTo = this.server.selectAndGetFolder(toBox);
+        IMAPFolder folderFrom = this.server.selectAndGetFolder(fromBox);
+        IMAPFolder folderTo = this.server.selectAndGetFolder(toBox);
 
-        this.message = message;
-        this.messages = new Message[1];
-        this.messages[0] = this.message;
+        Message deleteMessage = message;
+        Message[] deleteMessageArray = new Message[1];
+        deleteMessageArray[0] = deleteMessage;
 
-        folderFrom.copyMessages(this.messages, folderTo);
+        folderFrom.copyMessages(deleteMessageArray, folderTo);
 
-        IMAPdelete.deleteMessage(this.message);
+        IMAPdelete.deleteMessage(deleteMessage);
     }
 }

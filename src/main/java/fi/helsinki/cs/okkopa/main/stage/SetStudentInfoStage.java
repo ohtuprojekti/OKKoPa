@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
 
-    private static Logger LOGGER = Logger.getLogger(SetStudentInfoStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SetStudentInfoStage.class.getName());
     private ExceptionLogger exceptionLogger;
     private QRCodeDAO qRCodeDatabase;
     private MissedExamDao missedExamDAO;

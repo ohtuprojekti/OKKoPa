@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GetEmailStage extends Stage<Object, InputStream> {
 
-    private static Logger LOGGER = Logger.getLogger(GetEmailStage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GetEmailStage.class.getName());
     private EmailRead imapServer;
     private ExceptionLogger exceptionLogger;
 
