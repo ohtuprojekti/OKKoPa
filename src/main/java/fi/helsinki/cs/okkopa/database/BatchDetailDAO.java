@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.database;
 
 import com.j256.ormlite.dao.Dao;
@@ -10,15 +6,15 @@ import com.j256.ormlite.table.TableUtils;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.BatchDbModel;
 import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-/**
- *
- * @author phemmila
- */
+@Component
 public class BatchDetailDAO {
 
     private Dao<BatchDbModel, String> batchDbDao;
 
+    @Autowired
     public BatchDetailDAO(OkkopaDatabaseConnectionSource connectionSource) throws SQLException {
         batchDbDao = DaoManager.createDao(connectionSource, BatchDbModel.class);
         TableUtils.createTableIfNotExists(connectionSource, BatchDbModel.class);
