@@ -43,7 +43,7 @@ public class ErrorPDFRemover implements Remover {
         ArrayList<File> fileList = saver.list(saveFolder);
         if (fileList == null) {
             return;
-        };
+        }
         for (File pdf : fileList) {
             float fileAgeInDays = (System.currentTimeMillis() - pdf.lastModified()) / (1000 * 60 * 60 * 24);
             if (fileAgeInDays > saveDays) {

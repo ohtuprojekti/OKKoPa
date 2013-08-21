@@ -2,7 +2,6 @@ package fi.helsinki.cs.okkopa.pdfprocessor;
 
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.exception.DocumentException;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

@@ -5,5 +5,5 @@ public interface Remover {
     /**
      * Deletes old messages.
      */
-    public void deleteOldMessages();
+    void deleteOldMessages();
 }

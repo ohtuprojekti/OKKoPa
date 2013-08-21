@@ -32,6 +32,7 @@
     </entry>
     <entry key="mail.message.defaulttopic">Sähköpostin otsikko tähän</entry>
     <entry key="mail.message.replyto">okkopa2.2013@gmail.com</entry>
+    <entry key="mail.message.defaulttopic.report">Konseptipinkan raportti</entry>
      
     <!-- Database settings -->
     <!-- Url without .h2.db in the end. -->

@@ -48,7 +48,10 @@ public class EmailSenderImpl implements EmailSender {
 
     @Override
     public void send(String receiverEmailAddress, String subject, String message, String senderAddress, InputStream attachment) throws MessagingException {
-
+        if(senderAddress == null) {
+            senderAddress = sender;
+        }
+        
         OKKoPaMessage msg = new OKKoPaMessage(receiverEmailAddress, senderAddress, properties);
         msg.setSubject(subject);
         msg.setText(message);

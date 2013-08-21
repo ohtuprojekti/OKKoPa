@@ -6,21 +6,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class EmailReadImpl implements EmailRead {
@@ -35,6 +33,11 @@ public class EmailReadImpl implements EmailRead {
     private final boolean deleteAfterProcessing;
     private final String processedFolderName;
 
+    /**
+     * Constructor, gets settings from the given properties object.
+     * 
+     * @param settings
+     */
     @Autowired
     public EmailReadImpl(Settings settings) {
         host = settings.getProperty("mail.imap.host");
@@ -53,7 +56,7 @@ public class EmailReadImpl implements EmailRead {
     }
 
     @Override
-    public void connect() throws NoSuchProviderException, MessagingException {
+    public void connect() throws MessagingException {
         Properties properties = System.getProperties();
         Session session = Session.getDefaultInstance(properties);
         store = session.getStore("imaps");
@@ -106,7 +109,7 @@ public class EmailReadImpl implements EmailRead {
     public void closeQuietly() {
         try {
             close();
-        } catch (MessagingException ex) {
+        } catch (Exception ex) {
             // Ignore
         }
     }

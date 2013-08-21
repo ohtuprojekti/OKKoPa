@@ -13,7 +13,6 @@ import fi.helsinki.cs.okkopa.model.FeedbackDbModel;
 import fi.helsinki.cs.okkopa.model.StudentDbModel;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
