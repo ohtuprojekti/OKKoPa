@@ -2,17 +2,18 @@ package stories
 
 import com.icegreen.greenmail.util.ServerSetup
 import com.icegreen.greenmail.util.GreenMail
-import fi.helsinki.cs.okkopa.Settings
-import fi.helsinki.cs.okkopa.mail.send.ExamPaperSender
-import fi.helsinki.cs.okkopa.mail.send.ExamPaperSenderImpl
+import fi.helsinki.cs.okkopa.main.Settings
+import fi.helsinki.cs.okkopa.mail.send.EmailSenderImpl
+
 import org.apache.pdfbox.pdmodel.PDDocument
 import java.security.Security
 import com.icegreen.greenmail.util.DummySSLSocketFactory
 import javax.mail.internet.MimeMessage
 import javax.mail.Multipart
 import javax.mail.BodyPart
-import fi.helsinki.cs.okkopa.exampaper.ExamPaper
+import fi.helsinki.cs.okkopa.model.ExamPaper
 import fi.helsinki.cs.okkopa.pdfprocessor.PDFSplitter
+import fi.helsinki.cs.okkopa.mail.send.EmailSender
 
 description "Email sending"
  
@@ -37,7 +38,7 @@ scenario "Sending an exam paper and then receiving an email", {
     }
  
     when "Email is sent", {
-        ExamPaperSender examPaperSender = new ExamPaperSenderImpl(settings);
+        EmailSender emailSender = new EmailSenderImpl(settings);
         examPaperSender.send(examPaper);
     }
  
@@ -69,7 +70,7 @@ scenario "Sending an exam paper and then receiving an email with attachment", {
     }
  
     when "Email is sent", {
-        ExamPaperSender examPaperSender = new ExamPaperSenderImpl(settings);
+        EmailSender emailSender = new EmailSenderImpl(settings);
         examPaperSender.send(examPaper);
     }
  
