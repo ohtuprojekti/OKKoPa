@@ -29,14 +29,16 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
     private BatchDetails batch;
     private EmailSender emailSender;
     private Settings settings;
+    private BatchDetailDAO batchDao;
 
     @Autowired
-    public ReadCourseInfoStage(PDFProcessor pDFProcessor, ExceptionLogger exceptionLogger, BatchDetails batch, Settings settings, EmailSender emailSender) {
+    public ReadCourseInfoStage(PDFProcessor pDFProcessor, ExceptionLogger exceptionLogger, BatchDetails batch, Settings settings, EmailSender emailSender, BatchDetailDAO batchDao) {
         this.pdfProcessor = pDFProcessor;
         this.exceptionLogger = exceptionLogger;
         this.batch = batch;
         this.settings = settings;
         this.emailSender = emailSender;
+        this.batchDao = batchDao;
     }
 
     @Override
@@ -55,7 +57,6 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
             examPapers.remove(0);
             LOGGER.debug("Kurssi-info luettu onnistuneesti.");
         } catch (PdfException | NotFoundException | SQLException | IOException ex) {
-            LOGGER.debug("jotain meni pieleen");
             exceptionLogger.logException(ex);
         }
 
@@ -66,7 +67,7 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
             processNextStages(examPaper);
         }
 
-        if(batch.getReportEmailAddress() != null && !batch.getReportEmailAddress().equals("")) {
+        if (batch.getReportEmailAddress() != null && !batch.getReportEmailAddress().equals("")) {
             sendEmail();
         } else {
         }
@@ -74,8 +75,11 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
 
     public void setBatchDetails(ExamPaper examPaper) throws SQLException, FileNotFoundException, IOException, NotFoundException {
         String[] fields = examPaper.getQRCodeString().split(":");
-        LOGGER.debug("Kurssi-info luettu: " + examPaper.getQRCodeString());
 
+        if (fields.length != 6) {
+            throw new NotFoundException();
+        }
+        LOGGER.debug("Kurssi-info luettu: " + examPaper.getQRCodeString());
         try {
             batch.setCourseCode(fields[0]);
             batch.setPeriod(fields[1]);
@@ -85,13 +89,10 @@ public class ReadCourseInfoStage extends Stage<List<ExamPaper>, ExamPaper> {
         } catch (Exception e) {
             throw new NotFoundException();
         }
-        if (fields.length >= 6) {
-            BatchDetailDAO batchDao = new BatchDetailDAO(new OkkopaDatabaseConnectionSource(settings));
-            BatchDbModel bdm = batchDao.getBatchDetails(fields[5]);
+        BatchDbModel bdm = batchDao.getBatchDetails(fields[5]);
 
-            batch.setEmailContent(bdm.getEmailContent());
-            batch.setReportEmailAddress(bdm.getReportEmailAddress());
-        }
+        batch.setEmailContent(bdm.getEmailContent());
+        batch.setReportEmailAddress(bdm.getReportEmailAddress());
     }
 
     private void sendEmail() {
