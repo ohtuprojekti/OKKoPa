@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.mail.MessagingException;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -60,7 +61,7 @@ public class RetryFailedEmailsStage extends Stage {
         if (fileList == null) {
             LOGGER.debug("Ei uudelleenlähetettävää.");
             return;
-        };
+        }
         // Get list of failed emails from database
         List<FailedEmailDbModel> failedEmails;
         try {
@@ -72,10 +73,9 @@ public class RetryFailedEmailsStage extends Stage {
         // Match files and send
         for (FailedEmailDbModel failedEmail : failedEmails) {
             for (File pdf : fileList) {
-                if (failedEmail.getFilename().equals(pdf.getName())) {
-                    if (retryFailedEmail(pdf, failedEmail)) {
-                        continue;
-                    }
+                if (failedEmail.getFilename().equals(pdf.getName())
+                        && retryFailedEmail(pdf, failedEmail)) {
+                    continue;
                 }
             }
         }
@@ -98,7 +98,7 @@ public class RetryFailedEmailsStage extends Stage {
         } catch (MessagingException ex) {
             exceptionLogger.logException(ex);
             // Delete if too old.
-            long ageInMinutes = (new Date().getTime() - failedEmail.getFailTime().getTime()) / 60000;
+            long ageInMinutes = TimeUnit.MILLISECONDS.toMinutes(new Date().getTime() - failedEmail.getFailTime().getTime());
             if (ageInMinutes > retryExpirationMinutes) {
                 pdf.delete();
             }

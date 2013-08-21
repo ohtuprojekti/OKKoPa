@@ -100,7 +100,7 @@ public class OKKoPaMessage {
      * @return Built message
      * @throws MessagingException
      */
-    private final MimeMessage generateMessage() throws MessagingException {
+    private MimeMessage generateMessage() throws MessagingException {
         // Get the default Session object.
         session = generateSession();
         MimeMessage message = new MimeMessage(session);

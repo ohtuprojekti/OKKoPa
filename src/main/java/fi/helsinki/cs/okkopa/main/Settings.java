@@ -11,18 +11,18 @@ import java.util.Properties;
  */
 public class Settings extends Properties {
 
-    public Settings(String fileName) throws FileNotFoundException, IOException {
+    public Settings(String fileName) throws IOException {
         Properties props = readSettingXML(fileName);
 
         try {
             props.putAll(readSettingXML("passwords.xml"));
-        } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
+            // doesn't matter if there is no passwords in separate file
         }
         this.putAll(props);
     }
 
-    private Properties readSettingXML(String fileName) throws FileNotFoundException, IOException {
+    private Properties readSettingXML(String fileName) throws IOException {
         Properties currentProps = new Properties();
 
         try {
@@ -36,6 +36,5 @@ public class Settings extends Properties {
             fis.close();
             return currentProps;
         }
-
     }
 }

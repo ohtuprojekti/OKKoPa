@@ -5,5 +5,5 @@ import javax.mail.MessagingException;
 
 public interface EmailSender {
 
-    public void send(String receiverEmailAddress, InputStream attachment) throws MessagingException;
+    void send(String receiverEmailAddress, InputStream attachment) throws MessagingException;
 }

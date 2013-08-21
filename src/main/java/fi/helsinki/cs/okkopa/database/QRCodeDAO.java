@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.table.TableUtils;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
-import fi.helsinki.cs.okkopa.model.MissedExamDbModel;
 import fi.helsinki.cs.okkopa.model.QRCodeDbModel;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
