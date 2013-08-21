@@ -5,35 +5,55 @@ import java.io.InputStream;
 import java.util.List;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 
+/**
+ * Email get and attachment reading utilities.
+ */
 public interface EmailRead {
 
     /**
      * Closes the connection.
+     * 
+     * @throws MessagingException If there were problems with the server.
+     * @throws NullPointerException If connect() was not called successfully before close().
      */
     void close() throws MessagingException;
     
+    /**
+     * Closes the connection without Exceptions. To be used in finally() block.
+     */
     void closeQuietly();
 
     /**
-     * Connects into the email server.
+     * Connects to the email server.
      *
-     * @throws NoSuchProviderException
-     * @throws MessagingException
+     * @throws MessagingException If there were problems connecting.
      */
     void connect() throws MessagingException;
     
+    /**
+     * Returns next Message object or null if there are no new Messages.
+     * 
+     * @return Next Message object or null if there are no new Messages
+     * @throws MessagingException If there were problems with the imap connection.
+     */
     Message getNextMessage() throws MessagingException;
 
     /**
-     * Returns list of next email's attachments as list.
+     * Returns list of given Messages attachments as a list.
      *
-     * @return null, if no new messages with attachments.
-     * @throws MessagingException
-     * @throws IOException
+     * @param message Message to get the attachments from.
+     * @return A list of attachments or an empty list if there are none.
+     * @throws MessagingException If there are problems with the imap connection.
+     * @throws IOException If there are problems reading the attachments.
      */
     List<InputStream> getMessagesAttachments(Message message) throws MessagingException, IOException;
     
+    /**
+     * Depending on the settings either deletes the mail from inbox or moves it to another folder.
+     * 
+     * @param message Message to be deleted or moved.
+     * @throws MessagingException If there were problems with the connection.
+     */
     void cleanUpMessage(Message message) throws MessagingException;
 }

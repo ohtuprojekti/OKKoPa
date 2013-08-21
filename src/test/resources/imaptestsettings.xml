@@ -4,7 +4,7 @@
 
     <!-- passwords -->
     <entry key="mail.smtp.password"></entry>
-    <entry key="mail.imap.password"></entry>
+    <entry key="mail.imap.password">testi</entry>
      
     <!-- smtp-settings -->
     <entry key="mail.smtp.auth">true</entry>
@@ -14,9 +14,9 @@
     <entry key="mail.smtp.user">okkopa2.2013@gmail.com</entry> 
     
     <!-- imap-settings -->
-    <entry key="mail.imap.host">imap.googlemail.com</entry>  
-    <entry key="mail.imap.port">993</entry>
-    <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
+    <entry key="mail.imap.host">localhost</entry>  
+    <entry key="mail.imap.port">4008</entry>
+    <entry key="mail.imap.user">okkopa@okkopa.ok</entry>
     <entry key="mail.imap.inboxfoldername">inbox</entry>
     <entry key="mail.imap.deleteafterprocessing">true</entry>
     <!-- Folder for processed emails, used only
