@@ -4,6 +4,7 @@ import fi.helsinki.cs.okkopa.database.MissedExamDao;
 import fi.helsinki.cs.okkopa.database.QRCodeDAO;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.sql.SQLException;
@@ -18,18 +19,20 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
     private ExceptionLogger exceptionLogger;
     private QRCodeDAO qRCodeDatabase;
     private MissedExamDao missedExamDAO;
+    private String atDomain;
 
     @Autowired
-    public SetStudentInfoStage(QRCodeDAO qRCodeDatabase, MissedExamDao missedExamDAO, ExceptionLogger exceptionLogger) {
+    public SetStudentInfoStage(QRCodeDAO qRCodeDatabase, MissedExamDao missedExamDAO, ExceptionLogger exceptionLogger, Settings settings) {
         this.qRCodeDatabase = qRCodeDatabase;
         this.exceptionLogger = exceptionLogger;
         this.missedExamDAO = missedExamDAO;
+        this.atDomain = settings.getProperty("mail.receiver.atdomain");
     }
 
     @Override
     public void process(ExamPaper examPaper) {
         try {
-            LOGGER.debug("ID: " + examPaper.getQRCodeString());
+            LOGGER.debug("QR code: " + examPaper.getQRCodeString());
             String userId = fetchUserId(examPaper.getQRCodeString());
             if (userId == null) {
                 //Rekisteröimätön anonyymikoodi.
@@ -39,11 +42,11 @@ public class SetStudentInfoStage extends Stage<ExamPaper, ExamPaper> {
             Student student = new Student();
             examPaper.setStudent(student);
             student.setUsername(userId);
-            // TODO katenointi
-            student.setEmail("okkopa.2013@gmail.com");
+            student.setEmail(userId + atDomain);
+            LOGGER.debug("Sähköpostiosoite: " + student.getEmail());
         } catch (NotFoundException | SQLException ex) {
             exceptionLogger.logException(ex);
-            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä anonyymi koodi.");
+            LOGGER.debug("Luettu QR-koodi ei ollut käyttäjätunnus eikä generoitu koodi.");
             // QR code isn't an user id and doesn't match any database entries.
             return;
         }

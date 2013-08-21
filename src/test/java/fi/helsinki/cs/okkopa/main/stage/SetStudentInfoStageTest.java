@@ -4,6 +4,7 @@ import fi.helsinki.cs.okkopa.database.MissedExamDao;
 import fi.helsinki.cs.okkopa.database.QRCodeDAO;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.main.ExceptionLogger;
+import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.model.ExamPaper;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ public class SetStudentInfoStageTest {
     private SetStudentInfoStage setStudentInfoStage;
     private Stage nextStage;
     private ExamPaper mockPaper;
+    private Settings settingsMock;
 
     public SetStudentInfoStageTest() {
     }
@@ -40,7 +42,9 @@ public class SetStudentInfoStageTest {
         exceptionLoggerMock = mock(ExceptionLogger.class);
         qrCodeDatabaseMock = mock(QRCodeDAO.class);
         missedExamDatabaseMock = mock(MissedExamDao.class);
-        setStudentInfoStage = new SetStudentInfoStage(qrCodeDatabaseMock, missedExamDatabaseMock, exceptionLoggerMock);
+        settingsMock = mock(Settings.class);
+        when(settingsMock.getProperty("mail.receiver.atdomain")).thenReturn("@tes.ti");
+        setStudentInfoStage = new SetStudentInfoStage(qrCodeDatabaseMock, missedExamDatabaseMock, exceptionLoggerMock, settingsMock);
         nextStage = mock(Stage.class);
         setStudentInfoStage.setNext(nextStage);
         mockPaper = mock(ExamPaper.class);
@@ -84,6 +88,7 @@ public class SetStudentInfoStageTest {
         examPaper.setQRCodeString("tunnus");
         setStudentInfoStage.process(examPaper);
         assertEquals("tunnus", examPaper.getStudent().getUsername());
+        assertEquals("tunnus@tes.ti", examPaper.getStudent().getEmail());
     }
 
     @Test
