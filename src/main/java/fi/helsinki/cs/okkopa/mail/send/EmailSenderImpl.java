@@ -43,17 +43,26 @@ public class EmailSenderImpl implements EmailSender {
 
     @Override
     public void send(String receiverEmailAddress, InputStream attachment) throws MessagingException {
-        OKKoPaMessage msg = new OKKoPaMessage(receiverEmailAddress, sender, properties);
-        msg.setSubject(subject);
-        String text = this.batch.getEmailContent();
-        msg.setText(text);
-        
-        
-        try {
-            msg.addPDFAttachment(attachment, attachmentName);
-        } catch (IOException ex) {
-            throw new MessagingException("Error while reading pdf stream");
+        send(receiverEmailAddress, subject, this.batch.getEmailContent(), sender, attachment);
+    }
+
+    @Override
+    public void send(String receiverEmailAddress, String subject, String message, String senderAddress, InputStream attachment) throws MessagingException {
+        if(senderAddress == null) {
+            senderAddress = sender;
         }
+        
+        OKKoPaMessage msg = new OKKoPaMessage(receiverEmailAddress, senderAddress, properties);
+        msg.setSubject(subject);
+        msg.setText(message);
+
+        if (attachment != null) {
+            try {
+                msg.addPDFAttachment(attachment, attachmentName);
+            } catch (IOException ex) {
+                throw new MessagingException("Error while reading pdf stream");
+            }
+        }     
         msg.send();
     }
 }

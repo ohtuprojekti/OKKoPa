@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.main;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +114,7 @@ public class BatchDetails {
     }
 
     public void reset() {
-        this.emailContent = settings.getProperty("mail.defaultmessage.body");
+        this.emailContent = settings.getProperty("mail.message.defaultbody");
         this.reportEmailAddress = null;
         this.totalPages = 0;
         this.failedScans = 0;

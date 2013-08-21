@@ -16,13 +16,14 @@ import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class EmailReadImpl implements EmailRead {
 
+    private static final Logger LOGGER = Logger.getLogger(EmailReadImpl.class.getName());
     private Store store;
     private Folder inbox;
     private final String host;
@@ -35,7 +36,7 @@ public class EmailReadImpl implements EmailRead {
 
     /**
      * Constructor, gets settings from the given properties object.
-     * 
+     *
      * @param settings
      */
     @Autowired
@@ -46,7 +47,7 @@ public class EmailReadImpl implements EmailRead {
         port = Integer.parseInt(settings.getProperty("mail.imap.port"));
         inboxFolderName = settings.getProperty("mail.imap.inboxfoldername");
         deleteAfterProcessing = Boolean.parseBoolean(settings.getProperty("mail.imap.deleteafterprocessing"));
-        processedFolderName = settings.getProperty("mail.imap.processedfolder");
+        processedFolderName = settings.getProperty("mail.imap.processedfoldername");
     }
 
     @Override
@@ -96,6 +97,10 @@ public class EmailReadImpl implements EmailRead {
         // if not deleting, move to processed folder
         if (!deleteAfterProcessing) {
             Folder processed = store.getFolder(processedFolderName);
+            if (!processed.exists()) {
+                LOGGER.info("Sähköpostikansiota " + processedFolderName + " ei löytynyt. Luodaan kansio.");
+                processed.create(Folder.HOLDS_MESSAGES);
+            }
             processed.open(Folder.READ_WRITE);
             Message[] messages = {message};
             inbox.copyMessages(messages, processed);

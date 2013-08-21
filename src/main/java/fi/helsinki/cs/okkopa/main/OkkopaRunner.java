@@ -36,7 +36,6 @@ public class OkkopaRunner implements Runnable {
         readQRCodeStage.setNext(setStudentInfoStage);
         setStudentInfoStage.setNext(sendEmailStage);
         sendEmailStage.setNext(saveToTikliStage);
-
     }
 
     @Override
