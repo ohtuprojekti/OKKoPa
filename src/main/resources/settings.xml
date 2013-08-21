@@ -18,7 +18,7 @@
     <entry key="mail.imap.port">993</entry>
     <entry key="mail.imap.user">okkopa2.2013@gmail.com</entry>
     <entry key="mail.imap.inboxfoldername">inbox</entry>
-    <entry key="mail.imap.deleteafterprocessing">true</entry>
+    <entry key="mail.imap.deleteafterprocessing">false</entry>
     <!-- Folder for processed emails, used only
     if mail.imap.deleteafterprocessing is false-->
     <entry key="mail.imap.processedfoldername">true</entry>

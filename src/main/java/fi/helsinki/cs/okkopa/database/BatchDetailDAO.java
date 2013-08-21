@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fi.helsinki.cs.okkopa.database;
 
 import com.j256.ormlite.dao.Dao;
@@ -11,10 +7,6 @@ import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.BatchDbModel;
 import java.sql.SQLException;
 
-/**
- *
- * @author phemmila
- */
 public class BatchDetailDAO {
 
     private Dao<BatchDbModel, String> batchDbDao;
