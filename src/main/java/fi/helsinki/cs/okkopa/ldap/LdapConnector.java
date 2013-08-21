@@ -13,6 +13,7 @@ import fi.helsinki.cs.okkopa.main.Settings;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.model.Student;
 import java.security.GeneralSecurityException;
+import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,7 +65,7 @@ public class LdapConnector {
             ldc = new LDAPConnection(sslUtil.createSSLSocketFactory(), settings.getProperty("ldap.server.address"), Integer.parseInt(settings.getProperty("ldap.server.port")));
 
             SimpleBindRequest bindReq = new SimpleBindRequest(bindDN, bindPWD);
-            bindReq.setResponseTimeoutMillis(1000);
+            bindReq.setResponseTimeoutMillis(TimeUnit.SECONDS.toMillis(1));
             ldc.bind(bindReq);
 
             SearchResult result = ldc.search(baseOU, SearchScope.SUBORDINATE_SUBTREE, String.format(searchFilter, student.getUsername()), "schacPersonalUniqueCode");

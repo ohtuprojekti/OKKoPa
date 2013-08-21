@@ -5,6 +5,7 @@ import fi.helsinki.cs.okkopa.file.save.FileSaver;
 import fi.helsinki.cs.okkopa.file.save.Saver;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class ErrorPDFRemover implements Remover {
             return;
         }
         for (File pdf : fileList) {
-            float fileAgeInDays = (System.currentTimeMillis() - pdf.lastModified()) / (1000 * 60 * 60 * 24);
+            float fileAgeInDays = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pdf.lastModified());
             if (fileAgeInDays > saveDays) {
                 pdf.delete();
             }
