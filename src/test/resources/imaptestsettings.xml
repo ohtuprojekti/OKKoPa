@@ -24,6 +24,7 @@
     <entry key="mail.imap.processedfoldername">processed</entry>
     
     <!-- Message settings -->
+    <entry key="mail.attachment.maximumsizeinmegabytes">100</entry>
     
     <!-- Don't use tabs in "mail.message.body" unless
     you want them to appear in e-mails. -->
