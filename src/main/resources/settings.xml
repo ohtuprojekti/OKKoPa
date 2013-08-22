@@ -28,6 +28,7 @@
     <!-- @ + domain part of the email that will be added to read qr-code string
     can leave empty when using full email in the qr-code -->
     <entry key="mail.receiver.atdomain">@mappi.helsinki.fi</entry>
+    <entry key="mail.attachment.maximumsizeinmegabytes">100</entry>
     
     <!-- Don't use tabs in "mail.message.defaultbody" unless
     you want them to appear in e-mails. -->

@@ -33,6 +33,9 @@ public class EmailReadImpl implements EmailRead {
     private final String inboxFolderName;
     private final boolean deleteAfterProcessing;
     private final String processedFolderName;
+    private final int maximumAttachmentSizeInMegabytes;
+    
+    private final int BYTESINMEGABYTE = 1048576;
 
     /**
      * Constructor, gets settings from the given properties object.
@@ -48,6 +51,7 @@ public class EmailReadImpl implements EmailRead {
         inboxFolderName = settings.getProperty("mail.imap.inboxfoldername");
         deleteAfterProcessing = Boolean.parseBoolean(settings.getProperty("mail.imap.deleteafterprocessing"));
         processedFolderName = settings.getProperty("mail.imap.processedfoldername");
+        maximumAttachmentSizeInMegabytes = Integer.parseInt(settings.getProperty("mail.attachment.maximumsizeinmegabytes"));
     }
 
     @Override
@@ -72,9 +76,10 @@ public class EmailReadImpl implements EmailRead {
         Multipart multipart = (Multipart) message.getContent();
         for (int i = 0; i < multipart.getCount(); i++) {
             BodyPart bodyPart = multipart.getBodyPart(i);
+            // filter by type, filename and attachment size
             if (!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition())
-                    && !StringUtils.isNotBlank(bodyPart.getFileName())) {
-                // attachments only
+                    && !StringUtils.isNotBlank(bodyPart.getFileName()) && 
+                    ((double) bodyPart.getSize() / BYTESINMEGABYTE) <= maximumAttachmentSizeInMegabytes) {
                 continue;
             }
             InputStream inputStream = bodyPart.getInputStream();
