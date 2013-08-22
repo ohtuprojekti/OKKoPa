@@ -86,6 +86,9 @@
     <entry key="gui.front.link">Kansilehtien luonti (luennoitsijat)</entry>
     <entry key="gui.front.info">Lisätietoa kannesta</entry>
     
+    <entry key="gui.front.infofield">Opiskelijoille lähtevä info</entry>
+    <entry key="gui.front.emailfield">Luennoitsijan/assarin email</entry>
+    
     <entry key="gui.create.header">OKKoPa - viitteiden luonti</entry>
     <entry key="gui.create.help">Tarvitsetko apua? Ota yhteys Ossiin!</entry>
     <entry key="gui.create.link">Viitteiden luonti (vain admin)</entry>
@@ -99,7 +102,8 @@
     <entry key="gui.add.reference.typo">Kirjoitit viitteesi väärin, tarkista oikeinkirjoitus.</entry>
     <entry key="gui.add.username.typo">Käyttäjätunnus pitää olla yli kaksi merkkiä pitkä.</entry>
     <entry key="gui.add.username.ok">homma OK! Koe tulee sinulle kunhan se on tarkistettu.</entry>
-    <entry key="gui.add.username.double">"Joku oli jo rekisteröitynyt antamallesi QR-koodille. Ota yhteyttä Ossiin, ja selvitä hässäkkä."</entry>
-    <entry key="gui.add.username.noreferenceondb">"antamaasi viitettä ei löytynyt, etkai vaan yritä syöttää paskaa sisään?"</entry>
+    <entry key="gui.add.username.double">Joku oli jo rekisteröitynyt antamallesi QR-koodille. Ota yhteyttä Ossiin, ja selvitä hässäkkä.</entry>
+    <entry key="gui.add.username.noreferenceondb">antamaasi viitettä ei löytynyt, etkai vaan yritä syöttää paskaa sisään?</entry>
+    <entry key="gui.add.missedexams">Rekisteröit viitteesi hieman myöhässä, joten tulevat konseptit tulevat sinulle, mutta missasit seuraavissa kellonajoissa konsepteja:</entry>
     
 </properties>

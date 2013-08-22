@@ -1,7 +1,6 @@
 package fi.helsinki.cs.okkopa.main.stage;
 
 import fi.helsinki.cs.okkopa.database.BatchDetailDAO;
-import fi.helsinki.cs.okkopa.database.OkkopaDatabaseConnectionSource;
 import fi.helsinki.cs.okkopa.exception.NotFoundException;
 import fi.helsinki.cs.okkopa.mail.send.EmailSender;
 import fi.helsinki.cs.okkopa.main.BatchDetails;
